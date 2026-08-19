@@ -4,14 +4,14 @@ level: ops
 version: "3.9"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T19:30:00Z
+timestamp: 2026-08-19T19:12:22Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 Pass-2 fix-wave remediation COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next"
+current_step: "Phase 3 wave 1 — S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded"
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,7 +28,7 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-19T19:30:00Z — S-1.01 Pass-2 fix-wave remediation COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next |
+| **Last Updated** | 2026-08-19T19:12:22Z - S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 completed (NOT CLEAN); D-016 added
 | **Current Phase** | phase-3 |
 | **Current Step** | Phase 3 wave 1 — S-1.01 Pass-2 fix-wave remediation COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next |
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next) |
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded)
 | 4: Holdout Evaluation | not-started | | | | |
 | 5: Adversarial Refinement | not-started | | | | |
 | 6: Formal Hardening | not-started | | | | |
@@ -61,15 +61,15 @@ dtu_required: false
 | Adversarial convergence pass-1 | COMPLETE + VERIFIED | F-02/F-03 ADJUDICATED-DEFERRED (D-008). Convergence 0/3; F-01/F-04 RESOLVED + VERIFIED. NEXT: Pass 2. |
 | Adversarial convergence pass-2 | NOT CLEAN | Fresh-context different-model adversary; 4 MEDIUM findings ESCALATED (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT); SESSION WRAPPED. |
 | S-1.01 Pass-2 remediation fix-wave | COMPLETE + VERIFIED | HEAD 4820ead; CI-equiv: build 0/fmt 0/clippy 0/nextest 61/61 passed 0 skipped; all 4 findings dispositioned: F-04-a RESOLVED, F-04-b accepted-residual, F-VP017 fixed, F-SCAN-DOT-ROOT premise-disproven+comment-fixed |
+| Adversarial convergence pass-3 | COMPLETE + NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3
 
 ## Convergence Status
 
-- Consecutive clean passes: 0 of 3 (next adversarial Pass 3 is the first clean-pass opportunity)
+- Consecutive clean passes: 0 of 3 (next adversarial Pass 4 is the first clean-pass opportunity)
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
-
-## Fix Wave Ledger
+- Pass 3: NOT CLEAN. Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3.## Fix Wave Ledger
 
 | Finding | Operator | Status | Notes |
 |---------|----------|--------|-------|
@@ -135,8 +135,7 @@ dtu_required: false
 
 ## Session Resume Checkpoint
 
-S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next. Convergence 0/3 (next clean pass opportunity).
-
+S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded. NEXT: operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-debt entry; F-P3-02/F-P3-04 comment corrections; F-P3-02 BC-2.01.003 PC3 scope) -> test-file-only fix wave for accepted items -> re-verify gate GREEN -> adversarial Pass 4 toward 3 consecutive clean passes. Separately: operator to re-materialize the .factory worktree and forward-remove the 4 scratch files (STATE.md.bak, STATE.md.bak2.tmp, STATE.md.bak3, cycles/phase-3-wave-1/convergence-trajectory.md.bak). Reminder: include D-007 in adversary ground truth.
 ## Adversarial Pass 1
 
 - Fresh-context different-model adversary with policies.yaml rubric
@@ -154,8 +153,7 @@ S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversaria
 
 ## NEXT ACTION
 
-Adversarial Pass 3 (fresh context, different model, policies.yaml injected, scoped-to-fix tail). Convergence 0/3 → need 3 consecutive clean passes.
-
+Operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-debt entry; F-P3-02/F-P3-04 comment corrections; F-P3-02 BC-2.01.003 PC3 scope) -> test-file-only fix wave for accepted items -> re-verify gate GREEN -> adversarial Pass 4 (fresh context, scoped-to-fix) toward 3 consecutive clean passes. Separately: operator to re-materialize the .factory worktree and forward-remove the 4 scratch files (STATE.md.bak, STATE.md.bak2.tmp, STATE.md.bak3, cycles/phase-3-wave-1/convergence-trajectory.md.bak). Reminder: include D-007 in adversary do-not-re-litigate ground truth.
 ## Operator Decisions Completed (This Session)
 
 | Finding | Decision | Status |
@@ -169,7 +167,7 @@ Adversarial Pass 3 (fresh context, different model, policies.yaml injected, scop
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded) |
 
 ## Historical Content
 
