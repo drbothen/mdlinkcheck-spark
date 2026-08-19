@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-19T20:05:24Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01 && cargo nextest run --locked --workspace --no-fail-fast 2>&1"}
+{"status":"pass","timestamp":"2026-08-19T21:27:58Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01 && cargo nextest run --locked 2>&1; echo \"EXIT_CODE: $?\""}

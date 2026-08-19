@@ -35,3 +35,25 @@
 - EXCEPTION-01: This checkpoint is INCOMPLETE (no ls-remote proof possible)
 
 **Next Action:** ESCALATE-BEFORE-FIX: Present the 4 Pass-2 MEDIUM findings to operator for adjudication.
+
+---
+
+## Session Checkpoint: 2026-08-19T21:42:00Z
+**State:** Adversarial Pass 4 NOT CLEAN: 1 MEDIUM (F-P4-01), 2 LOW residuals non-blocking. F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018) with fail-closed assert!(!FORBIDDEN_PATTERNS.is_empty()) + runtime pin-probe count. Red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate. Convergence streak 0/3. NEXT: adversarial Pass 5 (first clean-pass opportunity after remediation).
+
+**Feature branch:** feature/S-1.01-workspace-scaffold-and-core-discovery
+**HEAD SHA:** f468bd5 (remediation fix-wave)
+**Working tree:** clean (post-burst)
+**Test command:** cargo nextest run --locked --workspace --no-fail-fast
+**EXIT code:** 0
+**Pass/fail counts:** 61 passed, 0 fail
+**Toolchain verified:** cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
+
+**Adversarial Pass 4 verdict:** NOT CLEAN (fix-wave remediation, not clean-pass), 1 MEDIUM (F-P4-01), 2 LOW residuals non-blocking (comment "independent" over-claim; scanner.rs:31 terse-comment clarity). REMEDIATED+VERIFIED.
+
+**Checkpoint Status:** ARCHIVED
+
+**Operator Decisions Completed:**
+- D-018: F-P4-01 ACCEPT+FIX — fail-closed assert + runtime pin-probe count (POL-11)
+
+**Next Action:** Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P4-01 remediation; 3 consecutive clean passes required.
