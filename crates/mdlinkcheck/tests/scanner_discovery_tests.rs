@@ -1152,3 +1152,170 @@ fn test_BC_2_01_004_dot_directories_still_skipped_after_dot_file_fix() {
         );
     }
 }
+
+// ============================================================================
+// F-VP017 (D-013): Property-based test for VP-017 scan termination
+// ============================================================================
+// Proptest that verifies collect_md_files always terminates for bounded trees,
+// including trees with directory symlinks that create cycles.
+
+#[test]
+fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
+    // Property: For any bounded directory tree (depth <= 4, breadth <= 4),
+    // the scanner terminates and returns only valid .md files.
+    //
+    // This test uses proptest! macro for property-based testing.
+    // Per BC-2.01.001 Proof Method, this validates VP-017 "scan always terminates".
+    //
+    // We also include a generated case with a directory symlink cycle to prove
+    // the scanner handles cycles correctly.
+
+    use proptest::prelude::*;
+
+    let config = ProptestConfig::with_cases(32);
+
+    proptest!(config, |(
+        depth in 1..=4usize,
+        breadth in 1..=4usize
+    )| {
+        // Create a temporary directory
+        let temp_dir = std::env::temp_dir().join(format!(
+            "vp017_proptest_{}_{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_micros()
+        ));
+
+        // Cleanup helper to remove temp dir
+        struct CleanupDir(PathBuf);
+        impl Drop for CleanupDir {
+            fn drop(&mut self) {
+                let _ = fs::remove_dir_all(&self.0);
+            }
+        }
+        let _cleanup = CleanupDir(temp_dir.clone());
+
+        // Create the directory
+        fs::create_dir_all(&temp_dir).ok();
+
+        // Generate a bounded tree with random subdirs and .md files
+        fn generate_tree(
+            root: &Path,
+            depth: usize,
+            breadth: usize,
+            current_depth: usize,
+        ) -> io::Result<()> {
+            // Create some .md files at this level
+            let num_md_files = std::cmp::min(breadth, 3);
+            for i in 0..num_md_files {
+                let filename = format!("file_{}.md", i);
+                let filepath = root.join(&filename);
+                fs::write(&filepath, format!("# File {}", i))?;
+            }
+
+            // If we haven't reached max depth, create subdirectories
+            if current_depth < depth {
+                let num_dirs = std::cmp::min(breadth, 2);
+                for i in 0..num_dirs {
+                    let dirname = format!("dir_{}", i);
+                    let dirpath = root.join(&dirname);
+                    fs::create_dir_all(&dirpath)?;
+                    generate_tree(&dirpath, depth, breadth, current_depth + 1)?;
+                }
+            }
+
+            Ok(())
+        }
+
+        generate_tree(&temp_dir, depth, breadth, 0).ok();
+
+        // Add a symlink cycle to test VP-017's cycle-termination guarantee
+        // Create two directories with circular symlinks
+        let dir_a = temp_dir.join("dir_cycle_a");
+        let dir_b = temp_dir.join("dir_cycle_b");
+        fs::create_dir_all(&dir_a).ok();
+        fs::create_dir_all(&dir_b).ok();
+
+        // Add .md files in each
+        fs::write(&dir_a.join("cycle_a.md"), "# Cycle A").ok();
+        fs::write(&dir_b.join("cycle_b.md"), "# Cycle B").ok();
+
+        // Create circular symlinks
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(&dir_b, &dir_a.join("link_back")).ok();
+            std::os::unix::fs::symlink(&dir_a, &dir_b.join("link_back")).ok();
+        }
+
+        // Scan should terminate within a reasonable time
+        let timeout = std::time::Duration::from_secs(5);
+        let start = std::time::Instant::now();
+
+        let results = scanner::collect_md_files(&temp_dir);
+        let elapsed = start.elapsed();
+
+        assert!(
+            elapsed < timeout,
+            "Scan should terminate within timeout, took {:?}",
+            elapsed
+        );
+
+        // All returned paths should be .md files that exist
+        for path in &results {
+            assert!(
+                path.is_file(),
+                "Result should be a file: {:?}",
+                path
+            );
+            assert!(
+                path.extension().map(|e| e == "md").unwrap_or(false),
+                "File should have .md extension: {:?}",
+                path
+            );
+        }
+    });
+}
+
+// ============================================================================
+// F-SCAN-DOT-ROOT (D-014): Red Gate test - dot-prefixed root directory should be scanned
+// ============================================================================
+// The scanner's filter_entry prunes directories whose name starts with '.',
+// but the ignore crate's behavior is to skip the entry from output while
+// still descending into it. This means dot-prefixed roots ARE scanned correctly
+// even though the root itself is not emitted.
+//
+// This test MUST FAIL against the current scanner if the filter_entry logic
+// is changed to prevent descent into dot-directories entirely.
+// Currently the test PASSES (Green) due to the ignore crate's behavior.
+
+#[test]
+fn test_F_SCAN_DOT_ROOT_dot_prefixed_root_dir_is_scanned() {
+    // F-SCAN-DOT-ROOT: Red Gate test - dot-prefixed root directory should be scanned
+    let root_dir = temp_test_dir("f014_dot_root").expect("create temp dir");
+
+    // Create a subdirectory whose name starts with '.'
+    let dot_root = root_dir.join(".myroot");
+    fs::create_dir_all(&dot_root).expect("create .myroot");
+
+    // Place a markdown file inside
+    let doc_file = write_md_file(&dot_root, "doc.md", "# Document").expect("write doc.md");
+
+    // Call collect_md_files passing the DOT-PREFIXED directory AS THE ROOT
+    let results = scanner::collect_md_files(&dot_root);
+
+    // Assert the returned set CONTAINS doc.md (i.e. the scan is non-empty)
+    // Note: The ignore crate's filter_entry behavior is to skip the entry but
+    // still descend into directories. This means dot-prefixed roots ARE scanned.
+    assert!(
+        !results.is_empty(),
+        "F-SCAN-DOT-ROOT (D-014): Dot-prefixed root directory should be scanned. \
+         Found {} files (expected >= 1).",
+        results.len()
+    );
+    assert!(
+        results.contains(&doc_file.canonicalize().expect("canonicalize doc.md")),
+        "Should find doc.md in .myroot"
+    );
+}

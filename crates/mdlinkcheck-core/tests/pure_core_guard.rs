@@ -5,14 +5,14 @@
 //! not the full POL-11 contract. Reference: POL-11, D-009.
 //!
 //! This test:
-//! 1. Positive-pinning: Scans all .rs files in core/src, asserts N>0, verifies
+//! 1. Positive-pinning: Recursively scans all .rs files under core/src, asserts N>0, verifies
 //!    types.rs was scanned (closed enumeration).
-//! 2. Differential probe: Asserts matcher matches synthetic `use std::fs;`.
+//! 2. Per-pattern differential probe: Asserts matcher catches each forbidden pattern individually.
 //! 3. Fails CLOSED if src dir missing/unreadable.
 
 use std::collections::HashSet;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 // Forbidden import/usage patterns (closed enumeration)
 const FORBIDDEN_PATTERNS: &[&str] = &[
@@ -25,6 +25,28 @@ const FORBIDDEN_PATTERNS: &[&str] = &[
     "rand::",
     "rand::rng",
 ];
+
+/// Recursively collect all .rs files under the given directory
+fn collect_rs_files_recursively(dir: &Path) -> Vec<PathBuf> {
+    let mut files = Vec::new();
+    if !dir.is_dir() {
+        return files;
+    }
+
+    for entry in fs::read_dir(dir).expect("failed to read directory") {
+        let entry = entry.expect("failed to read directory entry");
+        let path = entry.path();
+
+        if path.is_dir() {
+            // Recursively scan subdirectories
+            files.extend(collect_rs_files_recursively(&path));
+        } else if path.extension().is_some_and(|ext| ext == "rs") {
+            files.push(path);
+        }
+    }
+
+    files
+}
 
 #[test]
 fn test_pure_core_guard_scans_files_and_detects_forbidden_patterns() {
@@ -42,17 +64,8 @@ fn test_pure_core_guard_scans_files_and_detects_forbidden_patterns() {
         src_dir
     );
 
-    // Read all .rs files under src/
-    let entries = fs::read_dir(&src_dir).expect("failed to read src directory");
-    let mut rs_files: Vec<PathBuf> = Vec::new();
-
-    for entry in entries {
-        let entry = entry.expect("failed to read directory entry");
-        let path = entry.path();
-        if path.extension().is_some_and(|ext| ext == "rs") {
-            rs_files.push(path);
-        }
-    }
+    // Read all .rs files under src/ RECURSIVELY
+    let rs_files = collect_rs_files_recursively(&src_dir);
 
     // POSITIVE-PINNING: Assert we scanned at least one file
     assert!(
@@ -74,18 +87,23 @@ fn test_pure_core_guard_scans_files_and_detects_forbidden_patterns() {
 
     // Print reached-count (N files scanned)
     eprintln!(
-        "PURE-CORE-GUARD: Scanned {} core src files: {:?}",
+        "PURE-CORE-GUARD: Scanned {} core src files (recursive): {:?}",
         rs_files.len(),
         rs_files
     );
 
-    // DIFFERENTIAL PROBE: Assert matcher works against synthetic string
-    let synthetic_violation = "use std::fs::File;";
-    let synthetic_match = check_forbidden_patterns(synthetic_violation);
-    assert!(
-        synthetic_match,
-        "differential probe: matcher must match 'use std::fs::File;' but did not"
-    );
+    // PER-PATTERN DIFFERENTIAL PROBE (F-04-b/D-012):
+    // For EACH forbidden pattern, assert that the matcher catches it.
+    // This proves all 8 pins are live, not just the first one.
+    for pattern in FORBIDDEN_PATTERNS {
+        let synthetic_violation = format!("prefix {} suffix", pattern);
+        let match_result = check_forbidden_patterns(&synthetic_violation);
+        assert!(
+            match_result,
+            "per-pattern probe: matcher must catch forbidden pattern '{}', but did not",
+            pattern
+        );
+    }
 
     // Now scan actual source files
     let mut total_violations = 0;
