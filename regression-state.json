@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-19T09:15:31Z","command":"cargo nextest run --locked --no-fail-fast 2>&1 | tee /tmp/tw_nt.log; echo \"NEXTEST_EXIT=$?\""}
+{"status":"pass","timestamp":"2026-08-19T09:46:14Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01 && cargo nextest run --locked --no-fail-fast 2>&1; echo \"Exit code: $?\""}
