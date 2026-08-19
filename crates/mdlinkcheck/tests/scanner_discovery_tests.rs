@@ -1198,7 +1198,7 @@ fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
         let _cleanup = CleanupDir(temp_dir.clone());
 
         // Create the directory
-        fs::create_dir_all(&temp_dir).ok();
+        fs::create_dir_all(&temp_dir).expect("create temp_dir");
 
         // Generate a bounded tree with random subdirs and .md files
         fn generate_tree(
@@ -1229,24 +1229,24 @@ fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
             Ok(())
         }
 
-        generate_tree(&temp_dir, depth, breadth, 0).ok();
+        generate_tree(&temp_dir, depth, breadth, 0).expect("generate bounded tree");
 
         // Add a symlink cycle to test VP-017's cycle-termination guarantee
         // Create two directories with circular symlinks
         let dir_a = temp_dir.join("dir_cycle_a");
         let dir_b = temp_dir.join("dir_cycle_b");
-        fs::create_dir_all(&dir_a).ok();
-        fs::create_dir_all(&dir_b).ok();
+        fs::create_dir_all(&dir_a).expect("create dir_a");
+        fs::create_dir_all(&dir_b).expect("create dir_b");
 
         // Add .md files in each
-        fs::write(dir_a.join("cycle_a.md"), "# Cycle A").ok();
-        fs::write(dir_b.join("cycle_b.md"), "# Cycle B").ok();
+        fs::write(dir_a.join("cycle_a.md"), "# Cycle A").expect("write cycle_a.md");
+        fs::write(dir_b.join("cycle_b.md"), "# Cycle B").expect("write cycle_b.md");
 
         // Create circular symlinks
         #[cfg(unix)]
         {
-            std::os::unix::fs::symlink(&dir_b, dir_a.join("link_back")).ok();
-            std::os::unix::fs::symlink(&dir_a, dir_b.join("link_back")).ok();
+            std::os::unix::fs::symlink(&dir_b, dir_a.join("link_back")).expect("symlink dir_b -> dir_a/link_back");
+            std::os::unix::fs::symlink(&dir_a, dir_b.join("link_back")).expect("symlink dir_a -> dir_b/link_back");
         }
 
         // Scan should terminate within a reasonable time
@@ -1255,6 +1255,8 @@ fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
 
         let results = scanner::collect_md_files(&temp_dir);
         let elapsed = start.elapsed();
+
+        prop_assert!(!results.is_empty(), "fixture must produce at least one .md file; empty scan indicates a silently-failed fixture");
 
         assert!(
             elapsed < timeout,

@@ -23,7 +23,6 @@ const FORBIDDEN_PATTERNS: &[&str] = &[
     "std::io::stderr",
     "Instant::now",
     "rand::",
-    "rand::rng",
 ];
 
 /// Recursively collect all .rs files under the given directory
@@ -94,7 +93,7 @@ fn test_pure_core_guard_scans_files_and_detects_forbidden_patterns() {
 
     // PER-PATTERN DIFFERENTIAL PROBE (F-04-b/D-012):
     // For EACH forbidden pattern, assert that the matcher catches it.
-    // This proves all 8 pins are live, not just the first one.
+    // This proves each of the 7 pins is individually live (each has an independent synthetic positive; no pin is a superstring of another).
     for pattern in FORBIDDEN_PATTERNS {
         let synthetic_violation = format!("prefix {} suffix", pattern);
         let match_result = check_forbidden_patterns(&synthetic_violation);
