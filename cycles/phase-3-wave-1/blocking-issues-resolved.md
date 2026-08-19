@@ -52,3 +52,29 @@ traces_to: STATE.md
 | **Status** | PARKED (escalated, no self-fix) |
 
 ---
+
+## F-01 (AC-002 dedup tautological) — RESOLVED
+
+| Field | Value |
+|-------|-------|
+| **ID** | F-01 |
+| **Severity** | MEDIUM |
+| **Category** | content-defect (test-soundness) |
+| **Issue** | test_BC_2_01_001_no_duplicate_in_scan_set tautological — asserts returned_len == HashSet(returned).len(); structurally cannot fail. With follow_links(false) no file is reachable twice, so BC-2.01.001 PC2 multi-path clause not exercised (dead false-arm). (Reopens prior ledger F4.) |
+| **Resolution** | GENUINE in-scope assertion replacing tautology + BC-2.01.006 vacuity note (D-010). Falsifiability PROVEN (phantom file → assert FAIL left:2 right:3). |
+| **Resolution Date** | 2026-08-19 |
+| **Fix Commit** | 3b705eb (F-01/D-010) + 2859e03 (fmt clean) |
+| **Status** | RESOLVED + VERIFIED (independently gate-verified: build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59 passed) |
+
+## F-04 (pure-core enforcement absent) — RESOLVED
+
+| Field | Value |
+|-------|-------|
+| **ID** | F-04 |
+| **Severity** | MEDIUM |
+| **Category** | process-gap (pure-core enforcement) |
+| **Issue** | story Architecture Compliance table:225 claims std::fs/std::net ban enforced by "cargo deny rule" + "Kani harnesses fail to compile". cargo-deny cannot ban std modules; zero Kani harnesses exist. Code currently complies but no mechanical guard exists. |
+| **Resolution** | Mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs (D-009). POL-11 positive-coverage (reached-count=2, types.rs+lib.rs, asserted nonzero + closed enumeration). File-scan falsifiability PROVEN (injected use std::fs → exit 101; reverted → exit 0). |
+| **Resolution Date** | 2026-08-19 |
+| **Fix Commit** | 710d09b (amended fmt-clean) |
+| **Status** | RESOLVED + VERIFIED (independently gate-verified: build/fmt/clippy -Dwarnings/nextest

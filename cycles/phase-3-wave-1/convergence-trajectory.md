@@ -59,3 +59,31 @@ Fresh-context adversarial review of S-1.01 implementation via orchestrator-run e
 - STORY-INDEX.md and S-1.01 story frontmatter say status: draft while sprint-state.yaml says S-1.01 in_progress. This discrepancy will be reconciled later.
 
 ---
+
+### Pass 2 (2026-08-19) - FIX PAIR COMPLETE
+
+**Findings:** 0 (0 CRIT, 0 HIGH, 0 MED, 0 LOW) - F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings
+**Novelty:** LOW (same adversary, fix pair verification pass)
+**Convergence counter:** 0/3
+
+**Operator Ruling:** S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED at HEAD 2859e03
+
+#### Summary
+
+The S-01 fix pair (F-01 genuine oracle, F-04 pure-core guard) has been independently verified via full CI gate (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59 passed). F-02 and F-03 are ADJUDICATED-DEFERRED per D-008 (not blocking for Pass 2).
+
+#### Fix Pair Verification
+
+| Finding | Status | Verification |
+|---------|--------|--------------|
+| F-01 | RESOLVED + VERIFIED | GENUINE in-scope dedup assertion + BC-2.01.006 vacuity note; falsifiability PROVEN (phantom file → assert FAIL left:2 right:3); commit 3b705eb (+ fmt 2859e03) |
+| F-04 | RESOLVED + VERIFIED | Mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs; POL-11 positive-coverage (reached-count=2); file-scan falsifiability PROVEN; commit 710d09b |
+| F-02 | ADJUDICATED-DEFERRED | DEFERRED to BC-2.08.004 / SS-05; test comments corrected to state deferral honestly in 3b705eb |
+| F-03 | ADJUDICATED-DEFERRED | DEFERRED to BC-2.08.004 / SS-05; test comments corrected to state deferral honestly in 3b705eb |
+
+#### Notes
+- This is a FIX PAIR VERIFICATION pass, not a full adversarial pass
+- F-02/F-03 are injected as ADJUDICATED-DEFERRED non-findings (per D-008) - must NOT be re-raised as blocking
+- 3 consecutive clean passes still required to converge S-1.01 (currently 0/3)
+- Convergence trajectory: `4→...→0` (Pass 1: 4 findings, Pass 2: 0 findings due to fix pair + deferrals)
+

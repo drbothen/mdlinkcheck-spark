@@ -4,14 +4,14 @@ level: ops
 version: "3.9"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T10:59:00Z
+timestamp: 2026-08-19T14:24:32Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 adversarial convergence Pass 1 ADJUDICATED by operator (D-008/D-009/D-010). F-01/F-04 PENDING fix; F-02/F-03 DEFERRED per D-008. Convergence 0/3; SESSION WRAPPED for operator restart. NEXT: F-01+F-04 fix pair → independent CI gate → Pass 2."
+current_step: "Phase 3 wave 1 — S-1.01 F-01+F-04 fix pair COMPLETE + independently gate-verified (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59). Convergence 0/3. NEXT: adversarial convergence Pass 2 (fresh-context different-model), F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings, verify F-01/F-04."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -35,9 +35,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-18 (Phase 3 start from ratified spec package) |
-| **Last Updated** | 2026-08-19 — S-1.01 adversarial convergence Pass 1 ADJUDICATED by operator (D-008/D-009/D-010) |
+| **Last Updated** | 2026-08-19 — S-1.01 F-01+F-04 fix pair COMPLETE + independently gate-verified (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59) |
 | **Current Phase** | phase-3 |
-| **Current Step** | Phase 3 wave 1 — S-1.01 adversarial convergence Pass 1 ADJUDICATED by operator (D-008/D-009/D-010). F-01/F-04 PENDING fix; F-02/F-03 DEFERRED per D-008. Convergence 0/3; SESSION WRAPPED for operator restart. NEXT: F-01+F-04 fix pair → independent CI gate → Pass 2. |
+| **Current Step** | Phase 3 wave 1 — S-1.01 F-01+F-04 fix pair COMPLETE + independently gate-verified (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59). Convergence 0/3. NEXT: adversarial convergence Pass 2 (fresh-context different-model), F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings, verify F-01/F-04. |
 
 ## Phase Progress
 
@@ -48,7 +48,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: RATIFIED with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 1 ADJUDICATED by operator; awaiting Pass 2) |
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 1 ADJUDICATED; fix pair F-01+F-04 complete + verified; Pass 2 pending) |
 | 4: Holdout Evaluation | not-started | | | | |
 | 5: Adversarial Refinement | not-started | | | | |
 | 6: Formal Hardening | not-started | | | | |
@@ -65,12 +65,12 @@ dtu_required: false
 | Failing tests (Red Gate) | DONE + VERIFIED | 27/27 scanner tests fail with todo!() panic; control 25/25 core type tests pass |
 | Implementer TDD-to-green | DONE + verified | ignore-crate-native rewrite committed at 41b05d8; suite green (52/52 pass) |
 | Resume integrity check | DONE + verified | HEAD 41b05d831e1e2aa1423cd5734edd44e2923e5020 matches prior checkpoint; working tree clean; cargo nextest run --locked: 52/52 passed |
-| S-1.01 fix-wave | COMPLETE + VERIFIED | HEAD d969347; suite 58/58 PASS; all CI-equivalent gates GREEN (build/fmt/clippy-Dwarnings/nextest all exit 0); 2 fix-wave commits: 0e8e500 (clippy collapsible_if + unused imports + fmt), d969347 (#![allow(non_snake_case)] on traceability tests + dead helper removal + fmt hygiene) |
-| Adversarial convergence pass-1 | ADJUDICATED by operator | 4 MEDIUM findings adjudicated (F-01..F-04); PASS-VERDICT: ADJUDICATED; convergence 0/3; SESSION WRAPPED for operator restart |
+| S-1.01 fix-wave | COMPLETE + VERIFIED | HEAD 2859e03; 59/59 passed; all CI-equivalent gates GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); commits: 3b705eb (F-01/D-010 genuine oracle + F-02/F-03/D-008 comment corrections + fmt), 710d09b (F-04/D-009 pure-core guard + POL-11), 2859e03 (F-01 rustfmt clean) |
+| Adversarial convergence pass-1 | COMPLETE + VERIFIED | Fix pair F-01+F-04 complete + independently verified (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59). F-02/F-03 ADJUDICATED-DEFERRED (D-008). Convergence 0/3; NEXT: Pass 2 (fresh-context adversary, F-02/F-03 injected as non-findings). |
 
 ## Convergence Status
 
-Passes validly completed: 0; consecutive clean passes: 0 of 3 required; operator-ruled on Pass-1 escalation (F-01..F-04, all MEDIUM). F-01/F-04 PENDING fix; F-02/F-03 DEFERRED per D-008.
+Passes validly completed: 0; consecutive clean passes: 0 of 3 required; operator-ruled on Pass-1 escalation (F-01..F-04, all MEDIUM). F-01/F-04 RESOLVED + VERIFIED; F-02/F-03 ADJUDICATED-DEFERRED (D-008).
 
 ## Fix Wave Ledger
 
@@ -84,10 +84,10 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; operator
 | F5 (AC-008 CLI surface rejects --hidden; H6; D-011) | test-writer | RESOLVED | cli lib module created; real assertion instead of fake panic! |
 | F6 (nested .gitignore PC2; BC-2.01.003 PC2; H7) | test-writer | RESOLVED | Real nested .gitignore test (subdir excludes drop.md, keeps keep.md) |
 | CLIPPY-01 | implementer | RESOLVED | 41 findings resolved: collapsible_if, 2 unused imports, dead helper, 31 non_snake_case traceability-name, needless borrow, len>=1; fmt test files now green |
-| F-01 MEDIUM [content-defect] | test-soundness | ADJUDICATED | test_BC_2_01_001_no_duplicate_in_scan_set tautological — asserts returned_len == HashSet(returned).len(); with follow_links(false) no file reachable twice, so BC-2.01.001 PC2 multi-path clause not exercised (dead false-arm). (Reopens prior ledger F4.) Operator ruling: replace with genuine in-scope assertion + BC-2.01.006 vacuity note. PENDING fix. |
-| F-02 MEDIUM [content-defect] | partial AC coverage | ADJUDICATED | AC-006 (story:103-107) and AC-010 (story:124-129) each assert two postconditions; the "anchor table still built via Pass 1.5" half is structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. Operator ruling (D-008): DEFERRED to the story implementing run_scan + Pass 1.5 + AnchorIndex. |
-| F-03 MEDIUM [content-defect] | semantic anchoring | ADJUDICATED | POLICY 4 FAIL: VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables — Cross-File Anchors into Ignored Files Resolve", source_bc BC-2.08.004, module anchor_table, 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not VP-016's anchor-target-resolution property. VP-016's module (anchor_table) != story target_module (scanner). Operator ruling (D-008): DEFERRED to the story implementing run_scan + Pass 1.5 + AnchorIndex. |
-| F-04 MEDIUM [process-gap] | pure-core enforcement absent | ADJUDICATED | story Architecture Compliance table:225 claims std::fs/std::net ban in mdlinkcheck-core enforced by "cargo deny rule" + "Kani harnesses fail to compile if I/O imported". cargo-deny structurally cannot ban std modules; zero Kani harnesses exist. Code currently complies (types.rs imports only std::collections::HashMap, std::path::PathBuf, serde) but no mechanical guard exists. Operator ruling (D-009): Add cheap mechanical pure-core I/O guard NOW, test/CI-only, with POL-11 positive-coverage assertion. PENDING fix. |
+| F-01 MEDIUM [content-defect] | test-soundness | ADJUDICATED + RESOLVED + VERIFIED | test_BC_2_01_001_no_duplicate_in_scan_set tautological replaced with GENUINE in-scope assertion (D-010) + BC-2.01.006 vacuity note. Falsifiability PROVEN (phantom file → assert FAIL left:2 right:3). Commit 3b705eb (+ fmt 2859e03). |
+| F-02 MEDIUM [content-defect] | partial AC coverage | ADJUDICATED-DEFERRED | AC-006 (story:103-107) and AC-010 (story:124-129) each assert two postconditions; the "anchor table still built via Pass 1.5" half is structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. Operator ruling (D-008): DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly. |
+| F-03 MEDIUM [content-defect] | semantic anchoring | ADJUDICATED-DEFERRED | POLICY 4 FAIL: VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables", 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not anchor-target-resolution. VP-016's module (anchor_table) != story target_module (scanner). Operator ruling (D-008): DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly (removed VP-016 over-claim). |
+| F-04 MEDIUM [process-gap] | pure-core enforcement absent | ADJUDICATED + RESOLVED + VERIFIED | Mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs (D-009). POL-11 positive-coverage (reached-count=2, types.rs+lib.rs, asserted nonzero + closed enumeration). File-scan falsifiability PROVEN (injected use std::fs → exit 101; reverted → exit 0). Commit 710d09b (amended fmt-clean). |
 
 ## Decisions Log
 
@@ -113,10 +113,10 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; operator
 
 | ID | Issue | Severity | Blocking Phase | Owner | Resolution |
 |----|-------|----------|---------------|-------|------------|
-| F-01 | AC-002 dedup tautological — test BC_2_01_001_no_duplicate_in_scan_set asserts returned_len == HashSet(returned).len(); structurally cannot fail. With follow_links(false) no file reachable twice, so BC-2.01.001 PC2 multi-path clause not exercised (dead false-arm). (Reopens prior ledger F4.) | MEDIUM | phase-3 | test-writer | ADJUDICATED by operator (D-010); PENDING fix (genuine in-scope assertion + BC-2.01.006 vacuity note). |
-| F-02 | AC-006 and AC-010 partial coverage — each asserts two postconditions; "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. | MEDIUM | phase-3 | test-writer | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story. |
-| F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables", 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not anchor-target-resolution. VP-016's module (anchor_table) != story target_module (scanner). | MEDIUM | phase-3 | spec-steward | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story. |
-| F-04 | Pure-core enforcement absent — story Architecture Compliance table:225 claims std::fs/std::net ban enforced by "cargo deny rule" + "Kani harnesses fail to compile". cargo-deny cannot ban std modules; zero Kani harnesses exist. Code currently complies but no mechanical guard exists. | MEDIUM | phase-3 | architect | ADJUDICATED by operator (D-009); PENDING fix (mechanical I/O guard, POL-11, test/CI-only). |
+| F-01 | AC-002 dedup tautological — replaced with GENUINE in-scope assertion (D-010) + BC-2.01.006 vacuity note. Falsifiability PROVEN (phantom file → assert FAIL left:2 right:3). | MEDIUM | phase-3 | test-writer | ADJUDICATED + RESOLVED + VERIFIED (D-010, commit 3b705eb + fmt 2859e03). |
+| F-02 | AC-006 and AC-010 partial coverage — each asserts two postconditions; "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. | MEDIUM | phase-3 | test-writer | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly. |
+| F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables", 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not anchor-target-resolution. VP-016's module (anchor_table) != story target_module (scanner). | MEDIUM | phase-3 | spec-steward | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly (removed VP-016 over-claim). |
+| F-04 | Pure-core enforcement absent — added mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs (D-009). POL-11 positive-coverage (reached-count=2, types.rs+lib.rs, asserted nonzero + closed enumeration). File-scan falsifiability PROVEN (injected use std::fs into core/src → exit 101; reverted → exit 0). | MEDIUM | phase-3 | architect | ADJUDICATED + RESOLVED + VERIFIED (D-009, commit 710d09b). |
 
 ## Drift Items
 
@@ -124,19 +124,20 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; operator
 - [process-gap] Red Gate verified test redness but not oracle correctness (two gitignore over-exclusion tests were spec-wrong; surfaced only during implementation). Add oracle-correctness spot-check to Red Gate/test-review.
 - [process-gap] Red Gate/test-review did not catch a non-exercising "property" test (proptest imported but never invoked; symlink branch gated on never-created paths). Add a gate check that property tests actually invoke a generator and fixture branches are not dead.
 - [process-gap] Implementer self-reported FMT_EXIT=0 but test files were committed fmt-dirty; caught only by orchestrator's independent execution. Reaffirms reports-are-not-evidence; orchestrator must run the FULL gate (fmt+clippy+tests), not trust subagent gate self-reports.
+- [process-gap][recurrence x3] Test files committed fmt-dirty AGAIN this cycle — both 3b705eb (scanner_discovery_tests.rs) and the original F-04 commit (pure_core_guard.rs) failed  as first committed; caught only by the orchestrator's independent gate, fixed in 710d09b (amend) + 2859e03. This is the 3rd recorded occurrence of the 'reports-are-not-evidence: subagent self-reports fmt-clean but commits fmt-dirty' gap. Codification (a per-story-chain pre-commit/CI fmt gate) is DEFERRED for this engagement per operator directive 'no pre-gate factory/tooling work'; carried as tech-debt, target: post-wave-4 factory hardening. Interim mitigation: orchestrator continues to run the full independent gate (fmt+clippy+nextest) on every committed fix, never trusting subagent gate self-reports.
 
 ## Session Resume Checkpoint
 
-DISK-VERIFIED STATE (as of 2026-08-19T10:57:00Z):
+DISK-VERIFIED STATE (as of 2026-08-19T14:24:32Z):
 - Feature branch: feature/S-1.01-workspace-scaffold-and-core-discovery
-- HEAD SHA: d969347afdc53db82adeef04935be11dfc04ff33
+- HEAD SHA: 2859e03ca7c5c52e2960979fabecb148b1edfc96
 - Working tree: clean
-- Test command: cargo nextest run --locked --no-fail-fast
+- Test command: cargo nextest run --locked --workspace --no-fail-fast
 - EXIT code: 0
-- Pass/fail counts: 58 passed, 0 fail
+- Pass/fail counts: 59 passed, 0 fail
 - Toolchain verified: cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
 
-Adversarial Pass 1 adjudicated by operator (D-008/D-009/D-010); convergence 0/3; SESSION WRAPPED for operator restart; resume at NEXT ACTION (F-01+F-04 fix pair → independent gate → Pass 2).
+S-1.01 F-01+F-04 fix pair COMPLETE + independently gate-verified (build/fmt/clippy -Dwarnings/nextest all exit 0; 59/59). Convergence 0/3. NEXT: adversarial convergence Pass 2 (fresh-context different-model), F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings, verify F-01/F-04.
 
 ## Adversarial Pass 1
 
@@ -147,13 +148,13 @@ Adversarial Pass 1 adjudicated by operator (D-008/D-009/D-010); convergence 0/3;
 
 ## NEXT ACTION
 
-Dispatch the F-01 + F-04 fix pair in the S-1.01 worktree (feature/S-1.01-workspace-scaffold-and-core-discovery, HEAD d969347afdc53db82adeef04935be11dfc04ff33): test-writer does F-01 (genuine in-scope dedup assertion + BC-2.01.006 vacuity note) AND the F-02/F-03 test-comment honesty corrections in crates/mdlinkcheck/tests/scanner_discovery_tests.rs (remove the VP-016 over-claim; state the Pass-1.5 halves are deferred per D-008); implementer does F-04 (pure-core I/O guard test, POL-11 positive-coverage, test/CI-only). Serialize (single worktree). Then run an INDEPENDENT full CI-equiv gate (build/fmt/clippy -Dwarnings/nextest, raw output + exit codes). Then dispatch adversarial convergence Pass 2 (fresh-context different-model adversary) with F-02 and F-03 injected as ADJUDICATED-DEFERRED non-findings and instructions to verify the F-01/F-04 fixes. 3 consecutive clean passes still required to converge S-1.01.
+Dispatch adversarial convergence Pass 2 for S-1.01 (fresh-context, different-model adversary, policies.yaml rubric). Inject F-02 and F-03 as ADJUDICATED-DEFERRED non-findings (D-008) — must NOT be re-raised as blocking. Instruct the adversary to verify the F-01 genuine-oracle fix (D-010) and the F-04 pure-core guard (D-009) as landed at HEAD 2859e03. 3 consecutive clean passes still required to converge S-1.01 (currently 0/3).
 
 ## Concurrent Cycles
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 adversarial convergence Pass 1 ADJUDICATED by operator; convergence 0/3; SESSION WRAPPED for operator restart) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED; convergence 0/3; NEXT: Pass 2) |
 
 ## Historical Content
 

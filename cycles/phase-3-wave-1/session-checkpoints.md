@@ -74,3 +74,38 @@ traces_to: STATE.md
 **Next Action:** Dispatch fix wave with explicit null/leave-unfixed disposition option + orchestrator diff-verification — implementer: F2a + F2b + F1 comment correction + debt entry; test-writer: F3 + F4 + F5 + F6. Then re-run adversarial convergence FROM PASS 1 (clean-pass streak = 0).
 
 ---
+
+### Checkpoint 3 (2026-08-19T14:24:32Z)
+
+**Session:** S-1.01 F-01+F-04 fix pair checkpoint
+
+**State:**
+- Feature branch: feature/S-1.01-workspace-scaffold-and-core-discovery
+- HEAD SHA: 2859e03ca7c5c52e2960979fabecb148b1edfc96
+- Working tree: clean
+- Test command: cargo nextest run --locked --workspace --no-fail-fast
+- EXIT code: 0
+- Pass/fail counts: 59 passed, 0 fail
+- Toolchain verified: cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
+
+**Commit chain (since d969347):**
+- 3b705eb (F-01/D-010): genuine oracle + F-02/F-03/D-008 comment corrections + fmt
+- 710d09b (F-04/D-009): mechanical pure-core I/O guard + POL-11 + fmt-clean
+- 2859e03 (F-01): rustfmt clean
+
+**Fix pair verification:**
+- F-01: RESOLVED + VERIFIED — GENUINE in-scope dedup assertion + BC-2.01.006 vacuity note; falsifiability PROVEN (phantom file → assert FAIL left:2 right:3)
+- F-04: RESOLVED + VERIFIED — mechanical pure-core I/O guard; POL-11 positive-coverage; file-scan falsifiability PROVEN
+- F-02/F-03: ADJUDICATED-DEFERRED (D-008) — test comments corrected to state deferral honestly
+
+**CI gate verification:**
+- build: exit 0
+- fmt: exit 0
+- clippy -Dwarnings: exit 0
+- nextest all: 59/59 passed, 0 fail
+
+**Convergence Status:** 0 consecutive clean passes; Pass 1 ADJUDICATED; fix pair verified; NEXT: Pass 2 (fresh-context different-model adversary, F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings).
+
+**Next Action:** Dispatch adversarial convergence Pass 2 with F-02/F-03 injected as ADJUDICATED-DEFERRED non-findings (D-008); verify F-01/F-04 at HEAD 2859e03.
+
+---
