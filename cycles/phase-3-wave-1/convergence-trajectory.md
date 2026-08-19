@@ -87,3 +87,50 @@ The S-01 fix pair (F-01 genuine oracle, F-04 pure-core guard) has been independe
 - 3 consecutive clean passes still required to converge S-1.01 (currently 0/3)
 - Convergence trajectory: `4→...→0` (Pass 1: 4 findings, Pass 2: 0 findings due to fix pair + deferrals)
 
+---
+
+### Pass 2 (2026-08-19) - SECOND ADVERSARIAL PASS
+
+**Findings:** 4 MEDIUM (F-04-a, F-04-b, F-VP017, F-SCAN-DOT-ROOT), 0 HIGH, 0 CRIT
+**Novelty:** MEDIUM (fresh-context different-model static adversary, policies.yaml rubric)
+**Convergence counter:** 0/3
+**Verdict:** NOT CLEAN
+
+#### Adversarial Review Findings - PASS 2
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-04-a | MEDIUM | content-defect | pure_core_guard.rs:46 non-recursive fs::read_dir vs docstring "all .rs files" | Future core/src subdir .rs silently unscanned but still green + positive reached-count; non-recursion limit absent from sensitivity block. Fix: recurse OR reword to "top-level" + add caveat. ESCALATED-PENDING-OPERATOR. |
+| F-04-b | MEDIUM | content-defect | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern never caught | Proves mechanism liveness not pin completeness. Fix: assert each pattern individually. ESCALATED-PENDING-OPERATOR. |
+| F-VP017 | MEDIUM | content-defect | Story Task10 (S-1.01:208) + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked | Example-based not property-based. Frozen spec → tech-debt vs Task10/VP-017. ESCALATED-PENDING-OPERATOR. |
+| F-SCAN-DOT-ROOT | MEDIUM | content-defect (latent) | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty | Threatens AC-001 once main wired; H1 test:1013 covers dot-ancestors only. ESCALATED-PENDING-OPERATOR. |
+
+#### Operator Verdict Summary
+
+- F-01 ADEQUATE: genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments
+- F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix
+- 2 MEDIUM latent implementation gaps (F-VP017, F-SCAN-DOT-ROOT) pending operator adjudication
+
+#### LOW Advisory Notes
+
+| ID | Severity | Category | Issue |
+|----|----------|----------|-------|
+| ADV-1 | LOW | implementation-gate | guard enumeration pins types.rs not lib.rs (minor coverage gap) |
+| ADV-2 | LOW | edge-case | ".md"-named file extension edge (pending verification) |
+| ADV-3 | LOW | comment-nit | symlink-cycle comment nit (non-blocking) |
+| ADV-4 | LOW | not-enumerated | SystemTime::now/getrandom not enumerated in POL-11 (not blocking) |
+
+#### Policy Review Summary
+
+- POL-1 (non-empty scan): PASS
+- POL-4 (enumerated forbidden patterns): PASS
+- AC-008 D-011 CLI-surface enforcement confirmed present
+
+#### Convergence Status
+- Consecutive clean passes: 0 of 3 required
+- Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer; D-009 F-04 guard; D-010 F-01 oracle)
+- Pass 2: NOT CLEAN (4 MEDIUM findings ESCALATED-PENDING-OPERATOR)
+
+#### Next Steps
+ESCALATE-BEFORE-FIX: Present the 4 Pass-2 MEDIUM findings to operator for adjudication (accept-and-fix / defer-tech-debt / reject-out-of-scope). After adjudication: remediate accepted findings, re-run independent CI gate, run Pass 3. 3 consecutive clean passes still required (0/3).
+
