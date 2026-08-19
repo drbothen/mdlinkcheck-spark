@@ -181,7 +181,10 @@ fn test_finding_construction() {
     assert_eq!(finding.line, 15);
     assert_eq!(finding.col, 3);
     assert_eq!(finding.verdict, Verdict::FileNotFound);
-    assert_eq!(finding.reason, Some("Target file does not exist".to_string()));
+    assert_eq!(
+        finding.reason,
+        Some("Target file does not exist".to_string())
+    );
 }
 
 #[test]

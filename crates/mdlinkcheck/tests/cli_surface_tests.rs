@@ -1,6 +1,8 @@
 //! CLI surface tests for S-1.01
 //! Tests for AC-008 and BC-2.01.004 D-011: no --hidden override flag
 
+#![allow(non_snake_case)]
+
 use clap::CommandFactory;
 
 // ============================================================================
@@ -16,7 +18,10 @@ fn test_BC_2_01_004_no_hidden_flag_defined() {
     // AND that hidden is ABSENT
 
     let cmd = mdlinkcheck::cli::CliArgs::command();
-    let arg_ids: Vec<String> = cmd.get_arguments().map(|a| a.get_id().as_str().to_string()).collect();
+    let arg_ids: Vec<String> = cmd
+        .get_arguments()
+        .map(|a| a.get_id().as_str().to_string())
+        .collect();
 
     // Must have the three domain flags: path, online, format
     assert!(

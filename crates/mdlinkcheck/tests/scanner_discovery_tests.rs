@@ -6,6 +6,8 @@
 //! - VP-016: .gitignore exclusion during traversal
 //! - VP-017: scan termination for arbitrary directory trees including symlink cycles
 
+#![allow(non_snake_case)]
+
 use std::collections::HashSet;
 use std::fs;
 use std::io;
@@ -65,18 +67,6 @@ fn create_dir_symlink(src: &Path, dst: &Path) -> io::Result<()> {
     }
 }
 
-/// Create a file symlink
-fn create_file_symlink(src: &Path, dst: &Path) -> io::Result<()> {
-    #[cfg(unix)]
-    {
-        std::os::unix::fs::symlink(src, dst)
-    }
-    #[cfg(not(unix))]
-    {
-        panic!("Symlink creation not supported on this platform")
-    }
-}
-
 // ============================================================================
 // AC-001: test_BC_2_01_001_default_cwd_scan_includes_all_md_files
 // ============================================================================
@@ -121,7 +111,8 @@ fn test_BC_2_01_001_no_duplicate_in_scan_set() {
     // Create another path to the same file via different route
     let alt_path = test_dir.join("x").join("y");
     fs::create_dir_all(&alt_path).expect("create alt path");
-    write_md_file(&alt_path, "deep.md", "# Deep (duplicate name, same file)").expect("write deep.md");
+    write_md_file(&alt_path, "deep.md", "# Deep (duplicate name, same file)")
+        .expect("write deep.md");
 
     let results = scanner::collect_md_files(&test_dir);
 
@@ -190,7 +181,11 @@ fn test_BC_2_01_003_gitignore_excludes_from_scan_set() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Only README.md should be found
-    assert_eq!(results.len(), 1, "Should find only 1 file (excluding gitignored)");
+    assert_eq!(
+        results.len(),
+        1,
+        "Should find only 1 file (excluding gitignored)"
+    );
     assert!(
         results[0].file_name().unwrap() == "README.md",
         "Should find README.md"
@@ -208,7 +203,8 @@ fn test_BC_2_01_003_gitignored_file_not_scanned_as_source() {
     // Create a gitignored file with a broken link
     let nm_dir = test_dir.join("node_modules");
     fs::create_dir_all(&nm_dir).expect("create node_modules");
-    write_md_file(&nm_dir, "secret.md", "# Secret [broken](./missing.md)").expect("write secret.md");
+    write_md_file(&nm_dir, "secret.md", "# Secret [broken](./missing.md)")
+        .expect("write secret.md");
     write_md_file(&test_dir, "README.md", "# Readme [good](./README.md)").expect("write README.md");
 
     write_gitignore(&test_dir, "node_modules/\n").expect("write .gitignore");
@@ -239,7 +235,12 @@ fn test_BC_2_01_003_gitignored_file_anchor_table_built_as_target() {
     write_md_file(&test_dir, "target.md", "# Target\n## Section").expect("write target.md");
 
     // Create another file that links to it
-    write_md_file(&test_dir, "source.md", "# Source [link](./target.md#Section)").expect("write source.md");
+    write_md_file(
+        &test_dir,
+        "source.md",
+        "# Source [link](./target.md#Section)",
+    )
+    .expect("write source.md");
 
     write_gitignore(&test_dir, "target.md\n").expect("write .gitignore");
 
@@ -247,7 +248,11 @@ fn test_BC_2_01_003_gitignored_file_anchor_table_built_as_target() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Only source.md should be in the scan set
-    assert_eq!(results.len(), 1, "target.md should be excluded from scan set");
+    assert_eq!(
+        results.len(),
+        1,
+        "target.md should be excluded from scan set"
+    );
     assert!(
         results[0].ends_with("source.md"),
         "Should only include source.md"
@@ -287,8 +292,15 @@ fn test_BC_2_01_003_nested_gitignore_respected() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Expected: README.md and docs/keep.md; docs/drop.md ABSENT
-    assert_eq!(results.len(), 2, "Exactly 2 files: README.md and docs/keep.md");
-    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
+    assert_eq!(
+        results.len(),
+        2,
+        "Exactly 2 files: README.md and docs/keep.md"
+    );
+    let file_names: Vec<String> = results
+        .iter()
+        .map(|p| p.file_name().unwrap().to_string_lossy().to_string())
+        .collect();
     assert!(
         file_names.contains(&"README.md".to_string()),
         "README.md should be found (root file, not gitignored). Found args: {:?}",
@@ -333,7 +345,11 @@ fn test_BC_2_01_003_global_gitignore_out_of_scope() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Should find the file - global gitignore is not configured
-    assert_eq!(results.len(), 1, "Global gitignore not in scope, local file found");
+    assert_eq!(
+        results.len(),
+        1,
+        "Global gitignore not in scope, local file found"
+    );
 }
 
 // ============================================================================
@@ -362,7 +378,11 @@ fn test_BC_2_01_004_dot_directories_unconditionally_skipped() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Only README.md should be found - dot-directories are skipped
-    assert_eq!(results.len(), 1, "Should find only 1 file (dot-directories skipped)");
+    assert_eq!(
+        results.len(),
+        1,
+        "Should find only 1 file (dot-directories skipped)"
+    );
     assert!(
         results[0].file_name().unwrap() == "README.md",
         "Should find README.md"
@@ -388,7 +408,11 @@ fn test_BC_2_01_004_no_override_flag_for_dot_dir_skip() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Dot-directory is unconditionally skipped
-    assert_eq!(results.len(), 0, "No files should be found (dot-dir skipped)");
+    assert_eq!(
+        results.len(),
+        0,
+        "No files should be found (dot-dir skipped)"
+    );
 }
 
 // ============================================================================
@@ -412,7 +436,11 @@ fn test_BC_2_01_004_directory_symlinks_not_followed() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Should only find local.md, not external.md via symlink
-    assert_eq!(results.len(), 1, "Should find only 1 file (symlink not followed)");
+    assert_eq!(
+        results.len(),
+        1,
+        "Should find only 1 file (symlink not followed)"
+    );
     assert!(
         results[0].file_name().unwrap() == "local.md",
         "Should find local.md"
@@ -437,12 +465,21 @@ fn test_BC_2_01_004_dot_dir_md_file_anchor_table_built_as_target() {
     write_md_file(&vd, "api.md", "# API\n## Section").expect("write api.md");
 
     // Create a file that references it
-    write_md_file(&test_dir, "README.md", "# Readme [link](.vitepress/api.md#Section)").expect("write README.md");
+    write_md_file(
+        &test_dir,
+        "README.md",
+        "# Readme [link](.vitepress/api.md#Section)",
+    )
+    .expect("write README.md");
 
     let results = scanner::collect_md_files(&test_dir);
 
     // README.md should be in scan set, .vitepress/api.md should NOT be
-    assert_eq!(results.len(), 1, "Should find only 1 file (dot-dir excluded)");
+    assert_eq!(
+        results.len(),
+        1,
+        "Should find only 1 file (dot-dir excluded)"
+    );
     assert!(
         results[0].file_name().unwrap() == "README.md",
         "Should find README.md"
@@ -501,7 +538,11 @@ fn test_BC_2_01_005_non_md_extensions_excluded() {
     let results = scanner::collect_md_files(&test_dir);
 
     // Should find zero files - none have exact .md extension
-    assert_eq!(results.len(), 0, "Should find no files (all excluded by extension filter)");
+    assert_eq!(
+        results.len(),
+        0,
+        "Should find no files (all excluded by extension filter)"
+    );
 }
 
 // ============================================================================
@@ -585,10 +626,18 @@ fn test_BC_2_01_001_scan_terminates_with_genuine_symlink_cycle() {
     );
 
     // Should find both files (the cycle is detected and avoided)
-    assert_eq!(results.len(), 2, "Should find both files despite symlink cycle");
-    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
+    assert_eq!(
+        results.len(),
+        2,
+        "Should find both files despite symlink cycle"
+    );
+    let file_names: Vec<String> = results
+        .iter()
+        .map(|p| p.file_name().unwrap().to_string_lossy().to_string())
+        .collect();
     assert!(
-        file_names.contains(&"file_a.md".to_string()) && file_names.contains(&"file_b.md".to_string()),
+        file_names.contains(&"file_a.md".to_string())
+            && file_names.contains(&"file_b.md".to_string()),
         "Should contain both file_a.md and file_b.md"
     );
 }
@@ -665,7 +714,11 @@ vendor/
     }
 
     // log.md should survive because *.log does not match .md files per BC-2.01.003
-    assert_eq!(results.len(), 1, "Only log.md should survive (*.log doesn't match .md files)");
+    assert_eq!(
+        results.len(),
+        1,
+        "Only log.md should survive (*.log doesn't match .md files)"
+    );
     assert!(
         results[0].file_name().unwrap() == "log.md",
         "The surviving file should be log.md"
@@ -682,7 +735,7 @@ fn test_EC_001_empty_tree_no_crash() {
     let test_dir = temp_test_dir("ec001_empty").expect("create temp dir");
 
     // Create some non-markdown files
-    fs::write(&test_dir.join("config.json"), "{}").expect("write config.json");
+    fs::write(test_dir.join("config.json"), "{}").expect("write config.json");
 
     let results = scanner::collect_md_files(&test_dir);
 
@@ -727,7 +780,11 @@ fn test_EC_005_uppercase_md_rejected() {
 
     let results = scanner::collect_md_files(&test_dir);
 
-    assert_eq!(results.len(), 0, "README.MD should be excluded (case-sensitive)");
+    assert_eq!(
+        results.len(),
+        0,
+        "README.MD should be excluded (case-sensitive)"
+    );
 }
 
 #[test]
@@ -882,7 +939,10 @@ fn test_mixed_scenarios_gitignore_and_dotdirs() {
     // README.md and node_modules/pkg.md should survive (node_modules is NOT gitignored here)
     // .github/conf.md is skipped (dot-dir), docs/secret.md is gitignored
     assert_eq!(results.len(), 2, "README.md and pkg.md should survive");
-    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
+    let file_names: Vec<String> = results
+        .iter()
+        .map(|p| p.file_name().unwrap().to_string_lossy().to_string())
+        .collect();
     assert!(
         file_names.contains(&"README.md".to_string()) && file_names.contains(&"pkg.md".to_string()),
         "Should contain both README.md and pkg.md"
@@ -936,13 +996,15 @@ fn test_BC_2_01_001_dot_ancestor_should_not_block_scan() {
     // BUG: This currently returns empty because filter_entry rejects path components
     // starting with '.', including the hidden_ancestor ancestor of scanroot
     assert!(
-        results.len() >= 1,
+        !results.is_empty(),
         "Dot-ancestor should not block scan. Found {} files (expected >= 1). \
          The bug: filter_entry rejects path components starting with '.' including ancestors.",
         results.len()
     );
     assert!(
-        results.iter().any(|p| p.file_name().unwrap() == "readme.md"),
+        results
+            .iter()
+            .any(|p| p.file_name().unwrap() == "readme.md"),
         "Should find readme.md in the scan root"
     );
 }
@@ -986,7 +1048,10 @@ fn test_BC_2_01_004_dot_files_should_be_included() {
     );
 
     // Verify all three files are found
-    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
+    let file_names: Vec<String> = results
+        .iter()
+        .map(|p| p.file_name().unwrap().to_string_lossy().to_string())
+        .collect();
     assert!(
         file_names.contains(&"visible.md".to_string()),
         "Should find visible.md"
