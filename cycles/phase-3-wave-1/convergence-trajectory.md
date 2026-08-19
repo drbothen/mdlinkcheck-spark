@@ -4,7 +4,7 @@ level: ops
 version: "1.0"
 status: complete
 producer: state-manager
-timestamp: 2026-08-19T05:24:57Z
+timestamp: 2026-08-19T10:13:03Z
 cycle: "phase-3-wave-1"
 input-hash: "[md5]"
 traces_to: STATE.md
@@ -16,17 +16,17 @@ traces_to: STATE.md
 
 | Pass | Date | Total | CRIT | HIGH | MED | LOW | Novelty | Score | Counter | Verdict |
 |------|------|-------|------|------|-----|-----|---------|-------|---------|---------|
-| 1 | 2026-08-19 | 6 | 0 | 3 | 3 | 0 | HIGH | 0.00 | 0/3 | FINDINGS_REMAIN |
+| 1 | 2026-08-19 | 4 | 0 | 0 | 4 | 0 | HIGH | 0.00 | 0/3 | FINDINGS_REMAIN |
 
 ## Trajectory Shorthand
 
-`6→...`
+`4→...`
 
 ## Per-Pass Details
 
 ### Pass 1 (2026-08-19)
 
-**Findings:** 6 (0 CRIT, 3 HIGH, 3 MED, 0 LOW)
+**Findings:** 4 (0 CRIT, 0 HIGH, 4 MED, 0 LOW)
 **Novelty:** HIGH (fresh-context different-model adversary)
 **Convergence counter:** 0/3
 
@@ -38,19 +38,22 @@ Fresh-context adversarial review of S-1.01 implementation via orchestrator-run e
 
 | ID | Severity | Category | Issue | Status |
 |----|----------|----------|-------|--------|
-| F1 | HIGH | spec-vs-impl+coverage | BC-2.01.004 PC3 file-symlink following VIOLATED. scanner.rs:24 follow_links(false)+is_file() excludes symlink-to-file. No AC covers PC3. VP-INDEX:144 assigns to BC-2.01.006. | PENDING-DEFER (operator ruling needed) |
-| F2a | HIGH | spec-vs-impl | Dot-ancestor silent empty scan. filter_entry checks ALL path components incl. root ancestors. | PENDING-FIX (implementer) |
-| F2b | HIGH/MEDIUM | MATERIAL-product-intent | Dot-FILE .env.md excluded despite code comment. ESCALATED for operator intent ruling. | PENDING-FIX (implementer) |
-| F3 | MEDIUM | test-soundness | VP-017 "property" test inert. Zero proptest generator tokens; loop creates level_N but guard checks level1/level2. Dead symlink branch. | PENDING-FIX (test-writer) |
-| F4 | MEDIUM | test-soundness | AC-002 dedup tautological (single file, x==x). Unexercised. | PENDING-FIX (test-writer) |
-| F5 | MEDIUM | test-soundness | AC-008 never inspects CliArgs/try_parse/--hidden. Duplicate of AC-007. | PENDING-FIX (test-writer) |
-| F6 | MEDIUM | coverage-gap | BC-2.01.003 PC2 nested-.gitignore untested. All fixtures at root only. | PENDING-FIX (test-writer) |
+| F-01 | MEDIUM | content-defect | test-soundness: scanner_discovery_tests.rs:101-130 dedup test (test_BC_2_01_001_no_duplicate_in_scan_set) is tautological — asserts returned_len == HashSet(returned).len(), structurally cannot fail; with follow_links(false) no file is reachable twice, so BC-2.01.001 PC2 multi-path clause is not exercised (dead false-arm). (Reopens prior ledger F4.) | ESCALATED to operator |
+| F-02 | MEDIUM | content-defect | partial AC coverage: AC-006 (story:103-107) and AC-010 (story:124-129) each assert two postconditions; the "anchor table still built via Pass 1.5" half is structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. | ESCALATED to operator |
+| F-03 | MEDIUM | content-defect | semantic anchoring — POLICY 4 FAIL: VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables — Cross-File Anchors into Ignored Files Resolve", source_bc BC-2.08.004, module anchor_table, 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not VP-016's anchor-target-resolution property. VP-016's module (anchor_table) != story target_module (scanner). | ESCALATED to operator |
+| F-04 | MEDIUM | process-gap | pure-core enforcement absent: story Architecture Compliance table:225 claims std::fs/std::net ban in mdlinkcheck-core enforced by "cargo deny rule" + "Kani harnesses fail to compile if I/O imported". cargo-deny structurally cannot ban std modules; zero Kani harnesses exist. Code currently complies (types.rs imports only std::collections::HashMap, std::path::PathBuf, serde) but no mechanical guard exists. | ESCALATED to operator |
 
-#### Observations
+#### Non-blocking Observations (LOW)
 
 | ID | Severity | Category | Issue | Status |
 |----|----------|----------|-------|--------|
-| OBS-1 | MEDIUM | spec-governance | VP-016 label drift: VP-INDEX defines "excluded files are valid anchor targets" but story/BC gloss as ".gitignore exclusion / never in scan set". | PARKED (no self-fix, specs frozen) |
-| OBS-2 | LOW | PASS confirmations | All pass criteria verified: purity boundary, WalkBuilder, case-sensitive match, follow_links(false), dep pins, demo-evidence clean. | VERIFIED |
+| OBS-1 | LOW | dev-efficiency | proptest unused dev-dep (VP-017 proof_method=integration; implementer correctly wrote integration test). | VERIFIED |
+| OBS-2 | LOW | unused-dep | rayon unused prod dep (ADR-005 parallel deferred). | VERIFIED |
+| OBS-3 | LOW | acceptable-stub | main.rs is fn main(){todo!()} (acceptable stub for S-1.01 scope). | VERIFIED |
+| OBS-4 | LOW | out-of-scope | filter_entry dot-root basename edge is out-of-scope for default-CWD S-1.01. | VERIFIED |
+
+#### Bookkeeping Note
+
+- STORY-INDEX.md and S-1.01 story frontmatter say status: draft while sprint-state.yaml says S-1.01 in_progress. This discrepancy will be reconciled later.
 
 ---

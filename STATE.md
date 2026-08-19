@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.8"
+version: "3.9"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T08:40:00Z
+timestamp: 2026-08-19T10:09:06Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 fix-wave COMPLETE @ d969347; full CI-equiv gate green (build/fmt/clippy-Dwarnings/nextest all exit 0; 58/58, 0 skipped); adversarial convergence 0/3 NEXT."
+current_step: "Phase 3 wave 1 — S-1.01 adversarial convergence Pass 1 COMPLETE. PASS-VERDICT: FINDINGS(4). No HIGH/critical functional defects; discovery correctness genuinely tested. Hints F1/F2a/F2b/F3/F5/F6 re-verified RESOLVED; prior F4 dedup claim REOPENED as F-01. Four MEDIUM findings ESCALATED to operator (escalate-before-fix); NO fix wave dispatched. Convergence clean-pass streak 0/3. AWAITING OPERATOR RULING."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -35,9 +35,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-18 (Phase 3 start from ratified spec package) |
-| **Last Updated** | 2026-08-19 — S-1.01 fix-wave COMPLETE @ d969347; full CI-equiv gate; convergence 0/3 |
+| **Last Updated** | 2026-08-19 — S-1.01 adversarial convergence Pass 1 COMPLETE @ F-01..F-04 escalated |
 | **Current Phase** | phase-3 |
-| **Current Step** | Phase 3 wave 1 — S-1.01 fix-wave COMPLETE. Feature-branch HEAD d969347; suite 58 tests (58 pass, 0 fail); all CI-equivalent gates GREEN (build/fmt/clippy-Dwarnings/nextest all exit 0). Adversarial convergence 0/3 NEXT.
+| **Current Step** | Phase 3 wave 1 — S-1.01 adversarial convergence Pass 1 COMPLETE. PASS-VERDICT: FINDINGS(4). No HIGH/critical functional defects; discovery correctness genuinely tested. Hints F1/F2a/F2b/F3/F5/F6 re-verified RESOLVED; prior F4 dedup claim REOPENED as F-01. Four MEDIUM findings ESCALATED to operator (escalate-before-fix); NO fix wave dispatched. Convergence clean-pass streak 0/3. AWAITING OPERATOR RULING. |
 
 ## Phase Progress
 
@@ -48,7 +48,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: RATIFIED with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 1 dispatched) |
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 1 REMEDIATED Awaiting Pass 2) |
 | 4: Holdout Evaluation | not-started | | | | |
 | 5: Adversarial Refinement | not-started | | | | |
 | 6: Formal Hardening | not-started | | | | |
@@ -66,11 +66,11 @@ dtu_required: false
 | Implementer TDD-to-green | DONE + verified | ignore-crate-native rewrite committed at 41b05d8; suite green (52/52 pass) |
 | Resume integrity check | DONE + verified | HEAD 41b05d831e1e2aa1423cd5734edd44e2923e5020 matches prior checkpoint; working tree clean; cargo nextest run --locked: 52/52 passed |
 | S-1.01 fix-wave | COMPLETE + VERIFIED | HEAD d969347; suite 58/58 PASS; all CI-equivalent gates GREEN (build/fmt/clippy-Dwarnings/nextest all exit 0); 2 fix-wave commits: 0e8e500 (clippy collapsible_if + unused imports + fmt), d969347 (#![allow(non_snake_case)] on traceability tests + dead helper removal + fmt hygiene) |
-| Adversarial convergence | PASS 1 dispatched | fresh-context adversary with remembered findings as unverified hints; 0/3 clean-pass streak |
+| Adversarial convergence pass-1 | REMEDIATED | 4 MEDIUM findings escalated (F-01..F-04); PASS-VERDICT: FINDINGS(4); convergence 0/3; AWAITING OPERATOR RULING |
 
 ## Convergence Status
 
-Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACTION = run adversarial convergence Pass (fresh-context different-model adversary).
+Passes validly completed: 0; consecutive clean passes: 0 of 3 required; blocked awaiting operator ruling on Pass-1 escalation (F-01..F-04, all MEDIUM).
 
 ## Fix Wave Ledger
 
@@ -80,10 +80,14 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACT
 | F2a (H1 dot-ancestor empties scan; BC-2.01.001 PC1) | implementer | RESOLVED | filter_entry fixed to skip dot-DIRECTORIES only; .hidden(false) added |
 | F2b (H2/H4 dot-files; operator ruling INCLUDE) | implementer | RESOLVED | Dot-files now included; dot-dir combined test passes |
 | F3 (VP-017 real cycle + termination; adversary F-01) | test-writer | RESOLVED | Rewritten in 076c12c, passes; cosmetic unused `results` removed |
-| F4 (AC-002 dedup; H5) | test-writer | RESOLVED | HashSet-uniqueness over returned Vec, passes at 076c12c |
+| F4 (AC-002 dedup; H5) | test-writer | REOPENED | HashSet-un
 | F5 (AC-008 CLI surface rejects --hidden; H6; D-011) | test-writer | RESOLVED | cli lib module created; real assertion instead of fake panic! |
 | F6 (nested .gitignore PC2; BC-2.01.003 PC2; H7) | test-writer | RESOLVED | Real nested .gitignore test (subdir excludes drop.md, keeps keep.md) |
 | CLIPPY-01 | implementer | RESOLVED | 41 findings resolved: collapsible_if, 2 unused imports, dead helper, 31 non_snake_case traceability-name, needless borrow, len>=1; fmt test files now green |
+| F-01 MEDIUM [content-defect] | test-soundness | ESCALATED | test_BC_2_01_001_no_duplicate_in_scan_set tautological — asserts returned_len == HashSet(returned).len(); with follow_links(false) no file reachable twice, so BC-2.01.001 PC2 multi-path clause not exercised (dead false-arm). (Reopens prior ledger F4.) |
+| F-02 MEDIUM [content-defect] | partial AC coverage | ESCALATED | AC-006 (story:103-107) and AC-010 (story:124-129) each assert two postconditions; the "anchor table still built via Pass 1.5" half is structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. |
+| F-03 MEDIUM [content-defect] | semantic anchoring | ESCALATED | POLICY 4 FAIL: VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables — Cross-File Anchors into Ignored Files Resolve", source_bc BC-2.08.004, module anchor_table, 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not VP-016's anchor-target-resolution property. VP-016's module (anchor_table) != story target_module (scanner). |
+| F-04 MEDIUM [process-gap] | pure-core enforcement absent | ESCALATED | story Architecture Compliance table:225 claims std::fs/std::net ban in mdlinkcheck-core enforced by "cargo deny rule" + "Kani harnesses fail to compile if I/O imported". cargo-deny structurally cannot ban std modules; zero Kani harnesses exist. Code currently complies (types.rs imports only std::collections::HashMap, std::path::PathBuf, serde) but no mechanical guard exists. |
 
 ## Decisions Log
 
@@ -96,6 +100,7 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACT
 | D-005 | 2026-08-19 | Operator ruling: fix tests to spec-correct oracles for the two gitignore over-exclusion tests (VP-016 and mixed-scenario); test-file-only change. Commit 3e1f253. |
 | D-006 | 2026-08-19 | Process: expose CliArgs via the lib crate (crates/mdlinkcheck/src/cli.rs, pub) so AC-008/F5 can assert the CLI surface has no --hidden; consistent with D-004 (bin+lib hybrid). Implementer source work, pending. |
 | D-007 | 2026-08-19 | Operator-ruled durable: PC3 file-symlink following DEFERRED to BC-2.01.006; S-1.01 fix = correct the false comment + record tech-debt deferral entry (do NOT implement follow_links for files). |
+| D-008 | 2026-08-19 | Operator-ruled escalation: Pass-1 adversarial findings F-01..F-04 (all MEDIUM) ESCALATED to operator; "escalate-before-fix" protocol invoked; NO fix wave dispatched; AWAITING operator ruling. |
 
 ## Skip Log
 
@@ -106,11 +111,10 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACT
 
 | ID | Issue | Severity | Blocking Phase | Owner | Resolution |
 |----|-------|----------|---------------|-------|------------|
-| F1 | BC-2.01.004 PC3 file-symlink following VIOLATED. scanner.rs:24 follow_links(false)+is_file() excludes symlink-to-file. Code comment scanner.rs:52-53 falsely claims PC3 compliance. No AC covers PC3. VP-INDEX:144 assigns file-symlink-following to BC-2.01.006 (separate story) — scope tension. | HIGH | phase-3 | Implementer | RESOLVED: comment corrected; tech-debt deferral recorded per D-007 |
-| F2a | Dot-ancestor silent empty scan. filter_entry checks ALL path components incl. root ancestors. Root under .config/docs with README.md → collect_md_files returned [] (empty). Violates BC-2.01.001 PC1. | HIGH | phase-3 | Implementer | RESOLVED: filter_entry fixed to skip dot-DIRECTORIES only; .hidden(false) added |
-| F2b | Dot-FILE .env.md excluded despite code comment. Root .env.md + normal.md → returned ["normal.md"], .env.md absent. Contradicts scanner.rs:27 comment. ESCALATED to operator for dot-file inclusion intent ruling. | HIGH/MEDIUM | phase-3 | Implementer | RESOLVED: dot-files now included; dot-dir combined test passes |
-| F5 | AC-008 CLI surface --hidden guard. cli_surface_tests.rs:41 uses hardcoded panic! instead of real assertion. VP-011 PC3/AC-008. | MEDIUM | phase-3 | test-writer | RESOLVED: cli lib module created; real assertion instead of fake panic! |
-| F6 | Nested .gitignore test. Fake test masked by root docs/ exclusion + dead first results. Needs real nested .gitignore (subdir excludes drop.md, keeps keep.md). | MEDIUM | phase-3 | test-writer | RESOLVED: real nested .gitignore test created |
+| F-01 | AC-002 dedup tautological — test BC_2_01_001_no_duplicate_in_scan_set asserts returned_len == HashSet(returned).len(); structurally cannot fail. With follow_links(false) no file reachable twice, so BC-2.01.001 PC2 multi-path clause not exercised (dead false-arm). (Reopens prior ledger F4.) | MEDIUM | phase-3 | test-writer | ESCALATED to operator; F-01..F-04 blocked on operator ruling. |
+| F-02 | AC-006 and AC-010 partial coverage — each asserts two postconditions; "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. | MEDIUM | phase-3 | test-writer | ESCALATED to operator; F-01..F-04 blocked on operator ruling. |
+| F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables", 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not anchor-target-resolution. VP-016's module (anchor_table) != story target_module (scanner). | MEDIUM | phase-3 | spec-steward | ESCALATED to operator; F-01..F-04 blocked on operator ruling. |
+| F-04 | Pure-core enforcement absent — story Architecture Compliance table:225 claims std::fs/std::net ban enforced by "cargo deny rule" + "Kani harnesses fail to compile". cargo-deny cannot ban std modules; zero Kani harnesses exist. Code currently complies but no mechanical guard exists. | MEDIUM | phase-3 | architect | ESCALATED to operator; F-01..F-04 blocked on operator ruling. |
 
 ## Drift Items
 
@@ -130,21 +134,24 @@ DISK-VERIFIED STATE (as of 2026-08-19T08:40:00Z):
 - Pass/fail counts: 58 passed, 0 fail
 - Toolchain verified: cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
 
+Adversarial Pass 1 done @ this checkpoint; 4 MEDIUM findings escalated; convergence 0/3; blocked on operator ruling.
+
 ## Adversarial Pass 1
 
 - Fresh-context different-model adversary with policies.yaml rubric
 - Lens perimeter declared; F1-F7 handed as unverified hints
 - Convergence clean-pass streak = 0 of 3
+- 4 MEDIUM findings ESCALATED to operator (F-01..F-04)
 
 ## NEXT ACTION
 
-RUN ADVERSARIAL CONVERGENCE PASS (fresh-context different-model adversary; 0/3 clean-pass streak required).
+AWAITING OPERATOR RULING on S-1.01 Pass-1 escalation (F-01..F-04, all MEDIUM, frozen-spec scoping tensions). No fix wave, no spec edits, no Pass 2 until operator rules.
 
 ## Concurrent Cycles
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 fix-wave COMPLETE @ d969347; adversarial convergence 0/3 NEXT) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 adversarial convergence Pass 1 REMEDIATED; 4 MEDIUM findings escalated; convergence 0/3; AWAITING OPERATOR RULING) |
 
 ## Historical Content
 
