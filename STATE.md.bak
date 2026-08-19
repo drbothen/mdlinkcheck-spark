@@ -11,7 +11,7 @@ input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — adversarial Pass 2 COMPLETE: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT), 0 HIGH. F-01 ADEQUATE; F-04 mechanism ADEQUATE. Convergence 0/3. Operator adjudication: 4 MEDIUM findings ACCEPT+FIX (D-011 D-012 D-013 D-014). Remediation IN PROGRESS in .worktrees/S-1.01 (test-writer + implementer). NEXT: independent CI-equiv gate on the fix, then adversarial Pass 3 (fresh context, different model, scoped-to-fix tail)."
+current_step: "Phase 3 wave 1 — adversarial Pass 2 COMPLETE: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT), 0 HIGH. F-01 ADEQUATE; F-04 mechanism ADEQUATE. Convergence 0/3. SESSION WRAPPED. NEXT: escalate 4 Pass-2 findings to operator (escalate-before-fix); no fix/Pass-3 until adjudicated. CHECKPOINT COMMITTED LOCALLY, PUSH BLOCKED (SEC-01)."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,7 +28,7 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated | 2026-08-19T15:30:00Z — Operator adjudication: 4 Pass-2 MEDIUM findings ACCEPT+FIX (D-011 D-012 D-013 D-014) |
+| **Last Updated** | 2026-08-19T14:55:00Z — Pass 2 verdict: NOT CLEAN, 4 MEDIUM |
 | **Current Phase** | phase-3 |
 | **Current Step** | Phase 3 wave 1 — adversarial Pass 2 COMPLETE: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT), 0 HIGH. F-01 ADEQUATE; F-04 mechanism ADEQUATE. Convergence 0/3. SESSION WRAPPED. NEXT: escalate 4 Pass-2 findings to operator (escalate-before-fix); no fix/Pass-3 until adjudicated. CHECKPOINT COMMITTED LOCALLY, PUSH BLOCKED (SEC-01). |
 
@@ -83,10 +83,10 @@ dtu_required: false
 | F-02 MEDIUM [content-defect] | partial AC coverage | ADJUDICATED-DEFERRED | AC-006 (story:103-107) and AC-010 (story:124-129) each assert two postconditions; the "anchor table still built via Pass 1.5" half is structurally undischargeable in S-1.01 (no AnchorIndex/run_scan/Pass 1.5 code). Tests verify only the "not in scan set" half. Operator ruling (D-008): DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly. |
 | F-03 MEDIUM [content-defect] | semantic anchoring | ADJUDICATED-DEFERRED | POLICY 4 FAIL: VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables", 5 fixtures require run_scan/Pass 1.5/AnchorIndex. Story:71-72 mischaracterizes VP-016 as ".gitignore exclusion — files never in scan set". test_VP_016_* verifies only the exclusion premise, not anchor-target-resolution. VP-016's module (anchor_table) != story target_module (scanner). Operator ruling (D-008): DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). Test comments corrected in 3b705eb to state the deferral honestly (removed VP-016 over-claim). |
 | F-04 MEDIUM [process-gap] | pure-core enforcement absent | ADJUDICATED + RESOLVED + VERIFIED | Mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs (D-009). POL-11 positive-coverage (reached-count=2, types.rs+lib.rs, asserted nonzero + closed enumeration). File-scan falsifiability PROVEN (injected use std::fs → exit 101; reverted → exit 0). Commit 710d09b (amended fmt-clean). |
-| F-04-a MEDIUM [content-defect] | pure-core guard | ADJUDICATED ACCEPT+FIX — remediation in progress (D-011) | pure_core_guard.rs:46 non-recursive fs::read_dir vs docstring "all .rs files"; future core/src subdir .rs silently unscanned but still green + positive reached-count; non-recursion limit absent from sensitivity block. Fix: recurse OR reword to "top-level" + add caveat. |
-| F-04-b MEDIUM [content-defect] | pure-core guard | ADJUDICATED ACCEPT+FIX — remediation in progress (D-012) | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern (Instant::now typo, rand::) never caught; proves mechanism liveness not pin completeness. Fix: assert each pattern individually. |
-| F-VP017 MEDIUM [content-defect] | property-test | ADJUDICATED ACCEPT+FIX — remediation in progress (D-013) | Story Task10 (S-1.01:208) + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked. Example-based not property-based. Frozen spec → tech-debt vs Task10/VP-017. |
-| F-SCAN-DOT-ROOT MEDIUM [content-defect, latent] | scanner filter | ADJUDICATED ACCEPT+FIX — remediation in progress (D-014) | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. Threatens AC-001 once main wired; H1 test:1013 covers dot-ancestors only. |
+| F-04-a MEDIUM [content-defect] | pure-core guard | ESCALATED-PENDING-OPERATOR | pure_core_guard.rs:46 non-recursive fs::read_dir vs docstring "all .rs files"; future core/src subdir .rs silently unscanned but still green + positive reached-count; non-recursion limit absent from sensitivity block. Fix: recurse OR reword to "top-level" + add caveat. |
+| F-04-b MEDIUM [content-defect] | pure-core guard | ESCALATED-PENDING-OPERATOR | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern (Instant::now typo, rand::) never caught; proves mechanism liveness not pin completeness. Fix: assert each pattern individually. |
+| F-VP017 MEDIUM [content-defect] | property-test | ESCALATED-PENDING-OPERATOR | Story Task10 (S-1.01:208) + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked. Example-based not property-based. Frozen spec → tech-debt vs Task10/VP-017. |
+| F-SCAN-DOT-ROOT MEDIUM [content-defect, latent] | scanner filter | ESCALATED-PENDING-OPERATOR | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. Threatens AC-001 once main wired; H1 test:1013 covers dot-ancestors only. |
 
 ## Decisions Log
 
@@ -102,10 +102,6 @@ dtu_required: false
 | D-008 | 2026-08-19 | Operator ruling — F-02/F-03 ACCEPT + DEFER, no spec edit: VP-016 (source_bc BC-2.08.004, module anchor_table) and "anchor table still built via Pass 1.5" halves of AC-006 and AC-010 are formally DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
 | D-009 | 2026-08-19 | Operator ruling — F-04: Add mechanical pure-core I/O guard NOW, test/CI-only, with POL-11 positive-coverage assertion. File-scan falsifiability PROVEN (injected use std::fs → exit 101; reverted → exit 0). Commit 710d09b. |
 | D-010 | 2026-08-19 | Operator ruling — F-01: Test-only honest fix — replace tautological dedup oracle with GENUINE in-scope assertion (D-010) + BC-2.01.006 vacuity note. No spec edit. Commit 3b705eb. |
-| D-011 | 2026-08-19 | Operator ruling — F-04-a ACCEPT + FIX (test/CI-only): pure_core_guard.rs scans core/src NON-recursively while docstring claims "all .rs files". Fix = make the .rs enumeration recursive over core/src AND update docstring; keep closed-enumeration (types.rs present) + reached-count. No spec edit. |
-| D-012 | 2026-08-19 | Operator ruling — F-04-b ACCEPT + FIX (test/CI-only): differential probe exercised only 1/8 forbidden patterns under an .any() matcher (liveness not pin-completeness). Fix = assert each of the 8 FORBIDDEN_PATTERNS individually matches a synthetic positive (per-pattern differential probe). No spec edit. |
-| D-013 | 2026-08-19 | Operator ruling — F-VP017 ACCEPT + FIX (test-only): frozen story Task10 + frozen BC-2.01.001 Proof Method both mandate proptest (bounded depth + symlink cycle); delivered as example cases (proptest declared, never invoked). Fix = write the real proptest so S-1.01 satisfies its own frozen VP. No spec edit. |
-| D-014 | 2026-08-19 | Operator ruling — F-SCAN-DOT-ROOT ACCEPT + FIX (production, TDD): scanner.rs filter_entry has no root exemption (contradicting its own comment); dot-prefixed root dir → scan silently empty; threatens AC-001. Fix = exempt root entry (depth 0) from dot-dir pruning, failing-test-first. No spec edit. |
 
 ## Skip Log
 
@@ -120,10 +116,10 @@ dtu_required: false
 | F-02 | AC-006 and AC-010 partial coverage — "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01. | MEDIUM | phase-3 | test-writer | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
 | F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables". | MEDIUM | phase-3 | spec-steward | ADJUDICATED-DEFERRED by operator (D-0 2). |
 | F-04 | Pure-core enforcement absent — added mechanical pure-core I/O guard at crates/mdlinkcheck-core/tests/pure_core_guard.rs (D-009). | MEDIUM | phase-3 | architect | ADJUDICATED + RESOLVED + VERIFIED (D-009, commit 710d09b). |
-| F-04-a | pure_core_guard.rs:46 non-recursive fs::read_dir vs docstring "all .rs files"; future core/src subdir .rs silently unscanned. | MEDIUM | phase-3 | architect | ADJUDICATED ACCEPT+FIX (D-011); remediation IN PROGRESS |
-| F-04-b | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern never caught. | MEDIUM | phase-3 | test-writer | ADJUDICATED ACCEPT+FIX (D-012); remediation IN PROGRESS |
-| F-VP017 | Story Task10 + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked. | MEDIUM | phase-3 | test-writer | ADJUDICATED ACCEPT+FIX (D-013); remediation IN PROGRESS |
-| F-SCAN-DOT-ROOT | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. | MEDIUM | phase-3 | implementer | ADJUDICATED ACCEPT+FIX (D-014); remediation IN PROGRESS |
+| F-04-a | pure_core_guard.rs:46 non-recursive fs::read_dir vs docstring "all .rs files"; future core/src subdir .rs silently unscanned. | MEDIUM | phase-3 | architect | ESCALATED-PENDING-OPERATOR ( Pass-2 finding, must adjudicate before fix) |
+| F-04-b | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern never caught. | MEDIUM | phase-3 | test-writer | ESCALATED-PENDING-OPERATOR (Pass-2 finding, must adjudicate before fix) |
+| F-VP017 | Story Task10 + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked. | MEDIUM | phase-3 | test-writer | ESCALATED-PENDING-OPERATOR (Pass-2 finding, tech-debt vs Task10/VP-017) |
+| F-SCAN-DOT-ROOT | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. | MEDIUM | phase-3 | implementer | ESCALATED-PENDING-OPERATOR (Pass-2 finding, latent, must adjudicate before fix) |
 
 ## Drift Items
 
@@ -131,7 +127,7 @@ dtu_required: false
 
 ## Session Resume Checkpoint
 
-DISK-VERIFIED STATE (as of 2026-08-19T15:30:00Z):
+DISK-VERIFIED STATE (as of 2026-08-19T14:55:00Z):
 - Feature branch: feature/S-1.01-workspace-scaffold-and-core-discovery
 - HEAD SHA: 2859e03ca7c5c52e2960979fabecb148b1edfc96
 - Working tree: clean (pre-burst)
@@ -140,7 +136,7 @@ DISK-VERIFIED STATE (as of 2026-08-19T15:30:00Z):
 - Pass/fail counts: 59 passed, 0 fail
 - Toolchain verified: cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
 
-Adversarial Pass 2 verdict: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT), 0 HIGH. Operator adjudication: all 4 ACCEPT+FIX (D-011, D-012, D-013, D-014). Remediation IN PROGRESS in .worktrees/S-1.01 (test-writer + implementer). CHECKPOINT COMMITTED AND PENDING PUSH to factory-artifacts branch.
+Adversarial Pass 2 verdict: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT), 0 HIGH. SESSION WRAPPED. CHECKPOINT COMMITTED LOCALLY, PUSH BLOCKED (SEC-01).
 
 ## Adversarial Pass 1
 
@@ -151,7 +147,7 @@ Adversarial Pass 2 verdict: NOT CLEAN, 4 MEDIUM (F-04-a,F-04-b,F-VP017,F-SCAN-DO
 
 ## NEXT ACTION
 
-Phase 3 wave 1 — Pass-2 findings ADJUDICATED by operator (D-011 F-04-a, D-012 F-04-b, D-013 F-VP017, D-014 F-SCAN-DOT-ROOT — all ACCEPT+FIX). Remediation wave IN PROGRESS in .worktrees/S-1.01 (test-writer + implementer). Convergence 0/3. NEXT: independent CI-equiv gate on the fix, then adversarial Pass 3 (fresh context, different model, scoped-to-fix tail).
+ESCALATE-BEFORE-FIX: Present the 4 Pass-2 MEDIUM findings (F-04-a, F-04-b, F-VP017, F-SCAN-DOT-ROOT) to operator for adjudication (accept-and-fix / defer-tech-debt / reject-out-of-scope). F-04-a/F-04-b touch the fix directly (decide this cycle); F-VP017/F-SCAN-DOT-ROOT latent. After adjudication: remediate accepted findings (test/CI-only where possible), re-run independent CI gate, run Pass 3. 3 consecutive clean passes still required (0/3). No fix/Pass-3 this session per operator checkpoint directive.
 
 ## Operator Decisions Required
 
@@ -162,7 +158,7 @@ Phase 3 wave 1 — Pass-2 findings ADJUDICATED by operator (D-011 F-04-a, D-012 
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED; convergence 0/3; Pass 2 NOT CLEAN — 4 MEDIUM findings ESCALATED; Operator adjudication: all ACCEPT+FIX (D-011..D-014); remediation IN PROGRESS in .worktrees/S-1.01) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED; convergence 0/3; Pass 2 NOT CLEAN — 4 MEDIUM findings ESCALATED; SESSION WRAPPED; CHECKPOINT COMMITTED LOCALLY, PUSH BLOCKED (SEC-01)) |
 
 ## Historical Content
 

@@ -162,7 +162,7 @@ Phase 3 wave 1 — Pass-2 findings ADJUDICATED by operator (D-011 F-04-a, D-012 
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED; convergence 0/3; Pass 2 NOT CLEAN — 4 MEDIUM findings ESCALATED; Operator adjudication: all ACCEPT+FIX (D-011..D-014); remediation IN PROGRESS in .worktrees/S-1.01) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 F-01+F-04 fix pair COMPLETE + VERIFIED; convergence 0/3; Pass 2 NOT CLEAN — 4 MEDIUM findings ESCALATED; SESSION WRAPPED; CHECKPOINT COMMITTED LOCALLY, PUSH BLOCKED (SEC-01)) |
 
 ## Historical Content
 
