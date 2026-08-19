@@ -39,10 +39,8 @@ pub fn build_walk(root: &Path) -> WalkBuilder {
             let name = entry.file_name().to_string_lossy();
 
             // Skip only if: it's a directory AND its name starts with '.'
-            if is_dir {
-                if name.starts_with('.') {
-                    return false;
-                }
+            if is_dir && name.starts_with('.') {
+                return false;
             }
             true
         });
@@ -69,9 +67,7 @@ pub fn collect_md_files(root: &Path) -> Vec<PathBuf> {
                     // Check if it has .md extension (case-sensitive)
                     if is_md_extension(&path) {
                         // Deduplicate by absolute path
-                        let abs_path = path
-                            .canonicalize()
-                            .unwrap_or_else(|_| path.to_path_buf());
+                        let abs_path = path.canonicalize().unwrap_or_else(|_| path.to_path_buf());
                         if seen.insert(abs_path.clone()) {
                             paths.push(abs_path);
                         }
@@ -93,7 +89,5 @@ pub fn collect_md_files(root: &Path) -> Vec<PathBuf> {
 /// Returns true only if the file ends with exactly ".md" (lowercase).
 /// Returns false for .MD, .Md, .markdown, .mdx, etc.
 pub fn is_md_extension(path: &Path) -> bool {
-    path.extension()
-        .map(|ext| ext == "md")
-        .unwrap_or(false)
+    path.extension().map(|ext| ext == "md").unwrap_or(false)
 }
