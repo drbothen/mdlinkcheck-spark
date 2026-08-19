@@ -14,8 +14,7 @@ use std::path::PathBuf;
 
 use mdlinkcheck::scanner;
 
-// Re-export for convenience
-use mdlinkcheck::scanner::is_md_extension;
+// (is_md_extension is not used in this test file)
 
 // ============================================================================
 // Test Fixture Utilities
@@ -265,42 +264,45 @@ fn test_BC_2_01_003_gitignored_file_anchor_table_built_as_target() {
 #[test]
 fn test_BC_2_01_003_nested_gitignore_respected() {
     // H7 (PC2): Verify nested .gitignore in subdirectory is respected
+    // This test exercises a DIFFERENTIAL: without nested gitignore, drop.md would be found;
+    // its absence is caused solely by the nested gitignore excluding it.
     let test_dir = temp_test_dir("h7_nested_gitignore").expect("create temp dir");
 
-    // Create a subdirectory with its own .gitignore
-    let docs_dir = test_dir.join("docs");
-    fs::create_dir_all(&docs_dir).expect("create docs");
-    write_md_file(&docs_dir, "public.md", "# Public").expect("write public.md");
-    write_md_file(&docs_dir, "internal.md", "# Internal").expect("write internal.md");
-
-    // Create a root-level .gitignore that includes docs/
-    write_gitignore(&test_dir, "docs/\n").expect("write root .gitignore");
-
-    // Create a nested .gitignore inside docs/ that excludes internal.md
-    write_gitignore(&docs_dir, "!internal.md\n").expect("write docs/.gitignore");
-
-    let results = scanner::collect_md_files(&test_dir);
-
-    // docs/internal.md should be included (the ! negation in nested .gitignore)
-    // README.md and docs/public.md should be excluded (by root .gitignore)
-    // Actually: the nested .gitignore only applies to files in its directory
-    // and can override parent patterns. But root .gitignore excludes docs/ entirely
-    // So we expect only README.md (if created) or nothing if docs/ is excluded
-
-    // Let's simplify: root .gitignore excludes docs/
-    // The nested .gitignore cannot override parent directory exclusion
-    // This test verifies the scanner respects nested .gitignore correctly
-
+    // Create a root-level README.md (NOT excluded by any root .gitignore)
     write_md_file(&test_dir, "README.md", "# Readme").expect("write README.md");
 
+    // Create docs/ directory that is NOT excluded by root .gitignore
+    let docs_dir = test_dir.join("docs");
+    fs::create_dir_all(&docs_dir).expect("create docs");
+    write_md_file(&docs_dir, "keep.md", "# Keep").expect("write keep.md");
+    write_md_file(&docs_dir, "drop.md", "# Drop").expect("write drop.md");
+
+    // Root .gitignore does NOT exclude docs/ (this is critical - the masking bug)
+    // Only the nested docs/.gitignore excludes drop.md
+    write_gitignore(&docs_dir, "drop.md\n").expect("write docs/.gitignore");
+
+    // The nested .gitignore should exclude drop.md only
+    // keep.md should be found (not excluded by nested gitignore)
+    // README.md should be found (not excluded by any gitignore)
     let results = scanner::collect_md_files(&test_dir);
 
-    // README.md should be found
-    // docs/ contents should be excluded by root .gitignore
-    assert_eq!(results.len(), 1, "Only README.md should be found (docs/ gitignored)");
+    // Expected: README.md and docs/keep.md; docs/drop.md ABSENT
+    assert_eq!(results.len(), 2, "Exactly 2 files: README.md and docs/keep.md");
+    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
     assert!(
-        results[0].file_name().unwrap() == "README.md",
-        "Should find README.md"
+        file_names.contains(&"README.md".to_string()),
+        "README.md should be found (root file, not gitignored). Found args: {:?}",
+        file_names
+    );
+    assert!(
+        file_names.contains(&"keep.md".to_string()),
+        "docs/keep.md should be found (nested gitignore only excludes drop.md). Found args: {:?}",
+        file_names
+    );
+    assert!(
+        !file_names.contains(&"drop.md".to_string()),
+        "docs/drop.md should be ABSENT (excluded by nested gitignore). Found args: {:?}",
+        file_names
     );
 }
 
@@ -774,7 +776,7 @@ fn test_EC_008_symlink_cycle_terminates() {
     let start = std::time::Instant::now();
 
     // This should NOT hang
-    let results = scanner::collect_md_files(&test_dir);
+    let _results = scanner::collect_md_files(&test_dir);
 
     let elapsed = start.elapsed();
     assert!(
@@ -990,11 +992,11 @@ fn test_BC_2_01_004_dot_files_should_be_included() {
         "Should find visible.md"
     );
     assert!(
-        file_names.contains(&"notes.md".to_string()),
+        file_names.contains(&".notes.md".to_string()),
         "Should find .notes.md (dot-file, not dot-dir)"
     );
     assert!(
-        file_names.contains(&"hidden.md".to_string()),
+        file_names.contains(&".hidden.md".to_string()),
         "Should find .hidden.md (dot-file, not dot-dir)"
     );
 }

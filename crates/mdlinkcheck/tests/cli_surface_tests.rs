@@ -12,31 +12,33 @@ use clap::CommandFactory;
 #[test]
 fn test_BC_2_01_004_no_hidden_flag_defined() {
     // H6: Verify the CLI surface does not define --hidden flag (D-011)
-    // This test will FAIL TO COMPILE until the implementer adds the cli module
-    // in Phase 2 with mdlinkcheck::cli::CliArgs.
+    // Positive-pinning over absence-assertion: assert all expected flags ARE present
+    // AND that hidden is ABSENT
 
-    // The scan function exists, but the CLI module does not (yet)
-    // This test intentionally fails to compile to demonstrate the gap.
-    // When the CLI is added in Phase 2, this test will compile and pass.
-
-    // Note: This test intentionally does NOT run against the actual CLI
-    // because the cli module doesn't exist yet. This is the intended Red.
-    // The compile error IS the expected outcome for this test before Phase 2.
-
-    // To run this test in Phase 2, uncomment the following:
-
-    /*
     let cmd = mdlinkcheck::cli::CliArgs::command();
-    let arg_ids: Vec<&str> = cmd.get_arguments().map(|a| a.get_id()).collect();
+    let arg_ids: Vec<String> = cmd.get_arguments().map(|a| a.get_id().as_str().to_string()).collect();
 
+    // Must have the three domain flags: path, online, format
     assert!(
-        !arg_ids.contains(&"hidden"),
-        "--hidden flag must not be defined (D-011). Found args: {:?}",
+        arg_ids.contains(&"path".to_string()),
+        "path flag must be present. Found args: {:?}",
         arg_ids
     );
-    */
+    assert!(
+        arg_ids.contains(&"online".to_string()),
+        "online flag must be present. Found args: {:?}",
+        arg_ids
+    );
+    assert!(
+        arg_ids.contains(&"format".to_string()),
+        "format flag must be present. Found args: {:?}",
+        arg_ids
+    );
 
-    // For now, we just document that this test should be enabled in Phase 2.
-    // The test structure is correct; the missing module is the intended failure.
-    panic!("CLI module not yet implemented (Phase 2). This test is correctly failing to compile in Phase 1.");
+    // Must NOT have hidden flag
+    assert!(
+        !arg_ids.contains(&"hidden".to_string()),
+        "--hidden flag must NOT be defined (D-011). Found args: {:?}",
+        arg_ids
+    );
 }
