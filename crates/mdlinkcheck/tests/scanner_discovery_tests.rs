@@ -1239,14 +1239,14 @@ fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
         fs::create_dir_all(&dir_b).ok();
 
         // Add .md files in each
-        fs::write(&dir_a.join("cycle_a.md"), "# Cycle A").ok();
-        fs::write(&dir_b.join("cycle_b.md"), "# Cycle B").ok();
+        fs::write(dir_a.join("cycle_a.md"), "# Cycle A").ok();
+        fs::write(dir_b.join("cycle_b.md"), "# Cycle B").ok();
 
         // Create circular symlinks
         #[cfg(unix)]
         {
-            std::os::unix::fs::symlink(&dir_b, &dir_a.join("link_back")).ok();
-            std::os::unix::fs::symlink(&dir_a, &dir_b.join("link_back")).ok();
+            std::os::unix::fs::symlink(&dir_b, dir_a.join("link_back")).ok();
+            std::os::unix::fs::symlink(&dir_a, dir_b.join("link_back")).ok();
         }
 
         // Scan should terminate within a reasonable time
@@ -1281,14 +1281,15 @@ fn test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle() {
 // ============================================================================
 // F-SCAN-DOT-ROOT (D-014): Red Gate test - dot-prefixed root directory should be scanned
 // ============================================================================
-// The scanner's filter_entry prunes directories whose name starts with '.',
-// but the ignore crate's behavior is to skip the entry from output while
-// still descending into it. This means dot-prefixed roots ARE scanned correctly
-// even though the root itself is not emitted.
+// The ignore crate's filter_entry behavior does NOT apply to the root entry.
+// When a dot-prefixed directory is passed AS THE ROOT to collect_md_files,
+// the ignore crate always scans it (no filter_entry filtering occurs on root).
+// This means dot-prefixed roots ARE scanned correctly because the root is never
+// filtered - there is no production scanner bug and no scanner change is needed.
 //
-// This test MUST FAIL against the current scanner if the filter_entry logic
-// is changed to prevent descent into dot-directories entirely.
-// Currently the test PASSES (Green) due to the ignore crate's behavior.
+// This test verifies that the ignore crate does not apply filter_entry to the
+// root entry. If the scanner were to pre-filter the root before passing it to
+// ignore, this test would fail.
 
 #[test]
 fn test_F_SCAN_DOT_ROOT_dot_prefixed_root_dir_is_scanned() {
@@ -1305,9 +1306,9 @@ fn test_F_SCAN_DOT_ROOT_dot_prefixed_root_dir_is_scanned() {
     // Call collect_md_files passing the DOT-PREFIXED directory AS THE ROOT
     let results = scanner::collect_md_files(&dot_root);
 
-    // Assert the returned set CONTAINS doc.md (i.e. the scan is non-empty)
-    // Note: The ignore crate's filter_entry behavior is to skip the entry but
-    // still descend into directories. This means dot-prefixed roots ARE scanned.
+    // Assert the returned set CONTAINS doc.md (i.e. the scan is non-empty).
+    // The ignore crate's filter_entry does not apply to the root entry - when
+    // a dot-prefixed directory is passed AS THE ROOT, it is always scanned.
     assert!(
         !results.is_empty(),
         "F-SCAN-DOT-ROOT (D-014): Dot-prefixed root directory should be scanned. \
