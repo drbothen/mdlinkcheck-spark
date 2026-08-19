@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.7"
+version: "3.8"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T17:12:00Z
+timestamp: 2026-08-19T05:24:57Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 in per-story TDD chain. Red Gate PASSED (verified by execution). Next action on resume: dispatch implementer for S-1.01 TDD-to-green."
+current_step: "Phase 3 wave 1 — S-1.01 in per-story TDD chain. Post-compaction integrity checkpoint. Feature-branch commit chain and suite status RE-VERIFIED from disk (see Session Resume Checkpoint for observed SHAs/exit code). Adversarial convergence PASS COUNT RESET to 0 — NEXT ACTION on resume: re-run adversarial convergence FROM PASS 1 (3 consecutive clean passes required), handing remembered findings as unverified hints to the first adversary."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -35,9 +35,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-18 (Phase 3 start from ratified spec package) |
-| **Last Updated** | 2026-08-19 — S-1.01 in per-story TDD chain; Red Gate verified |
+| **Last Updated** | 2026-08-19 — post-compaction integrity checkpoint; disk-verified feature-branch state; convergence pass count reset to 0 |
 | **Current Phase** | phase-3 |
-| **Current Step** | Phase 3 wave 1 — S-1.01 in per-story TDD chain. Red Gate PASSED (verified by execution). Next action on resume: dispatch implementer for S-1.01 TDD-to-green.
+| **Current Step** | Phase 3 wave 1 — S-1.01 in per-story TDD chain. Post-compaction integrity checkpoint. Feature-branch commit chain and suite status RE-VERIFIED from disk (see Session Resume Checkpoint for observed SHAs/exit code). Adversarial convergence PASS COUNT RESET to 0 — NEXT ACTION on resume: re-run adversarial convergence FROM PASS 1 (3 consecutive clean passes required), handing remembered findings as unverified hints to the first adversary.
 
 ## Phase Progress
 
@@ -65,10 +65,12 @@ dtu_required: false
 | Failing tests (Red Gate) | DONE + VERIFIED | 27/27 scanner tests fail with todo!() panic; control 25/25 core type tests pass |
 | Implementer TDD-to-green | NEXT ACTION | Not started — dispatch for S-1.01 TDD-to-green |
 | Remaining S-1.01 | Pipeline | per-story adversarial convergence (3 clean passes) → demo-recorder → package PR + pr-reviewer verdict for HUMAN → then WAVE-1 GATE |
+| Suite status | PASS | 52 tests run, 52 passed, 0 skipped, cargo --locked, EXIT=0 |
+| Adversarial convergence | NOT VALIDLY STARTED (pass count reset to 0) | re-run from PASS 1; 3 consecutive clean required; remembered findings are unverified hints only |
 
 ## Convergence Status
 
-Not applicable — Phase 3 story delivery; convergence tracking begins per-story (adversarial review at story PR) and at wave gates.
+Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACTION = RE-RUN adversarial convergence FROM PASS 1.
 
 ## Decisions Log
 
@@ -78,6 +80,7 @@ Not applicable — Phase 3 story delivery; convergence tracking begins per-story
 | D-002 | 2026-08-18 | Operator ruling: pin clap="=4.6.5", unicode-normalization="=0.1.24", proptest="~1.6" (resolved 1.6.0) to match ratified dependency-graph.md verified-version table. Verified in Cargo.lock; only proptest's dev subtree (rand 0.8 family, getrandom, lazy_static) shifted; 8 production deps unchanged. Commit 0025791. |
 | D-003 | 2026-08-18 | Orchestrator decision (process): removed out-of-scope `ureq="3.3.0"` from S-1.01 binary manifest (unused in S-1.01 source; not in story Library Requirements; deferred to E-5 HTTP stories, first use S-5.02, to be pinned =3.3.0). Pruned entire rustls/ring/webpki TLS subtree (282 lock lines). Commit 5161fcb. |
 | D-004 | 2026-08-18 | Orchestrator decision (process): accepted test-writer's addition of crates/mdlinkcheck/src/lib.rs (`pub mod scanner;`) + scanner.rs `use std::path::PathBuf;` as the minimal, benign enabler for the story-mandated integration tests (binary crate becomes bin+lib hybrid; no behavior change, no todo!() removed, architecture does not forbid a lib target). |
+| D-005 | 2026-08-19 | Operator ruling: fix tests to spec-correct oracles for the two gitignore over-exclusion tests (VP-016 and mixed-scenario); test-file-only change. Commit 3e1f253. |
 
 ## Skip Log
 
@@ -90,13 +93,48 @@ None.
 
 ## Drift Items
 
-- [process-gap] test-writer violated the "no source edits / STOP-and-report" instruction (created lib.rs + edited scanner.rs) and misreported it as "zero source files modified." Changes were benign and accepted (D-004), but flag for lessons codification: tighten test-writer dispatch to require STOP-and-report before any src/ touch, and treat self-reports as non-evidence (already verified by execution here).
-- [governance] main branch protection is ABSENT (GitHub 404). Compensating gate this run = all merges HUMAN-executed. To be packaged as an optional human action at wave-1 PR handoff. Not a blocker.
-- [governance] .factory/merge-config.yaml autonomy_level=4 (auto-merge) is OVERRIDDEN for this engagement by operator standing rules: ALL PR creation / verdict posts / merges are HUMAN-executed. Documented exception for the waves-1→4 run.
+- [process-gap] Orchestrator context auto-compacted mid-directive; a checkpoint commit was lost (factory-artifacts remained at its prior tip). Codification follow-up: checkpoint EARLIER and in smaller increments; treat post-compaction summary content as unverified until re-anchored to disk.
+- [process-gap] Red Gate verified test redness but not oracle correctness (two gitignore over-exclusion tests were spec-wrong; surfaced only during implementation). Add oracle-correctness spot-check to Red Gate/test-review.
+- [process-gap] Red Gate/test-review did not catch a non-exercising "property" test (proptest imported but never invoked; symlink branch gated on never-created paths). Add a gate check that property tests actually invoke a generator and fixture branches are not dead.
 
 ## Session Resume Checkpoint
 
-Branch commit chain on feature/S-1.01 = ebedaa9 (scaffold) → 0025791 (dep pins) → 5161fcb (ureq removal) → 9b122e8 (Red Gate tests); Red Gate verified (27/27 scanner tests fail with todo!() panic = reached-count, 0 fixture false-reds; control 25/25 core type tests pass); toolchain pinned cargo/rustc 1.97.0, all cargo commands run with --locked; NEXT ACTION = dispatch implementer for S-1.01 TDD-to-green, then adversarial convergence (3 clean passes, inject .factory/policies.yaml rubric) → demo → PR packaged for HUMAN → WAVE-1 GATE (full suite + adversarial wave diff + holdout eval → HUMAN ratify). ENDPOINT of engagement = wave-4 gate. develop still = f81f412 (no product code merged yet; S-1.01 lives only on its feature branch/worktree).
+DISK-VERIFIED STATE (as of this checkpoint):
+- Feature branch: feature/S-1.01-workspace-scaffold-and-core-discovery
+- HEAD SHA: 41b05d831e1e2aa1423cd5734edd44e2923e5020
+- Git log --oneline -15:
+  - 41b05d8 refactor(S-1.01): use ignore::WalkBuilder native .gitignore/.ignore handling (require_git(false)); drop hand-rolled matcher
+  - 3e1f253 test(S-1.01): correct VP-016 and mixed-scenario oracles to spec-correct .gitignore semantics (D-005)
+  - 9b122e8 test(S-1.01): failing tests for AC-001..013 + VP-016/VP-017 (Red Gate)
+  - 5161fcb fix(S-1.01): remove out-of-scope ureq dep (deferred to E-5 HTTP stories)
+  - 0025791 fix(S-1.01): pin clap/unicode-normalization/proptest to ratified verified-version table (operator ruling)
+  - ebedaa9 stub(S-1.01): compilable scaffold + workspace + core type shapes
+- Working tree: clean
+- Test command: cargo nextest run --locked
+- EXIT code: 0
+- Pass/fail counts: 52 passed, 0 skipped
+- Develop tip: f81f412494a01ae595205b321d4664f357e2cb31
+- Factory-artifacts tip before this commit: fc0d3b1dfb22e598de643f1f33efd6901d786d83
+
+UNVERIFIED (summary-derived, reconcile on resume):
+- implementer TDD-to-green + ignore-crate-native rewrite + oracle fix D-005 are believed committed on the feature branch (verified by git log: 3e1f253 oracle fix, 41b05d8 ignore-crate rewrite)
+- The following adversarial-convergence findings are remembered from a pre-compaction pass and are HINTS ONLY for the first adversary, NOT confirmed:
+  - F1 (HIGH, scanner.rs filter_entry ~line 28-34): predicate checks ALL path components incl. ancestors above root AND the leaf filename → (a) silent empty scan when root is under a dot-dir ancestor [BC-2.01.001 PC1], (b) dot-FILES like .env.md wrongly excluded despite code comment + BC-2.01.001 PC1.
+  - F2 (HIGH, VP-017 test): the symlink-cycle "property" test imports proptest but never invokes it and gates symlink creation on never-created paths → VP-017 not exercised.
+  - F3 (HIGH, spec-vs-impl + story-coverage): BC-2.01.004 PC3 requires FILE-symlink following; impl uses follow_links(false)+is_file() so symlink-to-file is excluded; no AC covers PC3; ignore crate follow_links is all-or-nothing vs dir-symlink safety PC2/DI-009. MATERIAL SCOPE QUESTION — escalate to operator before any fix.
+  - F4 (MEDIUM): dot-files excluded (same root cause as F1).
+  - F5 (MEDIUM): AC-002 no-duplicate test tautological (single file, x==x).
+  - F6 (MEDIUM): AC-008 no-override test never inspects CliArgs / doesn't assert absence of --hidden.
+  - F7 (MEDIUM): BC-2.01.003 PC2 nested-.gitignore untested (coverage gap).
+
+NEXT ACTION on resume:
+1. Re-run adversarial convergence FROM PASS 1 with a fresh-context different-model adversary (inject .factory/policies.yaml rubric; declare lens perimeter up front); hand the F1-F7 hints to the FIRST adversary as leads to check, not as findings.
+2. Independently confirm/deny each hint by execution (three-part evidence rule).
+3. ESCALATE F3 (BC-2.01.004 PC3 file-symlink scope) to operator before any fix wave — escalate-before-fix; specs are FROZEN so the decision is implementation scope only.
+4. Route fix wave with null-disposition option + orchestrator diff-verification.
+5. Reach 3 consecutive clean passes → demo-recorder per-AC → pr-manager packages PR + pr-reviewer verdict for HUMAN → WAVE-1 GATE (HUMAN ratify). ENDPOINT of engagement = wave-4 gate.
+
+Standing rules remain binding: specs frozen; every mutation (PR creation/verdict/merge) packaged for HUMAN only; verifiers fail closed; subagent reports verified by execution.
 
 ## Concurrent Cycles
 

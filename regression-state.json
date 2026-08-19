@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-19T03:15:03Z","command":"cargo test --locked --test types_tests 2>&1 | tail -15"}
+{"status":"pass","timestamp":"2026-08-19T05:12:44Z","command":"cargo nextest run --locked 2>&1; echo \"EXIT=$?\""}

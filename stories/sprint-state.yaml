@@ -7,10 +7,10 @@ current_wave: 1
 
 stories:
   S-1.01:
-    status: pending
+    status: in_progress
     wave: 1
-    branch: null
-    worktree: null
+    branch: feature/S-1.01-workspace-scaffold-and-core-discovery
+    worktree: /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01
     blocked_by: []
 
   S-1.02:
