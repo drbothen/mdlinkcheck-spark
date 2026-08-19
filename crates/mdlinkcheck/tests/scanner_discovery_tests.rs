@@ -575,15 +575,16 @@ vendor/
             "Should not include vendor: {:?}",
             path
         );
-        assert!(
-            !path_str.ends_with("log.md"),
-            "Should not include log.md: {:?}",
-            path
-        );
+        // Note: *.log only matches files ending in .log; log.md ends in .md so *.log does NOT match
+        // This is a control test per BC-2.01.003 to prove exclusion is not over-broad
     }
 
-    // Verify we got no files (all were gitignored)
-    assert_eq!(results.len(), 0, "All files should be excluded by .gitignore");
+    // log.md should survive because *.log does not match .md files per BC-2.01.003
+    assert_eq!(results.len(), 1, "Only log.md should survive (*.log doesn't match .md files)");
+    assert!(
+        results[0].file_name().unwrap() == "log.md",
+        "The surviving file should be log.md"
+    );
 }
 
 // ============================================================================
@@ -788,12 +789,31 @@ fn test_mixed_scenarios_gitignore_and_dotdirs() {
     fs::create_dir_all(&docs_dir).expect("create docs");
     write_md_file(&docs_dir, "secret.md", "# Secret").expect("write secret.md");
 
-    // Create .gitignore that excludes docs
+    // Create .gitignore that excludes docs (node_modules is NOT listed)
     write_gitignore(&test_dir, "docs/\n").expect("write .gitignore");
 
     let results = scanner::collect_md_files(&test_dir);
 
-    // Should only find README.md (node_modules gitignored, .github skipped)
-    assert_eq!(results.len(), 1, "Only README.md should be found");
-    assert!(results[0].file_name().unwrap() == "README.md");
+    // README.md and node_modules/pkg.md should survive (node_modules is NOT gitignored here)
+    // .github/conf.md is skipped (dot-dir), docs/secret.md is gitignored
+    assert_eq!(results.len(), 2, "README.md and pkg.md should survive");
+    let file_names: Vec<String> = results.iter().map(|p| p.file_name().unwrap().to_string_lossy().to_string()).collect();
+    assert!(
+        file_names.contains(&"README.md".to_string()) && file_names.contains(&"pkg.md".to_string()),
+        "Should contain both README.md and pkg.md"
+    );
+    // Verify no result contains secret.md (docs/ gitignored) or conf.md (.github/ dot-dir)
+    for path in &results {
+        let path_str = path.to_string_lossy();
+        assert!(
+            !path_str.contains("secret.md"),
+            "Should not include secret.md (gitignored by docs/): {:?}",
+            path
+        );
+        assert!(
+            !path_str.contains("conf.md"),
+            "Should not include conf.md (dot-dir .github skipped): {:?}",
+            path
+        );
+    }
 }
