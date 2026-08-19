@@ -12,7 +12,6 @@ mdlinkcheck-core = { path = "../mdlinkcheck-core" }
 ignore = "0.4.33"
 clap = { version = "=4.6.5", features = ["derive"] }
 rayon = "1.12.0"
-ureq = "3.3.0"
 
 [dev-dependencies]
 proptest = "~1.6"
