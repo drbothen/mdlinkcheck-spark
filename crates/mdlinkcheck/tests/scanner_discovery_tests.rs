@@ -128,7 +128,8 @@ fn test_BC_2_01_001_no_duplicate_in_scan_set() {
     assert_eq!(
         results.len(),
         expected_set.len(),
-        "Should find exactly {} files from fixture", expected_set.len()
+        "Should find exactly {} files from fixture",
+        expected_set.len()
     );
     for path in &results {
         assert!(
