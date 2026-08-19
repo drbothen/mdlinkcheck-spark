@@ -40,3 +40,4 @@
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-19T16:50:11-0500","ts_epoch":1787176211,"schema_version":1}
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-19T16:50:51-0500","ts_epoch":1787176251,"schema_version":1}
 {"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T16:56:41-0500","ts_epoch":1787176601,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"sot_clobber_redirect","ts":"2026-08-19T17:19:28-0500","ts_epoch":1787177968,"schema_version":1}
