@@ -102,31 +102,53 @@ fn test_BC_2_01_001_default_cwd_scan_includes_all_md_files() {
 fn test_BC_2_01_001_no_duplicate_in_scan_set() {
     let test_dir = temp_test_dir("ac002_no_duplicate").expect("create temp dir");
 
-    // Create a file structure that could have duplicate paths if dedup fails
-    // (e.g., file in nested dir that could be visited via multiple traversal paths)
+    // Create a file structure with two distinct .md files
     let deep_path = test_dir.join("a").join("b").join("c");
     fs::create_dir_all(&deep_path).expect("create deep path");
-    write_md_file(&deep_path, "deep.md", "# Deep").expect("write deep.md");
+    let deep_file = write_md_file(&deep_path, "deep.md", "# Deep").expect("write deep.md");
 
-    // Create another path to the same file via different route
     let alt_path = test_dir.join("x").join("y");
     fs::create_dir_all(&alt_path).expect("create alt path");
-    write_md_file(&alt_path, "deep.md", "# Deep (duplicate name, same file)")
-        .expect("write deep.md");
+    let alt_file = write_md_file(&alt_path, "alt.md", "# Alt").expect("write alt.md");
 
     let results = scanner::collect_md_files(&test_dir);
 
-    // Verify no duplicates using proper HashSet comparison
-    let returned_len = results.len();
-    let unique_set: HashSet<_> = results.iter().collect();
+    // Build the independently-known expected set from the fixture files.
+    // The scanner canonicalizes paths, so we must canonicalize our expected paths too.
+    let expected_set: HashSet<PathBuf> = [
+        deep_file.canonicalize().expect("canonicalize deep_file"),
+        alt_file.canonicalize().expect("canonicalize alt_file"),
+    ]
+    .into_iter()
+    .collect();
 
+    // Verify the returned scan set matches the expected set exactly
+    // (F-01/D-010: genuine oracle - compare against known fixture files,
+    //  not a tautological self-comparison of results)
     assert_eq!(
-        returned_len,
-        unique_set.len(),
-        "Should have no duplicates in scan set. Got {} results, but {} unique paths",
-        returned_len,
-        unique_set.len()
+        results.len(),
+        expected_set.len(),
+        "Should find exactly {} files from fixture", expected_set.len()
     );
+    for path in &results {
+        assert!(
+            expected_set.contains(path),
+            "Path should be in expected set: {:?}",
+            path
+        );
+    }
+    for expected_path in &expected_set {
+        assert!(
+            results.iter().any(|r| r == expected_path),
+            "Expected path should be in results: {:?}",
+            expected_path
+        );
+    }
+
+    // Note: BC-2.01.001 PC2's "multiple traversal paths yield one entry" clause is VACUOUS
+    // under follow_links(false) because no file is reachable by two distinct paths when
+    // symlinks are not followed. This clause becomes non-vacuously testable only once
+    // symlink-following (BC-2.01.006) is implemented.
 }
 
 // ============================================================================
@@ -225,9 +247,11 @@ fn test_BC_2_01_003_gitignored_file_not_scanned_as_source() {
 
 #[test]
 fn test_BC_2_01_003_gitignored_file_anchor_table_built_as_target() {
-    // This test verifies the behavior described in BC-2.01.003 invariant 2.
-    // The anchor table building for gitignored files is a Pass 1.5 concern,
-    // so we verify the scan set behavior is correct here.
+    // This test verifies only the "not in scan set" half of AC-006.
+    // AC-006 has two postconditions: (1) gitignored files excluded from scan set,
+    // (2) anchor table still built for gitignored files via Pass 1.5.
+    // Postcondition (2) is DEFERRED per D-008 (no AnchorIndex/run_scan/Pass 1.5 exists yet).
+    // The test verifies only postcondition (1) - the exclusion/discovery premise.
 
     let test_dir = temp_test_dir("ac006_gitignore_anchor").expect("create temp dir");
 
@@ -453,9 +477,11 @@ fn test_BC_2_01_004_directory_symlinks_not_followed() {
 
 #[test]
 fn test_BC_2_01_004_dot_dir_md_file_anchor_table_built_as_target() {
-    // This test verifies that dot-dir .md files remain valid anchor targets
-    // (DI-006 case 3). The file itself is NOT in the scan set, but if referenced
-    // from an in-scan-set file, its anchor table should be built by Pass 1.5.
+    // This test verifies only the "not in scan set" half of AC-010.
+    // AC-010 has two postconditions: (1) dot-dir files excluded from scan set,
+    // (2) anchor table still built for dot-dir files via Pass 1.5.
+    // Postcondition (2) is DEFERRED per D-008 (no AnchorIndex/run_scan/Pass 1.5 exists yet).
+    // The test verifies only postcondition (1) - the exclusion/discovery premise.
 
     let test_dir = temp_test_dir("ac010_dot_target").expect("create temp dir");
 
@@ -648,7 +674,13 @@ fn test_BC_2_01_001_scan_terminates_with_genuine_symlink_cycle() {
 
 #[test]
 fn test_VP_016_gitignore_patterns_exclude_from_scan_set() {
-    // VP-016: Files matching .gitignore patterns are never in the scan set
+    // This test verifies ONLY the "exclusion/discovery" half of VP-016:
+    // that files matching .gitignore patterns are excluded from the scan set.
+    // VP-016's full property includes anchor-target-resolution into ignored files
+    // (source_bc BC-2.08.004, module anchor_table), which is DEFERRED per D-008
+    // to the story implementing run_scan + Pass 1.5 + AnchorIndex.
+    // The current scanner does NOT build anchor tables, so this test only verifies
+    // the exclusion premise - not the full VP-016 contract.
 
     let test_dir = temp_test_dir("vp016_integration").expect("create temp dir");
 
