@@ -4,14 +4,14 @@ level: ops
 version: "3.8"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T08:36:00Z
+timestamp: 2026-08-19T08:40:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 fix-wave green @bf0e92e (58/58, exit 0); clippy CLIPPY-01 open; convergence 0/3."
+current_step: "Phase 3 wave 1 — S-1.01 fix-wave COMPLETE @ d969347; full CI-equiv gate green (build/fmt/clippy-Dwarnings/nextest all exit 0; 58/58, 0 skipped); adversarial convergence 0/3 NEXT."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -35,9 +35,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-18 (Phase 3 start from ratified spec package) |
-| **Last Updated** | 2026-08-19 — S-1.01 fix-wave checkpoint; disk-reconciled; convergence 0/3 |
+| **Last Updated** | 2026-08-19 — S-1.01 fix-wave COMPLETE @ d969347; full CI-equiv gate; convergence 0/3 |
 | **Current Phase** | phase-3 |
-| **Current Step** | Phase 3 wave 1 — S-1.01 fix-wave checkpoint. Feature-branch HEAD 076c12c, suite 58 tests (54 pass, 4 fail). Fix-wave ledger recorded. Convergence 0/3.
+| **Current Step** | Phase 3 wave 1 — S-1.01 fix-wave COMPLETE. Feature-branch HEAD d969347; suite 58 tests (58 pass, 0 fail); all CI-equivalent gates GREEN (build/fmt/clippy-Dwarnings/nextest all exit 0). Adversarial convergence 0/3 NEXT.
 
 ## Phase Progress
 
@@ -65,24 +65,25 @@ dtu_required: false
 | Failing tests (Red Gate) | DONE + VERIFIED | 27/27 scanner tests fail with todo!() panic; control 25/25 core type tests pass |
 | Implementer TDD-to-green | DONE + verified | ignore-crate-native rewrite committed at 41b05d8; suite green (52/52 pass) |
 | Resume integrity check | DONE + verified | HEAD 41b05d831e1e2aa1423cd5734edd44e2923e5020 matches prior checkpoint; working tree clean; cargo nextest run --locked: 52/52 passed |
-| S-1.01 fix-wave checkpoint | CHECKPOINT | HEAD 076c12c; suite 58 tests (54 pass, 4 fail); fix-wave ledger recorded; convergence 0/3 |
+| S-1.01 fix-wave | COMPLETE + VERIFIED | HEAD d969347; suite 58/58 PASS; all CI-equivalent gates GREEN (build/fmt/clippy-Dwarnings/nextest all exit 0); 2 fix-wave commits: 0e8e500 (clippy collapsible_if + unused imports + fmt), d969347 (#![allow(non_snake_case)] on traceability tests + dead helper removal + fmt hygiene) |
 | Adversarial convergence | PASS 1 dispatched | fresh-context adversary with remembered findings as unverified hints; 0/3 clean-pass streak |
 
 ## Convergence Status
 
-Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACTION = FINISH THE FIX WAVE.
+Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACTION = run adversarial convergence Pass (fresh-context different-model adversary).
 
 ## Fix Wave Ledger
 
 | Finding | Operator | Status | Notes |
 |---------|----------|--------|-------|
-| F1 (H3: scanner.rs:52-54 false comment on file-symlinks) | implementer | NOT-STARTED | Comment still false; follow_links(false); PC3→BC-2.01.006 tech-debt deferral per D-007 |
-| F2a (H1 dot-ancestor empties scan; BC-2.01.001 PC1) | implementer | RED-VERIFIED, pending green | Dot-ancestor test FAIL (0 vs >=1) |
-| F2b (H2/H4 include dot-files; operator ruling INCLUDE dot-files) | implementer | RED-VERIFIED, pending green | Dot-files test FAIL (1 vs 3); dot-dir combined FAIL (0 vs 1) |
-| F3 (VP-017 real cycle + termination; adversary F-01) | test-writer | TEST-FIXED & PASSING | Rewritten in 076c12c, passes; cosmetic unused `results` pending |
-| F4 (AC-002 dedup; H5) | test-writer | FIXED & VERIFIED | HashSet-uniqueness over returned Vec, passes at 076c12c |
-| F5 (AC-008 CLI surface rejects --hidden; H6; D-011) | test-writer | INVALID — fake panic! red | Hardcoded panic! not a real assertion; needs rework + cli lib module |
-| F6 (nested .gitignore PC2; BC-2.01.003 PC2; H7) | test-writer | INVALID — masked by root docs/ exclusion | Degenerates to root-gitignore dup; needs real nested test |
+| F1 (H3: scanner.rs:52-54 false comment on file-symlinks) | implementer | RESOLVED | Comment corrected; tech-debt deferral recorded per D-007 |
+| F2a (H1 dot-ancestor empties scan; BC-2.01.001 PC1) | implementer | RESOLVED | filter_entry fixed to skip dot-DIRECTORIES only; .hidden(false) added |
+| F2b (H2/H4 dot-files; operator ruling INCLUDE) | implementer | RESOLVED | Dot-files now included; dot-dir combined test passes |
+| F3 (VP-017 real cycle + termination; adversary F-01) | test-writer | RESOLVED | Rewritten in 076c12c, passes; cosmetic unused `results` removed |
+| F4 (AC-002 dedup; H5) | test-writer | RESOLVED | HashSet-uniqueness over returned Vec, passes at 076c12c |
+| F5 (AC-008 CLI surface rejects --hidden; H6; D-011) | test-writer | RESOLVED | cli lib module created; real assertion instead of fake panic! |
+| F6 (nested .gitignore PC2; BC-2.01.003 PC2; H7) | test-writer | RESOLVED | Real nested .gitignore test (subdir excludes drop.md, keeps keep.md) |
+| CLIPPY-01 | implementer | RESOLVED | 41 findings resolved: collapsible_if, 2 unused imports, dead helper, 31 non_snake_case traceability-name, needless borrow, len>=1; fmt test files now green |
 
 ## Decisions Log
 
@@ -105,38 +106,29 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACT
 
 | ID | Issue | Severity | Blocking Phase | Owner | Resolution |
 |----|-------|----------|---------------|-------|------------|
-| F1 | BC-2.01.004 PC3 file-symlink following VIOLATED. scanner.rs:24 follow_links(false)+is_file() excludes symlink-to-file. Code comment scanner.rs:52-53 falsely claims PC3 compliance. No AC covers PC3. VP-INDEX:144 assigns file-symlink-following to BC-2.01.006 (separate story) — scope tension. ESCALATED to operator (pending ruling). | HIGH | phase-3 | Implementer | DEFERRED to BC-2.01.006 per D-007 |
-| F2a | Dot-ancestor silent empty scan. filter_entry checks ALL path components incl. root ancestors. Root under .config/docs with README.md → collect_md_files returned [] (empty). Violates BC-2.01.001 PC1. Clear mechanical bug. | HIGH | phase-3 | Implementer | RED-VERIFIED, pending green fix |
-| F2b | Dot-FILE .env.md excluded despite code comment. Root .env.md + normal.md → returned ["normal.md"], .env.md absent. Contradicts scanner.rs:27 comment. ESCALATED to operator for dot-file inclusion intent ruling. | HIGH/MEDIUM | phase-3 | Implementer | RED-VERIFIED, pending green fix |
-| F5 | AC-008 CLI surface --hidden guard. cli_surface_tests.rs:41 uses hardcoded panic! instead of real assertion. VP-011 PC3/AC-008. | MEDIUM | phase-3 | test-writer | INVALID — fake red; needs cli lib module + real assertion |
-| F6 | Nested .gitignore test. Fake test masked by root docs/ exclusion + dead first results. Needs real nested .gitignore (subdir excludes drop.md, keeps keep.md). | MEDIUM | phase-3 | test-writer | INVALID — masked; needs real nested test |
+| F1 | BC-2.01.004 PC3 file-symlink following VIOLATED. scanner.rs:24 follow_links(false)+is_file() excludes symlink-to-file. Code comment scanner.rs:52-53 falsely claims PC3 compliance. No AC covers PC3. VP-INDEX:144 assigns file-symlink-following to BC-2.01.006 (separate story) — scope tension. | HIGH | phase-3 | Implementer | RESOLVED: comment corrected; tech-debt deferral recorded per D-007 |
+| F2a | Dot-ancestor silent empty scan. filter_entry checks ALL path components incl. root ancestors. Root under .config/docs with README.md → collect_md_files returned [] (empty). Violates BC-2.01.001 PC1. | HIGH | phase-3 | Implementer | RESOLVED: filter_entry fixed to skip dot-DIRECTORIES only; .hidden(false) added |
+| F2b | Dot-FILE .env.md excluded despite code comment. Root .env.md + normal.md → returned ["normal.md"], .env.md absent. Contradicts scanner.rs:27 comment. ESCALATED to operator for dot-file inclusion intent ruling. | HIGH/MEDIUM | phase-3 | Implementer | RESOLVED: dot-files now included; dot-dir combined test passes |
+| F5 | AC-008 CLI surface --hidden guard. cli_surface_tests.rs:41 uses hardcoded panic! instead of real assertion. VP-011 PC3/AC-008. | MEDIUM | phase-3 | test-writer | RESOLVED: cli lib module created; real assertion instead of fake panic! |
+| F6 | Nested .gitignore test. Fake test masked by root docs/ exclusion + dead first results. Needs real nested .gitignore (subdir excludes drop.md, keeps keep.md). | MEDIUM | phase-3 | test-writer | RESOLVED: real nested .gitignore test created |
 
 ## Drift Items
 
 - [process-gap] Orchestrator context auto-compacted mid-directive; a checkpoint commit was lost (factory-artifacts remained at its prior tip). Codification follow-up: checkpoint EARLIER and in smaller increments; treat post-compaction summary content as unverified until re-anchored to disk.
 - [process-gap] Red Gate verified test redness but not oracle correctness (two gitignore over-exclusion tests were spec-wrong; surfaced only during implementation). Add oracle-correctness spot-check to Red Gate/test-review.
 - [process-gap] Red Gate/test-review did not catch a non-exercising "property" test (proptest imported but never invoked; symlink branch gated on never-created paths). Add a gate check that property tests actually invoke a generator and fixture branches are not dead.
+- [process-gap] Implementer self-reported FMT_EXIT=0 but test files were committed fmt-dirty; caught only by orchestrator's independent execution. Reaffirms reports-are-not-evidence; orchestrator must run the FULL gate (fmt+clippy+tests), not trust subagent gate self-reports.
 
 ## Session Resume Checkpoint
 
-DISK-VERIFIED STATE (as of 2026-08-19T07:06:46Z):
+DISK-VERIFIED STATE (as of 2026-08-19T08:40:00Z):
 - Feature branch: feature/S-1.01-workspace-scaffold-and-core-discovery
-- HEAD SHA: 076c12c (sound VP-017/dedup/nested-gitignore + red regressions...)
-- Parent: 41b05d8
+- HEAD SHA: d969347afdc53db82adeef04935be11dfc04ff33
 - Working tree: clean
 - Test command: cargo nextest run --locked --no-fail-fast
-- EXIT code: 100
-- Pass/fail counts: 54 passed, 4 failed
+- EXIT code: 0
+- Pass/fail counts: 58 passed, 0 fail
 - Toolchain verified: cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
-
-## 4 Failures (at 076c12c)
-
-| Test | Status | Reason |
-|------|--------|--------|
-| test_BC_2_01_001_dot_ancestor_should_not_block_scan | VALID RED | 0 vs >=1; F2a pending |
-| test_BC_2_01_004_dot_files_should_be_included | VALID RED | 1 vs 3; F2b pending |
-| test_BC_2_01_004_dot_directories_still_skipped_after_dot_file_fix | VALID RED | 0 vs 1; F2b combined invariant |
-| cli_surface_tests::test_BC_2_01_004_no_hidden_flag_defined | INVALID | Fake red via hardcoded panic!; F5 pending |
 
 ## Adversarial Pass 1
 
@@ -146,20 +138,13 @@ DISK-VERIFIED STATE (as of 2026-08-19T07:06:46Z):
 
 ## NEXT ACTION
 
-FINISH THE FIX WAVE (incomplete):
-1. Test-writer: rewrite F6 as genuine nested-.gitignore test; DELETE fake cli_surface_tests.rs; clear cosmetics (unused is_md_extension, unused `results` in VP-017)
-2. Implementer: fix scanner.rs filter_entry to skip dot-DIRECTORIES relative to root only; add .hidden(false) [F2a+F2b]; correct false symlink comment + debt entry [F1-comment/D-007]; create cli lib module [D-006/F5]
-3. Test-writer: add REAL F5/H6 CLI-surface guard once cli module exists
-4. Orchestrator: diff-verify each phase by execution; confirm full suite green
-5. Adversarial convergence Pass 2: streak resets; 3 consecutive clean required
-
-NOTE: test-writer correction dispatch was DENIED by auto-mode classifier this turn — operator restart should re-authorize dispatches.
+RUN ADVERSARIAL CONVERGENCE PASS (fresh-context different-model adversary; 0/3 clean-pass streak required).
 
 ## Concurrent Cycles
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 fix-wave in progress; Pass 1 dispatched) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 fix-wave COMPLETE @ d969347; adversarial convergence 0/3 NEXT) |
 
 ## Historical Content
 
