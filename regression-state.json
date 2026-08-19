@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-19T05:12:44Z","command":"cargo nextest run --locked 2>&1; echo \"EXIT=$?\""}
+{"status":"pass","timestamp":"2026-08-19T05:48:48Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01\nrm -f crates/mdlinkcheck/tests/_pass1_verify.rs\necho \"=== tree status (expect clean) ===\" && git status --porcelain=v1 && echo \"STATUS_DONE\"\nbash -c 'cargo nextest run --locked >/tmp/s101_post.log 2>&1; echo \"NEXTEST_EXIT=$?\"; tail -2 /tmp/s101_post.log'"}

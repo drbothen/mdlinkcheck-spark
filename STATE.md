@@ -4,7 +4,7 @@ level: ops
 version: "3.8"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T05:24:57Z
+timestamp: 2026-08-19T05:55:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
@@ -35,20 +35,20 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-18 (Phase 3 start from ratified spec package) |
-| **Last Updated** | 2026-08-19 — post-compaction integrity checkpoint; disk-verified feature-branch state; convergence pass count reset to 0 |
+| **Last Updated** | 2026-08-19 — post-compaction integrity checkpoint; disk-verified feature-branch state; adversarial convergence Pass 1 complete (6 findings verified) |
 | **Current Phase** | phase-3 |
 | **Current Step** | Phase 3 wave 1 — S-1.01 in per-story TDD chain. Post-compaction integrity checkpoint. Feature-branch commit chain and suite status RE-VERIFIED from disk (see Session Resume Checkpoint for observed SHAs/exit code). Adversarial convergence PASS COUNT RESET to 0 — NEXT ACTION on resume: re-run adversarial convergence FROM PASS 1 (3 consecutive clean passes required), handing remembered findings as unverified hints to the first adversary.
 
 ## Phase Progress
 
-| Phase | Status | Started | Completed | Gate | Notes |
-|-------|--------|---------|-----------|------|-------|
+| Phase | Status | Started | Completed | Gate | Finding Progression |
+|-------|--------|---------|-----------|------|---------------------|
 | pre-1: Planning | completed | 2026-08-05 | 2026-08-05 | HUMAN: market-intel-review + intake-approval | |
 | 0: Codebase Ingestion | not-applicable (greenfield) | | | | |
-| 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: RATIFIED with closed-world remediation completed | Spec package: domain-spec, PRD + supplements, BCs, VPs, architecture |
-| 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | spec-lint enforcement tooling in place on develop |
+| 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: RATIFIED with closed-world remediation completed | |
+| 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | Wave 1 of engagement scope (waves 1→4); S-1.01 in per-story chain |
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 1: 6 findings) |
 | 4: Holdout Evaluation | not-started | | | | |
 | 5: Adversarial Refinement | not-started | | | | |
 | 6: Formal Hardening | not-started | | | | |
@@ -63,7 +63,7 @@ dtu_required: false
 | Dependency pins | DONE + verified | clap="=4.6.5", unicode-normalization="=0.1.24", proptest="~1.6" |
 | ureq removal | DONE + verified | Removed unused ureq="3.3.0" + TLS subtree (282 lock lines) |
 | Failing tests (Red Gate) | DONE + VERIFIED | 27/27 scanner tests fail with todo!() panic; control 25/25 core type tests pass |
-| Implementer TDD-to-green | NEXT ACTION | Not started — dispatch for S-1.01 TDD-to-green |
+| Implementer TDD-to-green | DONE + verified | ignore-crate-native rewrite committed at 41b05d8; suite green (52/52 pass) |
 | Remaining S-1.01 | Pipeline | per-story adversarial convergence (3 clean passes) → demo-recorder → package PR + pr-reviewer verdict for HUMAN → then WAVE-1 GATE |
 | Suite status | PASS | 52 tests run, 52 passed, 0 skipped, cargo --locked, EXIT=0 |
 | Adversarial convergence | NOT VALIDLY STARTED (pass count reset to 0) | re-run from PASS 1; 3 consecutive clean required; remembered findings are unverified hints only |
@@ -89,7 +89,12 @@ Passes validly completed: 0; consecutive clean passes: 0 of 3 required; NEXT ACT
 
 ## Blocking Issues
 
-None.
+| ID | Issue | Severity | Blocking Phase | Owner | Resolution |
+|----|-------|----------|---------------|-------|------------|
+| F1 | BC-2.01.004 PC3 file-symlink following VIOLATED. scanner.rs:24 follow_links(false)+is_file() excludes symlink-to-file. Code comment scanner.rs:52-53 falsely claims PC3 compliance. No AC covers PC3. VP-INDEX:144 assigns file-symlink-following to BC-2.01.006 (separate story) — scope tension. ESCALATED to operator (pending ruling). | HIGH | phase-3 | Implementer | PENDING-DEFER (deferred to BC-2.01.006 per operator ruling) |
+| F2a | Dot-ancestor silent empty scan. filter_entry checks ALL path components incl. root ancestors. Root under .config/docs with README.md → collect_md_files returned [] (empty). Violates BC-2.01.001 PC1. Clear mechanical bug. | HIGH | phase-3 | Implementer | PENDING-FIX (implementer) |
+| F2b | Dot-FILE .env.md excluded despite code comment. Root .env.md + normal.md → returned ["normal.md"], .env.md absent. Contradicts scanner.rs:27 comment. ESCALATED to operator for dot-file inclusion intent ruling. | HIGH/MEDIUM | phase-3 | Implementer | PENDING-FIX (implementer) |
+| OBS-1 | VP-016 label drift: VP-INDEX:75,96 defines VP-016 = "excluded files are valid anchor targets" (DI-006, anchor_table). But story S-1.01 (lines 71-73) and BC-2.01.003 gloss VP-016 as ".gitignore exclusion / never in scan set". Spec-internal contradiction. Specs FROZEN; operator did NOT direct a spec edit. | MEDIUM | phase-3 | N/A | PARKED (escalated, no self-fix) |
 
 ## Drift Items
 
@@ -130,16 +135,27 @@ UNVERIFIED (summary-derived, reconcile on resume):
 NEXT ACTION on resume:
 1. Re-run adversarial convergence FROM PASS 1 with a fresh-context different-model adversary (inject .factory/policies.yaml rubric; declare lens perimeter up front); hand the F1-F7 hints to the FIRST adversary as leads to check, not as findings.
 2. Independently confirm/deny each hint by execution (three-part evidence rule).
-3. ESCALATE F3 (BC-2.01.004 PC3 file-symlink scope) to operator before any fix wave — escalate-before-fix; specs are FROZEN so the decision is implementation scope only.
-4. Route fix wave with null-disposition option + orchestrator diff-verification.
-5. Reach 3 consecutive clean passes → demo-recorder per-AC → pr-manager packages PR + pr-reviewer verdict for HUMAN → WAVE-1 GATE (HUMAN ratify). ENDPOINT of engagement = wave-4 gate.
+3. ESCALATE F1 (PC3 file-symlink scope) to operator before any fix wave — escalate-before-fix; operator ruled DEFER PC3→BC-2.01.006. Fix: correct false comment at scanner.rs:52-53 + record tech-debt deferral entry.
+4. ESCALATE F2b (dot-file inclusion) to operator before any fix wave — operator ruled INCLUDE dot-files. Fix: modify filter_entry to skip only dot-DIRECTORIES, include dot-FILES like .env.md.
+5. Route fix wave with explicit null/leave-unfixed disposition option + orchestrator diff-verification — implementer: F2a (dot-ancestor) + F2b (include dot-files) + F1 comment correction + debt entry; test-writer: F3 (real proptest/cycle), F4 (real two-path dedup fixture, not file-symlink), F5 (assert CLI surface rejects --hidden), F6 (nested .gitignore).
+6. Re-run adversarial convergence FROM PASS 1 (clean-pass streak = 0).
+7. Reach 3 consecutive clean passes → demo-recorder per-AC → pr-manager packages PR + pr-reviewer verdict for HUMAN → WAVE-1 GATE (HUMAN ratify). ENDPOINT of engagement = wave-4 gate.
 
 Standing rules remain binding: specs frozen; every mutation (PR creation/verdict/merge) packaged for HUMAN only; verifiers fail closed; subagent reports verified by execution.
 
 ## Concurrent Cycles
 
-None.
+| Cycle | Type | Status |
+|-------|------|--------|
+| phase-3-wave-1 | feature | in-progress (S-1.01 in TDD chain; Pass 1 complete with 6 findings) |
 
 ## Historical Content
 
-None — Phase 3 active cycle in progress.
+| Content | Location |
+|---------|----------|
+| Burst history | `cycles/phase-3-wave-1/burst-log.md` |
+| Convergence trajectory | `cycles/phase-3-wave-1/convergence-trajectory.md` |
+| Session checkpoints | `cycles/phase-3-wave-1/session-checkpoints.md` |
+| Lessons learned | `cycles/phase-3-wave-1/lessons.md` |
+| Resolved blockers | `cycles/phase-3-wave-1/blocking-issues-resolved.md` |
+| Cycle manifest | `cycles/phase-3-wave-1/cycle-manifest.md` |
