@@ -9,9 +9,10 @@ use ignore::WalkBuilder;
 /// The builder is configured with:
 /// - Native .gitignore/.ignore file handling (git_ignore(true), ignore(true))
 /// - require_git(false) to enable gitignore in non-git directories (e.g. temp dirs)
-/// - Dot-directory skipping via filter_entry (unconditional)
+/// - Dot-directory skipping via filter_entry (only relative to root, not ancestors)
 /// - Directory symlink non-following (follow_links(false))
 /// - Case-sensitive .md extension filtering
+/// - .hidden(false) to include dot-files (dot-files are valid; only dot-directories are skipped)
 pub fn build_walk(root: &Path) -> WalkBuilder {
     let mut builder = WalkBuilder::new(root);
     builder
@@ -21,16 +22,29 @@ pub fn build_walk(root: &Path) -> WalkBuilder {
         // Enable gitignore in directories that are not actual git repos
         .require_git(false)
         // Do not follow directory symlinks to prevent infinite loops
+        // File symlinks are also not followed (deferred to BC-2.01.006)
         .follow_links(false)
+        // Disable the built-in hidden filter to include dot-files
+        .hidden(false)
         // Set no max depth for unlimited traversal
         .max_depth(None)
-        // Skip dot-directories unconditionally (dot-files are still scanned)
+        // Skip dot-directories only when they are not the root entry itself.
+        // An entry is a dot-directory only if:
+        //   1. It is a directory
+        //   2. Its file name starts with '.'
+        // Note: We evaluate entry's OWN name, NOT ancestors - this fixes the dot-ancestor bug.
+        // Also: .hidden(false) is set above to include dot-files.
         .filter_entry(|entry| {
-            // Skip if any path component is a dot-directory
-            !entry
-                .path()
-                .components()
-                .any(|c| matches!(c, std::path::Component::Normal(os) if os.to_string_lossy().starts_with('.')))
+            let is_dir = entry.file_type().map(|ft| ft.is_dir()).unwrap_or(false);
+            let name = entry.file_name().to_string_lossy();
+
+            // Skip only if: it's a directory AND its name starts with '.'
+            if is_dir {
+                if name.starts_with('.') {
+                    return false;
+                }
+            }
+            true
         });
     builder
 }
@@ -48,10 +62,10 @@ pub fn collect_md_files(root: &Path) -> Vec<PathBuf> {
         match entry {
             Ok(entry) => {
                 let path = entry.path().to_path_buf();
+                let is_file = entry.file_type().map(|ft| ft.is_file()).unwrap_or(false);
 
                 // Only include regular files (not directories, not symlinks to directories)
-                // Symlinks to files ARE followed per the spec (BC-2.01.004 postcondition 3)
-                if entry.file_type().map(|ft| ft.is_file()).unwrap_or(false) {
+                if is_file {
                     // Check if it has .md extension (case-sensitive)
                     if is_md_extension(&path) {
                         // Deduplicate by absolute path
