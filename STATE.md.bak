@@ -4,14 +4,14 @@ level: ops
 version: "3.8"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T08:36:00Z
+timestamp: 2026-08-19T08:30:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 fix-wave green @bf0e92e (58/58, exit 0); clippy CLIPPY-01 open; convergence 0/3."
+current_step: "Phase 3 wave 1 — S-1.01 fix-wave checkpoint. Feature-branch HEAD 076c12c, suite 58 tests (54 pass, 4 fail). Fix-wave ledger recorded. Convergence 0/3."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
