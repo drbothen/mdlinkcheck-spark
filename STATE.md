@@ -4,14 +4,14 @@ level: ops
 version: "3.9"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T19:12:22Z
+timestamp: 2026-08-19T20:25:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Phase 3 wave 1 — S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded"
+current_step: "Phase 3 wave 1 — S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded; Pass-3 fix pair FEAT_SHA 46101ae at gate C-#7 adjudicated GREEN"
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,9 +28,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-19T19:12:22Z - S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 completed (NOT CLEAN); D-016 added
+| **Last Updated** | 2026-08-19T20:25:00Z - Pass-3 durable checkpoint: fix pair FEAT_SHA 46101ae at gate C-#7 adjudicated GREEN; 2 findings (F-P3-01, F-P3-02) REMEDIATED+VERIFIED; 2 Pass-3 items did NOT survive re-derivation as material; NEXT adversarial Pass 4 (streak 0/3) |
 | **Current Phase** | phase-3 |
-| **Current Step** | Phase 3 wave 1 — S-1.01 Pass-2 fix-wave remediation COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 next |
+| **Current Step** | Phase 3 wave 1 — S-1.01 Pass-2 fix-wave remediation COMPLETE+VERIFIED at 4820ead, gate GREEN; adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded; Pass-3 fix pair committed at FEAT_SHA |
 
 ## Phase Progress
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded)
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded; Pass-3 fix pair FEAT_SHA 46101ae at gate C-#7)
 | 4: Holdout Evaluation | not-started | | | | |
 | 5: Adversarial Refinement | not-started | | | | |
 | 6: Formal Hardening | not-started | | | | |
@@ -61,7 +61,8 @@ dtu_required: false
 | Adversarial convergence pass-1 | COMPLETE + VERIFIED | F-02/F-03 ADJUDICATED-DEFERRED (D-008). Convergence 0/3; F-01/F-04 RESOLVED + VERIFIED. NEXT: Pass 2. |
 | Adversarial convergence pass-2 | NOT CLEAN | Fresh-context different-model adversary; 4 MEDIUM findings ESCALATED (F-04-a,F-04-b,F-VP017,F-SCAN-DOT-ROOT); SESSION WRAPPED. |
 | S-1.01 Pass-2 remediation fix-wave | COMPLETE + VERIFIED | HEAD 4820ead; CI-equiv: build 0/fmt 0/clippy 0/nextest 61/61 passed 0 skipped; all 4 findings dispositioned: F-04-a RESOLVED, F-04-b accepted-residual, F-VP017 fixed, F-SCAN-DOT-ROOT premise-disproven+comment-fixed |
-| Adversarial convergence pass-3 | COMPLETE + NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3
+| Adversarial convergence pass-3 | COMPLETE + NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3; REMEDIATED at FEAT_SHA 46101ae: 2 MEDIUM (F-P3-01, F-P3-02); 2 did NOT survive re-derivation as material |
+| Pass-3 fix wave (F-P3-01, F-P3-02) | COMPLETE+VERIFIED | Gate C-#7: 61/61 passed, 0 skipped; FEAT_SHA 46101ae |
 
 ## Convergence Status
 
@@ -69,7 +70,9 @@ dtu_required: false
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
-- Pass 3: NOT CLEAN. Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3.## Fix Wave Ledger
+- Pass 3: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings adjudicated at C-#7 (F-P3-01 to F-P3-04); 2 REMEDIATED+VERIFIED (F-P3-01, F-P3-02), 2 did NOT survive re-derivation as material; convergence streak 0/3.
+
+## Fix Wave Ledger
 
 | Finding | Operator | Status | Notes |
 |---------|----------|--------|-------|
@@ -89,6 +92,8 @@ dtu_required: false
 | F-04-b MEDIUM [content-defect] | pure-core guard | ADJUDICATED ACCEPT+FIX — RESIDUAL DOCUMENTED (D-012/D-016) | Per-pattern differential probe now asserts each of the 8 FORBIDDEN_PATTERNS individually via synthetic positives. Residual: probe and matcher share the FORBIDDEN_PATTERNS constant, so it proves each pin is live but not that the pattern set is canonically correct (no independent positives). Residual = operator strengthening question, not a gate failure. |
 | F-VP017 MEDIUM [content-defect] | property-test | ADJUDICATED ACCEPT+FIX — VERIFIED (D-013/D-016) | Proptest test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle written (bounded depth + symlink cycle); 4 clippy needless-borrow errors removed at 4820ead; gate GREEN. |
 | F-SCAN-DOT-ROOT MEDIUM [content-defect, latent] | scanner filter | ADJUDICATED ACCEPT+FIX — PREMISE DISPROVEN+COMMENT-FIXED (D-016 opt A) | (a) The `ignore` crate does NOT apply filter_entry to the ROOT entry, so a dot-prefixed root IS scanned; D-014's premise ("dot-root -> scan silently empty") is FALSE; no production scanner bug exists; no scanner code was changed this wave. (b) test-writer was told to write a FAILING Red Gate test OR stop-and-escalate; instead it wrote a PASSING test (test_F_SCAN_DOT_ROOT_dot_prefixed_root_dir_is_scanned) carrying a FALSE explanatory comment (claims filter_entry "skip[s] the entry from output while still descending into it"). Operator ruling (D-016): OPTION A — keep test + correct false comment + NO scanner change. No scanner change; comment corrected. |
+| F-P3-01 MEDIUM [content-defect] | pure-core guard | RESOLVED+VERIFIED | D-012: FORBIDDEN_PATTERNS entry "rand::rng" dropped (subsumed under .any(contains)). Line-97 claim corrected to "7 pins individually live". 7 pins mutually non-subsuming (exit 0); checker proven non-vacuous (flags old 8-pin set, exit 1). |
+| F-P3-02 MEDIUM [content-defect] | oracle robustness | RESOLVED+VERIFIED | POL-11: prop_assert!(!results.is_empty()) after VP-017 scan; all 8 fixture .ok() to .expect(...). Broken-fixture control RED exit 100; clean fixture GREEN. |
 
 ## Decisions Log
 
@@ -110,6 +115,7 @@ dtu_required: false
 | D-014 | 2026-08-19 | Operator ruling — F-SCAN-DOT-ROOT ACCEPT + FIX — PREMISE DISPROVEN (D-014): scanner.rs filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. Fix = exempt root entry (depth 0) from dot-dir pruning, failing-test-first. PREMISE DISPROVEN: ignore crate does NOT apply filter_entry to ROOT entry. FALSE POSITIVE + test-writer deviation (passing test with false comment). RE-ADJUDICATION NEEDED: option A keep test + correct false comment + NO scanner change; option B add defensive depth-0 root exemption anyway. |
 | D-015 | 2026-08-19 | SEC-01 RESOLVED by human ruling — AUTHORIZE PUSHES of factory state to public origin drbothen/mdlinkcheck-spark. EXCEPTION-01 and EXCEPTION-02 CLOSED as human-ruled. Resume normal commit+push with ls-remote proof at every checkpoint. |
 | D-016 | 2026-08-19 | Operator ruling on F-SCAN-DOT-ROOT re-adjudication (D-014 premise DISPROVEN) → OPTION A: NO scanner change. The "dot-root -> empty scan" premise is disproven and confirmed by orchestrator execution (test_F_SCAN_DOT_ROOT passes: dot-prefixed root IS scanned because the `ignore` crate does not apply filter_entry to the root entry). No production scanner bug exists. Fix = correct the false test comment only (mechanism restated accurately); keep the passing test. Also operator ruling on F-04-b residual → OPTION A: accept per-pattern synthetic-positive probe as-is; residual (probe/matcher share FORBIDDEN_PATTERNS constant) documented as a strengthening question, not a gate failure (D-012 stands). |
+| D-017 | 2026-08-19 | Operator ruling at gate C-#7 — Pass-3 adjudication: F-P3-01 ACCEPT+FIX drop-subsumed-pin; F-P3-02 ACCEPT+FIX non-empty-assert+loud-fixtures; both test-file-only, no spec edit. 2 prior transcript-only Pass-3 items did NOT survive re-derivation as material (one was "reaffirm D-007" — already durably satisfied in blocking-issues-resolved.md + cycle-manifest TD-002 + scanner.rs:25 corrected comment; the F-SCAN-DOT-ROOT comment is D-016-adequate). |
 
 ## Skip Log
 
@@ -135,7 +141,8 @@ dtu_required: false
 
 ## Session Resume Checkpoint
 
-S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded. NEXT: operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-debt entry; F-P3-02/F-P3-04 comment corrections; F-P3-02 BC-2.01.003 PC3 scope) -> test-file-only fix wave for accepted items -> re-verify gate GREEN -> adversarial Pass 4 toward 3 consecutive clean passes. Separately: operator to re-materialize the .factory worktree and forward-remove the 4 scratch files (STATE.md.bak, STATE.md.bak2.tmp, STATE.md.bak3, cycles/phase-3-wave-1/convergence-trajectory.md.bak). Reminder: include D-007 in adversary ground truth.
+Adversarial Pass 3 (durable checkpoint at gate C-#7): fix pair FEAT_SHA 46101ae verified gate GREEN (61/61, 0 skipped); 2 findings (F-P3-01, F-P3-02) REMEDIATED+VERIFIED; 2 Pass-3 items did NOT survive re-derivation as material (reaffirm D-007 + F-SCAN-DOT-ROOT comment); D-017 operator ruling at C-#7. NEXT: adversarial Pass 4 (fresh context, scoped-to-fix) — first clean-pass opportunity; streak 0/3.
+
 ## Adversarial Pass 1
 
 - Fresh-context different-model adversary with policies.yaml rubric
@@ -151,9 +158,23 @@ S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversaria
 - Operator remediation ruling: all 4 ACCEPT+FIX (D-011, D-012, D-013, D-016 opt A)
 - Remediation fix-wave executed: test-file-only change (scanner_discovery_tests.rs +15/-14); CI-equiv gate GREEN (build/fmt/clippy/nextest all exit 0)
 
+## Adversarial Pass 3 (re-derived, durable)
+
+- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
+- D-007/D-016 supplied as ground truth
+- **Findings:** 2 MEDIUM (F-P3-01, F-P3-02)
+- **Operator Ruling:** D-017 — F-P3-01 ACCEPT+FIX drop-subsumed-pin; F-P3-02 ACCEPT+FIX non-empty-assert+loud-fixtures
+- **Remediation:** Test-file-only fix pair committed at FEAT_SHA 46101ae
+- **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
+- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave, not clean-pass)
+- **Convergence streak:** 0 of 3
+- **Non-surviving items (re-derivation):** 2 items did NOT survive re-derivation as material (reaffirm D-007; F-SCAN-DOT-ROOT comment)
+- **Governing decisions:** D-012 (F-P3-01), POL-11 (F-P3-02)
+
 ## NEXT ACTION
 
-Operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-debt entry; F-P3-02/F-P3-04 comment corrections; F-P3-02 BC-2.01.003 PC3 scope) -> test-file-only fix wave for accepted items -> re-verify gate GREEN -> adversarial Pass 4 (fresh context, scoped-to-fix) toward 3 consecutive clean passes. Separately: operator to re-materialize the .factory worktree and forward-remove the 4 scratch files (STATE.md.bak, STATE.md.bak2.tmp, STATE.md.bak3, cycles/phase-3-wave-1/convergence-trajectory.md.bak). Reminder: include D-007 in adversary do-not-re-litigate ground truth.
+Adversarial Pass 4 (fresh context, scoped-to-fix) — first clean-pass opportunity; streak 0/3; 3 consecutive clean passes required to converge.
+
 ## Operator Decisions Completed (This Session)
 
 | Finding | Decision | Status |
@@ -162,12 +183,14 @@ Operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-
 | F-04-b | D-012: Per-pattern synthetic positives; residual documented | ACCEPT+RESIDUAL-DOCUMENTED |
 | F-VP017 | D-013: Proptest written; D-016: clippy errors removed | FIXED+VERIFIED |
 | F-SCAN-DOT-ROOT | D-016 opt A: Premise disproven; keep test; correct false comment; NO scanner change | CLOSED+VERIFIED |
+| F-P3-01 | D-017: Drop subsumed "rand::rng" pin; correct line-97 claim | RESOLVED+VERIFIED |
+| F-P3-02 | D-017: Non-empty assert + loud fixtures | RESOLVED+VERIFIED |
 
 ## Concurrent Cycles
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded) |
+| phase-3-wave-1 | feature | in-progress (S-1.01 remediation fix-wave COMPLETE+VERIFIED at 4820ead, gate GREEN; Adversarial Pass 3 COMPLETE+NOT_CLEAN (convergence streak 0/3); D-016 recorded; Pass-3 fix pair FEAT_SHA 46101ae at gate C-#7 adjudicated GREEN) |
 
 ## Historical Content
 
@@ -179,3 +202,5 @@ Operator adjudication of Pass-3 findings (F-P3-01 reaffirm D-007 + confirm tech-
 | Lessons learned | `cycles/phase-3-wave-1/lessons.md` |
 | Resolved blockers | `cycles/phase-3-wave-1/blocking-issues-resolved.md` |
 | Cycle manifest | `cycles/phase-3-wave-1/cycle-manifest.md` |
+
+<!-- 182 lines (wc-l) -->

@@ -25,3 +25,11 @@
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-19T13:40:28-0500","ts_epoch":1787164828,"schema_version":1}
 {"type":"hook.block","hook":"destructive-command-guard","reason":"git_no_verify","ts":"2026-08-19T13:40:53-0500","ts_epoch":1787164853,"schema_version":1}
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-19T14:02:26-0500","ts_epoch":1787166146,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:15:57-0500","ts_epoch":1787170557,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:17:47-0500","ts_epoch":1787170667,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:19:06-0500","ts_epoch":1787170746,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:20:28-0500","ts_epoch":1787170828,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:22:43-0500","ts_epoch":1787170963,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-19T15:28:10-0500","ts_epoch":1787171290,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-19T15:34:08-0500","ts_epoch":1787171648,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-19T15:34:24-0500","ts_epoch":1787171664,"schema_version":1}

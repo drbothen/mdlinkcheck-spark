@@ -134,3 +134,43 @@ The S-01 fix pair (F-01 genuine oracle, F-04 pure-core guard) has been independe
 #### Next Steps
 ESCALATE-BEFORE-FIX: Present the 4 Pass-2 MEDIUM findings to operator for adjudication (accept-and-fix / defer-tech-debt / reject-out-of-scope). After adjudication: remediate accepted findings, re-run independent CI gate, run Pass 3. 3 consecutive clean passes still required (0/3).
 
+
+---
+
+### Pass 3 (2026-08-19) - REMEDIATED (durable fresh-context re-derivation)
+
+**Findings:** 2 MEDIUM (F-P3-01, F-P3-02), 0 HIGH, 0 CRIT
+**Novelty:** LOW (scoped-to-fix adversarial review, policies.yaml rubric)
+**Convergence counter:** 0/3
+**Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave remediation, not clean-pass)
+
+#### Adversarial Review Findings - PASS 3
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-P3-01 | MEDIUM | content-defect | pure_core_guard.rs:82-88 probe exercises only 1/8 forbidden patterns; .any() short-circuit means corrupted later pattern never caught | Proves mechanism liveness not pin completeness. Fix: assert each pattern individually. D-012 governs; remediated at FEAT_SHA. ESCALATED-PENDING-OPERATOR. |
+| F-P3-02 | MEDIUM | oracle robustness | VP-017 scan oracle: no assert(!results.is_empty()) after scan; fixture .ok() masks setup failures silently | Add prop_assert!(!results.is_empty()) and change all 8 fixture .ok() to .expect(...). POL-11 spirit; remediated at FEAT_SHA. ESCALATED-PENDING-OPERATOR. |
+
+#### Operator Verdict Summary (D-017)
+
+- F-P3-01: ACCEPT+FIX drop-subsumed-pin (D-012) - FORBIDDEN_PATTERNS entry "rand::rng" dropped (strict superstring of "rand::"; subsumed under .any(contains)). Line-97 claim corrected to "7 pins individually live". 7 pins mutually non-subsuming (exit 0); checker proven non-vacuous (flags old 8-pin set, exit 1).
+- F-P3-02: ACCEPT+FIX non-empty-assert+loud-fixtures (POL-11) - prop_assert!(!results.is_empty()) after VP-017 scan; all 8 fixture .ok() changed to .expect(...). Broken-fixture control RED exit 100; clean fixture GREEN.
+- 2 prior transcript-only Pass-3 items did NOT survive re-derivation as material: (1) "reaffirm D-007" — already durably satisfied in blocking-issues-resolved.md + cycle-manifest TD-002 + scanner.rs:25 corrected comment; (2) F-SCAN-DOT-ROOT comment — D-016-adequate (premise disproven, comment correct).
+
+#### Remediation Evidence
+
+- **Gate:** C-#7
+- **Fix Wave:** Test-file-only (pure_core_guard.rs, scanner_discovery_tests.rs)
+- **Commit SHA:** FEAT_SHA 46101ae9e67fc59a9e41acd2f46f5d17fdb15f30
+- **CI Gate:** build/fmt/clippy -Dwarnings/nextest --locked all EXIT 0; 61 passed, 0 skipped
+- **Verification:** 2 material findings (F-P3-01, F-P3-02) durably reproducible; 2 non-material findings did not survive re-derivation
+
+#### Convergence Status
+- Consecutive clean passes: 0 of 3 required
+- Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer; D-009 F-04 guard; D-010 F-01 oracle)
+- Pass 2: NOT CLEAN (4 MEDIUM findings ESCALATED-PENDING-OPERATOR)
+- Pass 3: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
+
+#### Next Steps
+Adversarial Pass 4 (fresh context, scoped-to-fix) — first clean-pass opportunity; 3 consecutive clean passes required to converge (streak 0/3).
+
