@@ -20,7 +20,7 @@ producer: state-manager
 | VPs created | 17 new, 0 verified, 0 withdrawn |
 | Holdout scenarios | 10 new, 0 retired |
 | Total cost | $0.00 (completed) |
-| Adversarial passes | 6 (3/3 convergence achieved) |
+| Adversarial passes | 6 (1 of 3 substantiated convergence streak; final clean pass at 9d1a6bb) |
 | Final holdout satisfaction | 0.00 |
 | Release version | 1.0.0 (pending) |
 
@@ -58,7 +58,7 @@ None.
 ## Notes
 
 - S-1.01 implementation in TDD chain. Phase 3 wave 1 of 4.
-- Adversarial convergence COMPLETE (3/3 clean passes at 9d1a6bb).
+- Adversarial convergence IN PROGRESS (1 of 3 substantiated clean passes at 9d1a6bb; 2 more required).
 - POL-11 fail-closed guard CI-wired at .github/workflows/ci.yml:154.
 - 61/61 tests green (verified by nextest execution).
 - Demo evidence registered: 13 acceptance criteria × 3 formats (gif/tape/webm) + INDEX.md + DEMO-EVIDENCE-INDEX.md + evidence-report.md.

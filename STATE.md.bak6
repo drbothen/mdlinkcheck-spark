@@ -30,7 +30,7 @@ dtu_required: false
 | **Started** | 2026-08-05 |
 | **Last Updated** | 2026-08-20T05:30:00Z - S-1.01 SPRINT-1 COMPLETE: adversarial convergence 1/3 substantiated streak at 9d1a6bb (final clean pass); CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: 2 more clean adversarial passes required before PR packaging; CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: pr-manager packaging for HUMAN execution |
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 6 CLEAN! 3/3 convergence STREAK achieved @ 9d1a6bb (F-P5-01 comment-only fix; scanner.rs Target-2 NULL disposition). NEXT: S-1.01 complete via pr-manager packaging |
+| **Current Step** | Pass 6 CLEAN (first substantiated clean pass @ 9d1a6bb; F-P5-01 comment-only fix). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated. |
 
 ## Phase Progress
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 29→24→21→7→4→3 (convergence 3/3 @ 9d1a6bb)
+| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 29→24→21→7→4→3 (convergence 1/3 substantiated @ 9d1a6bb)
 
 ## Current Phase Steps
 
@@ -63,7 +63,7 @@ dtu_required: false
 | Pass-4 fix wave (F-P4-01) | COMPLETE+VERIFIED | Gate C-#7: 61/61 passed, 0 skipped; FEAT_SHA f468bd5 |
 | Adversarial convergence pass-5 | NOT CLEAN (fix-wave - remediation, not clean-pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED; REMEDIATED at FEAT_SHA 9d1a6bb (D-019); convergence streak 0/3. |
 | Pass-5 fix wave (F-P5-01) | COMPLETE+VERIFIED | Comment-only fix; 61/61 passed, 0 skipped; FEAT_SHA 9d1a6bb |
-| Adversarial convergence pass-6 | CLEAN! 3/3 STREAK | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved); convergence streak 3/3. NEXT: S-1.01 complete. |
+| Adversarial convergence pass-6 | CLEAN (first substantiated clean pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence streak 1 of 3. |
 
 ## Convergence Status
 

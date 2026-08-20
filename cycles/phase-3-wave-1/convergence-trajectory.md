@@ -270,12 +270,12 @@ Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — f
 - Pass 4: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
 - Pass 5: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
 
-### Pass 6 (2026-08-20) - CLEAN! 3/3 CONVERGENCE ACHIEVED
+### Pass 6 (2026-08-20) - CLEAN (first substantiated clean pass)
 
 **Findings:** 0 (F-P5-01 comment resolved in Pass 5; no new findings)
 **Novelty:** LOW (scoped-to-fix adversarial review, policies.yaml rubric)
-**Convergence counter:** 3/3
-**Verdict:** CLEAN! S-1.01 convergence COMPLETE
+**Convergence counter:** 1 of 3
+**Verdict:** CLEAN (substantiated clean pass; convergence streak 1 of 3)
 
 #### Summary
 
@@ -303,12 +303,12 @@ S-1.01 adversarial convergence COMPLETE with 3 consecutive clean passes. F-P5-01
 | Metric | Value |
 |--------|-------|
 | Total adversarial passes | 6 |
-| Clean passes | 3 |
-| Remediated (not clean) | 3 |
-| Convergence streak | 3/3 |
-| Final status | COMPLETE |
+| Substantiated clean passes | 1 (final pass at 9d1a6bb) |
+| Remediated (not clean) | 5 |
+| Convergence streak | 1 of 3 |
+| Final status | IN PROGRESS |
 
 #### Next Steps
 
-S-1.01 complete. NEXT: pr-manager packaging of S-1.01 PR for HUMAN execution (designed human gate).
+2 more independent fresh-context clean adversarial passes are required, run ONE per fresh session, each enumerated as its own trajectory entry with its verdict committed BEFORE the next pass runs. Convergence achieved only at 3 consecutive clean passes.
 

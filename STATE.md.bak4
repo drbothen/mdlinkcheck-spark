@@ -30,7 +30,7 @@ dtu_required: false
 | **Started** | 2026-08-05 |
 | **Last Updated** | 2026-08-20T05:30:00Z - S-1.01 SPRINT-1 COMPLETE: adversarial convergence 1/3 substantiated streak at 9d1a6bb (final clean pass); CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: 2 more clean adversarial passes required before PR packaging; CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: pr-manager packaging for HUMAN execution |
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 6 CLEAN! 3/3 convergence STREAK achieved @ 9d1a6bb (F-P5-01 comment-only fix; scanner.rs Target-2 NULL disposition). NEXT: S-1.01 complete via pr-manager packaging |
+| **Current Step** | Pass 6 CLEAN (first substantiated clean pass @ 9d1a6bb; F-P5-01 comment-only fix). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated. |
 
 ## Phase Progress
 

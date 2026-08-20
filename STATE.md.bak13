@@ -30,7 +30,7 @@ dtu_required: false
 | **Started** | 2026-08-05 |
 | **Last Updated** | 2026-08-20T05:30:00Z - S-1.01 SPRINT-1 COMPLETE: adversarial convergence 1/3 substantiated streak at 9d1a6bb (final clean pass); CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: 2 more clean adversarial passes required before PR packaging; CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: pr-manager packaging for HUMAN execution |
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 6 CLEAN! 3/3 convergence STREAK achieved @ 9d1a6bb (F-P5-01 comment-only fix; scanner.rs Target-2 NULL disposition). NEXT: S-1.01 complete via pr-manager packaging |
+| **Current Step** | Pass 6 CLEAN (first substantiated clean pass @ 9d1a6bb; F-P5-01 comment-only fix). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated. |
 
 ## Phase Progress
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 29→24→21→7→4→3 (convergence 3/3 @ 9d1a6bb)
+| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 29→24→21→7→4→3 (convergence 1/3 substantiated @ 9d1a6bb)
 
 ## Current Phase Steps
 
@@ -63,11 +63,11 @@ dtu_required: false
 | Pass-4 fix wave (F-P4-01) | COMPLETE+VERIFIED | Gate C-#7: 61/61 passed, 0 skipped; FEAT_SHA f468bd5 |
 | Adversarial convergence pass-5 | NOT CLEAN (fix-wave - remediation, not clean-pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED; REMEDIATED at FEAT_SHA 9d1a6bb (D-019); convergence streak 0/3. |
 | Pass-5 fix wave (F-P5-01) | COMPLETE+VERIFIED | Comment-only fix; 61/61 passed, 0 skipped; FEAT_SHA 9d1a6bb |
-| Adversarial convergence pass-6 | CLEAN! 3/3 STREAK | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved); convergence streak 3/3. NEXT: S-1.01 complete. |
+| Adversarial convergence pass-6 | CLEAN (first substantiated clean pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence streak 1 of 3. |
 
 ## Convergence Status
 
-- Consecutive clean passes: 3 of 3 (S-1.01 convergence COMPLETE)
+- Consecutive clean passes: 1 of 3 (S-1.01 convergence IN PROGRESS; final substantiated clean pass at 9d1a6bb)
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
@@ -77,7 +77,7 @@ dtu_required: false
 - Pass-4 fix wave at HEAD f468bd5: 61/61 passed, 0 skipped; gate GREEN.
 - Pass 5: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED and REMEDIATED at 9d1a6bb (comment-only fix); convergence streak 0/3.
 - Pass-5 fix wave at HEAD 9d1a6bb: 61/61 passed, 0 skipped; gate GREEN; comment-only fix for "independent" over-claim.
-- Pass 6: CLEAN! 3/3 convergence streak achieved. Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence COMPLETE.
+- Pass 6: CLEAN (first substantiated clean pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence 1 of 3 substantiated streak achieved at 9d1a6bb; 2 more clean passes required.
 
 ## Fix Wave Ledger
 
@@ -149,7 +149,7 @@ dtu_required: false
 
 ## Session Resume Checkpoint
 
-S-1.01 convergence COMPLETE (3/3 clean passes @ 9d1a6bb): F-P5-01 comment-only fix remediated and verified; 61/61 tests green; CI-wiring verified (POL-11 in ci.yml line 154); 13 acceptance criteria × 3 formats (gif/tape/webm) demo evidence registered in .factory/demo-evidence/S-1.01/; NULL disposition on scanner.rs Target-2 (comment already accurate). NEXT: pr-manager packaging of S-1.01 PR for HUMAN execution (designed human gate).
+S-1.01 convergence IN PROGRESS (1 of 3 substantiated clean passes @ 9d1a6bb): F-P5-01 comment-only fix remediated and verified; 61/61 tests green; CI-wiring verified (POL-11 in ci.yml line 154); 13 acceptance criteria × 3 formats (gif/tape/webm) demo evidence registered in .factory/demo-evidence/S-1.01/; NULL disposition on scanner.rs Target-2 (comment already accurate). NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated.
 
 ## Adversarial Pass 1
 
@@ -214,7 +214,7 @@ S-1.01 convergence COMPLETE (3/3 clean passes @ 9d1a6bb): F-P5-01 comment-only f
 
 ## NEXT ACTION
 
-S-1.01 per-story chain complete through convergence + demo evidence; pr-manager packaging of S-1.01 PR for HUMAN execution (designed human gate).
+S-1.01 per-story chain complete through convergence + demo evidence; 2 more independent fresh-context clean adversarial passes required before PR packaging; convergence 1 of 3 substantiated (final clean pass at 9d1a6bb).
 
 ## Operator Decisions Completed (This Session)
 
@@ -236,7 +236,7 @@ S-1.01 per-story chain complete through convergence + demo evidence; pr-manager 
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | COMPLETE (S-1.01 convergence 3/3 @ 9d1a6bb; demo evidence registered; NEXT: pr-manager packaging) |
+| phase-3-wave-1 | feature | IN PROGRESS (S-1.01 convergence 1/3 substantiated @ 9d1a6bb; 2 more clean passes required; NEXT: 2 more clean adversarial passes before PR packaging) |
 
 ## Historical Content
 
