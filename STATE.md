@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.11"
+version: "3.12"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T23:22:00Z
+timestamp: 2026-08-20T00:05:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 5 NOT CLEAN; F-P5-01 ACCEPT+FIX (D-019) COMMENT SOFTENING RECORDED; HUMAN PAUSE ORDER IN EFFECT; convergence streak 0/3"
+current_step: "Pass 5 NOT CLEAN; F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019) COMMENT-ONLY; convergence streak 0/3; NEXT: adversarial Pass 6 (fresh context, scoped-to-fix)"
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,9 +28,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-19T22:30:00Z - Pass-4 checkpoint: F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); 2 LOW residuals non-blocking; convergence streak 0/3; NEXT: adversarial Pass 5 (first clean-pass opportunity) |
+| **Last Updated** | 2026-08-20T00:05:00Z - Pass-5 checkpoint: F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019) comment-only; convergence streak 0/3; NEXT: adversarial Pass 6 (first clean-pass opportunity) |
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 4 NOT CLEAN; F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); streak 0/3; NEXT adversarial Pass 5 (first clean-pass opportunity) |
+| **Current Step** | Pass 5 NOT CLEAN; F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019) comment-only; convergence streak 0/3; NEXT: adversarial Pass 6 (fresh context, scoped-to-fix) |
 
 ## Phase Progress
 
@@ -41,11 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 4 NOT CLEAN; F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); 2 LOW residuals; streak 0/3; Pass-4 fix-wave remediation)
-| 4: Holdout Evaluation | not-started | | | | |
-| 5: Adversarial Refinement | not-started | | | | |
-| 6: Formal Hardening | not-started | | | | |
-| 7: Convergence | not-started | | | | |
+| 3: TDD Implementation | in-progress | 2026-08-18 | | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 0/3 (Pass 5 NOT CLEAN; F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019); convergence streak 0/3; NEXT: adversarial Pass 6)
 
 ## Current Phase Steps
 
@@ -53,7 +49,7 @@ dtu_required: false
 |------|--------|-------|
 | Worktree/branch | DONE | worktree .worktrees/S-1.01, branch feature/S-1.01-workspace-scaffold-and-core-discovery, based on develop f81f412 |
 | Stub scaffold | DONE + verified | cargo build --locked green; Red Gate 4 todo!() bodies; mdlinkcheck-core purity-clean |
-| Dependency pins | DONE + verified | clap="=4.6.5", unicode-normalization="=0.1.24", proptest="~1.6" |
+| Dependency pins | DONE + verified | clap="=4.6.5", unicode-normalization="==0.1.24", proptest="~1.6" |
 | ureq removal | DONE + verified | Removed unused ureq="3.3.0" + TLS subtree (282 lock lines) |
 | Failing tests (Red Gate) | DONE + VERIFIED | 27/27 scanner tests fail with todo!() panic; control 25/25 core type tests pass |
 | Implementer TDD-to-green | DONE + verified | ignore-crate-native rewrite committed at 41b05d8; suite green (52/52 pass) |
@@ -64,15 +60,18 @@ dtu_required: false
 | Adversarial convergence pass-3 | COMPLETE + NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings operator-adjudication-pending (F-P3-01 to F-P3-04); convergence streak 0/3; REMEDIATED at FEAT_SHA 46101ae: 2 MEDIUM (F-P3-01, F-P3-02); 2 did NOT survive re-derivation as material |
 | Pass-3 fix wave (F-P3-01, F-P3-02) | COMPLETE+VERIFIED | Gate C-#7: 61/61 passed, 0 skipped; FEAT_SHA 46101ae |
 | Adversarial convergence pass-4 | NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-016/D-017 supplied as ground truth; 1 MEDIUM finding (F-P4-01), 2 LOW residuals non-blocking; REMEDIATED at FEAT_SHA f468bd5 (D-018); convergence streak 0/3. |
+| Pass-4 fix wave (F-P4-01) | COMPLETE+VERIFIED | Gate C-#7: 61/61 passed, 0 skipped; FEAT_SHA f468bd5 |
+| Adversarial convergence pass-5 | NOT CLEAN (fix-wave - remediation, not clean-pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED; REMEDIATED at FEAT_SHA 9d1a6bb (D-019); convergence streak 0/3. |
 
 ## Convergence Status
 
-- Consecutive clean passes: 0 of 3 (next adversarial Pass 5 is the first clean-pass opportunity after F-P4-01 remediation)
+- Consecutive clean passes: 0 of 3 (Pass 6 is the first clean-pass opportunity after F-P5-01 remediation)
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
 - Pass 3: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-007/D-016 supplied as ground truth; 4 findings adjudicated at C-#7 (F-P3-01 to F-P3-04); 2 REMEDIATED+VERIFIED (F-P3-01, F-P3-02), 2 did NOT survive re-derivation as material; convergence streak 0/3.
 - Pass 4: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-016/D-017 supplied as ground truth; 1 MEDIUM finding (F-P4-01) ESCALATED and REMEDIATED at f468bd5; 2 LOW residuals non-blocking (comment "independent" over-claim; scanner.rs:31 terse-comment clarity); convergence streak 0/3.
+- Pass 5: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED and REMEDIATED at 9d1a6bb (comment-only fix); convergence streak 0/3.
 
 ## Fix Wave Ledger
 
@@ -97,6 +96,7 @@ dtu_required: false
 | F-P3-01 MEDIUM [content-defect] | pure-core guard | RESOLVED+VERIFIED | D-012: FORBIDDEN_PATTERNS entry "rand::rng" dropped (subsumed under .any(contains)). Line-97 claim corrected to "7 pins individually live". 7 pins mutually non-subsuming (exit 0); checker proven non-vacuous (flags old 8-pin set, exit 1). |
 | F-P3-02 MEDIUM [content-defect] | oracle robustness | RESOLVED+VERIFIED | POL-11: prop_assert!(!results.is_empty()) after VP-017 scan; all 8 fixture .ok() to .expect(...). Broken-fixture control RED exit 100; clean fixture GREEN. |
 | F-P4-01 MEDIUM [content-defect] | test-writer | RESOLVED+VERIFIED | pure_core_guard.rs passed GREEN on an emptied FORBIDDEN_PATTERNS (probe loop + .any() both iterate the const; only runtime N>0 assertion counted FILES not PINS) — the "green-on-emptied-input" vacuity class. Fix: Add fail-closed `assert!(!FORBIDDEN_PATTERNS.is_empty())` + runtime pin-probe positive-coverage count (POL-11 form). D-018 governs; remediated at FEAT_SHA f468bd5; red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate. |
+| F-P5-01 MEDIUM [content-defect] | test-writer | RESOLVED+VERIFIED | pure_core_guard.rs comment "independent" over-claim: claim "this proves the canonical set is complete" overstates; actual test uses synthetic positives derived from same FORBIDDEN_PATTERNS constant, so it proves mechanism liveness but NOT canonical completeness (D-012 residual). D-019 governs; remediated at FEAT_SHA 9d1a6bb; comment-only fix (no code change); 61-61 CI gate. NULL disposition on scanner.rs Target-2 (comment already accurate; no change needed). |
 
 ## Decisions Log
 
@@ -120,6 +120,8 @@ dtu_required: false
 | D-016 | 2026-08-19 | Operator ruling on F-SCAN-DOT-ROOT re-adjudication (D-014 premise DISPROVEN) → OPTION A: NO scanner change. The "dot-root -> empty scan" premise is disproven and confirmed by orchestrator execution (test_F_SCAN_DOT_ROOT passes: dot-prefixed root IS scanned because the `ignore` crate does not apply filter_entry to the root entry). No production scanner bug exists. Fix = correct the false test comment only (mechanism restated accurately); keep the passing test. Also operator ruling on F-04-b residual → OPTION A: accept per-pattern synthetic-positive probe as-is; residual (probe/matcher share FORBIDDEN_PATTERNS constant) documented as a strengthening question, not a gate failure (D-012 stands). |
 | D-017 | 2026-08-19 | Operator ruling at gate C-#7 — Pass-3 adjudication: F-P3-01 ACCEPT+FIX drop-subsumed-pin; F-P3-02 ACCEPT+FIX non-empty-assert+loud-fixtures; both test-file-only, no spec edit. 2 prior transcript-only Pass-3 items did NOT survive re-derivation as material (one was "reaffirm D-007" — already durably satisfied in blocking-issues-resolved.md + cycle-manifest TD-002 + scanner.rs:25 corrected comment; the F-SCAN-DOT-ROOT comment is D-016-adequate). |
 | D-018 | 2026-08-19 | Operator ruling — F-P4-01 ACCEPT+FIX (test-only): Add fail-closed `assert!(!FORBIDDEN_PATTERNS.is_empty())` + runtime pin-probe positive-coverage count (POL-11 form). Pure-core guard passed GREEN on emptied FORBIDDEN_PATTERNS (vacuity class "green-on-emptied-input"). Fix: assert non-empty + runtime positive-coverage count. Test-only; no spec edit. COMMITTED at FEAT_SHA f468bd5; red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate. |
+| D-019 | 2026-08-20 | Operator ruling — F-P5-01 ACCEPT+FIX comment-only (test-only): Comment "independent" over-claim in pure_core_guard.rs — claim that synthetic positive test proves canonical set completeness is false; test derives positives from same FORBIDDEN_PATTERNS constant, proving only mechanism liveness, not canonical completeness (D-012 residual). Fix: Correct comment to state accurate claim. NO code change. NULL disposition on scanner.rs Target-2 (comment already accurate; no change). Commit 9d1a6bb. |
+| D-020 | 2026-08-20 | Operator ruling this session: (a) HUMAN PAUSE ORDER LIFTED; (b) feature-branch push (f468bd5, 9d1a6bb unpushed vs origin 46101ae) to be PACKAGED FOR HUMAN, NOT factory-pushed. Do NOT push feature branch. Do NOT create PR. Do NOT merge. |
 
 ## Skip Log
 
@@ -139,14 +141,16 @@ dtu_required: false
 | F-VP017 | Story Task10 + BC-2.01.001.md:74 mandate proptest; delivered as 2 hand cases; proptest never invoked. | MEDIUM | phase-3 | test-writer | ADJUDICATED ACCEPT+FIX — VERIFIED (D-013); proptest written, 4 clippy errors removed at 4820ead. |
 | F-SCAN-DOT-ROOT | scanner.rs:37-46 filter_entry rejects any '.'-prefixed entry incl. ROOT; root="." → entire scan silently empty. | MEDIUM | phase-3 | implementer | ADJUDICATED ACCEPT+FIX — PREMISE DISPROVEN (D-016 opt A); FALSE POSITIVE + test-writer deviation (passing test with false comment); NO scanner change; comment corrected. |
 | F-P4-01 | pure_core_guard.rs passed GREEN on emptied FORBIDDEN_PATTERNS (vacuity class "green-on-emptied-input"); only runtime N>0 assertion counted FILES not PINS. | MEDIUM | phase-3 | test-writer | ADJUDICATED ACCEPT+FIX — VERIFIED (D-018); fail-closed assert + runtime pin-probe count; red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate. RESOLVED+VERIFIED at f468bd5. |
+| F-P5-01 | pure_core_guard.rs comment "independent" over-claim — synthetic positives derived from same FORBIDDEN_PATTERNS constant do NOT prove canonical completeness (D-012 residual). | MEDIUM | phase-3 | test-writer | ADJUDICATED ACCEPT+FIX — VERIFIED (D-019); comment-only fix; 61-61 CI gate. RESOLVED+VERIFIED at 9d1a6bb. |
 
 ## Drift Items
 
 - [clippy-gap] F-VP017 proptest introduced 4 clippy needless-borrow errors (scanner_discovery_tests.rs lines 1242, 1243, 1248, 1249). MECHANICAL FIX COMPLETE at 4820ead; gate GREEN.
+- [feature-branch] Local feature HEAD is 9d1a6bb; origin is 46101ae. Pass-4 (f468bd5) and Pass-5 (9d1a6bb) are UNPUSHED. Per operator ruling this session, feature-branch push will be PACKAGED FOR HUMAN, not factory-pushed. DO NOT push. DO NOT create PR. DO NOT merge.
 
 ## Session Resume Checkpoint
 
-Adversarial Pass 4 (durable checkpoint at FEAT_SHA f468bd5): F-P4-01 REMEDIATED+VERIFIED (D-018); fail-closed assert!(!FORBIDDEN_PATTERNS.is_empty()) + runtime pin-probe positive-coverage; red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate; 2 LOW residuals non-blocking (comment "independent" over-claim; scanner.rs:31 terse-comment clarity); convergence streak 0/3. NEXT: adversarial Pass 5 (fresh context, scoped-to-fix) — first clean-pass opportunity; 3 consecutive clean passes required.
+Adversarial Pass 5 (durable checkpoint at FEAT_SHA 9d1a6bb): F-P5-01 REMEDIATED+VERIFIED (D-019) comment-only fix; comment "independent" over-claim corrected; NO code change; 61-61 CI gate; convergence streak 0/3. NULL disposition on scanner.rs Target-2 (comment already accurate). NEXT: adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity; 3 consecutive clean passes required.
 
 ## Adversarial Pass 1
 
@@ -188,9 +192,21 @@ Adversarial Pass 4 (durable checkpoint at FEAT_SHA f468bd5): F-P4-01 REMEDIATED+
 - **Convergence streak:** 0 of 3
 - **Residual notes (non-blocking):** comment "independent" over-claim; scanner.rs:31 terse-comment clarity
 
+## Adversarial Pass 5
+
+- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
+- D-018/D-019 supplied as ground truth
+- **Findings:** 1 MEDIUM (F-P5-01) comment-only (over-claim "independent" in pure_core_guard.rs)
+- **Operator Ruling:** D-019 — F-P5-01 ACCEPT+FIX comment-only: comment "independent" over-claim corrected; claim that synthetic positives prove canonical set completeness is false (test derives positives from same FORBIDDEN_PATTERNS constant, proving only mechanism liveness, not canonical completeness per D-012 residual). NO code change.
+- **Remediation:** Comment-only fix committed at FEAT_SHA 9d1a6bb
+- **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
+- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave remediation, not clean-pass)
+- **Convergence streak:** 0 of 3
+- **NULL disposition:** scanner.rs Target-2 (comment already accurate; no change)
+
 ## NEXT ACTION
 
-Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P4-01 remediation; convergence streak 0/3; 3 consecutive clean passes required.
+Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P5-01 remediation; convergence streak 0/3; 3 consecutive clean passes required.
 
 ## Operator Decisions Completed (This Session)
 
@@ -203,12 +219,15 @@ Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — f
 | F-P3-01 | D-017: Drop subsumed "rand::rng" pin; correct line-97 claim | RESOLVED+VERIFIED |
 | F-P3-02 | D-017: Non-empty assert + loud fixtures | RESOLVED+VERIFIED |
 | F-P4-01 | D-018: Fail-closed assert + runtime pin-probe count (POL-11) | RESOLVED+VERIFIED |
+| F-P5-01 | D-019: Comment-only fix for "independent" over-claim | RESOLVED+VERIFIED |
+| PAUSE-01 | HUMAN PAUSE ORDER LIFTED this session | RESOLVED |
+| PUSH-01 | Feature-branch push (f468bd5, 9d1a6bb) to be PACKAGED FOR HUMAN, NOT factory-pushed | RESOLVED |
 
 ## Concurrent Cycles
 
 | Cycle | Type | Status |
 |-------|------|--------|
-| phase-3-wave-1 | feature | in-progress (Pass 4 NOT CLEAN; F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); 2 LOW residuals non-blocking; convergence streak 0/3; NEXT: adversarial Pass 5 (first clean-pass opportunity)) |
+| phase-3-wave-1 | feature | in-progress (Pass 5 NOT CLEAN; F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019) comment-only; convergence streak 0/3; NEXT: adversarial Pass 6 (first clean-pass opportunity)) |
 
 ## Historical Content
 
@@ -221,4 +240,4 @@ Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — f
 | Resolved blockers | `cycles/phase-3-wave-1/blocking-issues-resolved.md` |
 | Cycle manifest | `cycles/phase-3-wave-1/cycle-manifest.md` |
 
-<!-- 213 lines (wc-l) -->
+<!-- 218 lines (wc-l) -->

@@ -20,10 +20,11 @@ traces_to: STATE.md
 | 2 | 2026-08-19 | 0 | 0 | 0 | 0 | 0 | LOW | 0.00 | 0/3 | FIX PAIR VERIFICATION (F-01, F-04) |
 | 3 | 2026-08-19 | 4 | 0 | 0 | 4 | 0 | MEDIUM | 0.00 | 0/3 | NOT CLEAN |
 | 4 | 2026-08-19 | 1 | 0 | 0 | 1 | 2 | LOW | 0.00 | 0/3 | REMEDIATED+VERIFIED |
+| 5 | 2026-08-20 | 1 | 0 | 0 | 1 | 0 | LOW | 0.00 | 0/3 | REMEDIATED+VERIFIED (comment-only) |
 
 ## Trajectory Shorthand
 
-`4→0→4→1→...`
+`4→0→4→1→1→...`
 
 ## Per-Pass Details
 
@@ -224,5 +225,51 @@ Adversarial Pass 4 (fresh context, scoped-to-fix) — first clean-pass opportuni
 - Pass 4: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
 
 #### Next Steps
-Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P4-01 remediation; convergence streak 0/3; 3 consecutive clean passes required.
+Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P5-01 remediation; convergence streak 0/3; 3 consecutive clean passes required.
+
+---
+
+### Pass 5 (2026-08-20) - REMEDIATED (fresh-context re-derivation)
+
+**Findings:** 1 MEDIUM (F-P5-01), 0 HIGH, 0 CRIT
+**Novelty:** LOW (scoped-to-fix adversarial review, policies.yaml rubric)
+**Convergence counter:** 0/3
+**Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave remediation, not clean-pass)
+
+#### Adversarial Review Findings - PASS 5
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-P5-01 | MEDIUM | content-defect | pure_core_guard.rs comment "independent" over-claim: claim "this proves the canonical set is complete" overstates; actual test uses synthetic positives derived from same FORBIDDEN_PATTERNS constant, so it proves mechanism liveness but NOT canonical completeness (D-012 residual). | Comment only. D-019 governs; remediated at FEAT_SHA. ESCALATED-PENDING-OPERATOR. |
+
+#### LOW Advisory Notes (Non-blocking)
+
+| ID | Severity | Category | Issue |
+|----|----------|----------|-------|
+| ADV-1 | LOW | comment-nit | Comment "independent" over-claim (non-blocking) |
+
+#### Operator Verdict Summary (D-019)
+
+- F-P5-01: ACCEPT+FIX comment-only - pure_core_guard.rs comment "independent" over-claim corrected. NO code change. NULL disposition on scanner.rs Target-2 (comment already accurate; no change).
+
+#### Remediation Evidence
+
+- **Gate:** F-01 remediation fix-wave (D-019)
+- **Fix Wave:** Comment-only (crates/mdlinkcheck-core/tests/pure_core_guard.rs)
+- **Commit SHA:** FEAT_SHA 9d1a6bb44cda32291cb915270382c8b9e4d6d337
+- **CI Gate:** build/fmt/clippy -Dwarnings/nextest --locked all EXIT 0; 61 passed, 0 skipped
+- **Verification:** 
+  - Comment-only fix: corrected over-claim statement in comment.
+  - Full CI gate: 61/61 passed, 0 skipped.
+
+#### Convergence Status
+- Consecutive clean passes: 0 of 3 required
+- Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer; D-009 F-04 guard; D-010 F-01 oracle)
+- Pass 2: NOT CLEAN (4 MEDIUM findings ESCALATED-PENDING-OPERATOR)
+- Pass 3: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
+- Pass 4: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
+- Pass 5: REMEDIATED+VERIFIED at FEAT_SHA; gate GREEN; NOT CLEAN (fix-wave, not clean-pass)
+
+#### Next Steps
+Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P5-01 remediation; convergence streak 0/3; 3 consecutive clean passes required.
 

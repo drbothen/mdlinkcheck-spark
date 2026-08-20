@@ -57,3 +57,27 @@
 - D-018: F-P4-01 ACCEPT+FIX — fail-closed assert + runtime pin-probe count (POL-11)
 
 **Next Action:** Adversarial Pass 5 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P4-01 remediation; 3 consecutive clean passes required.
+
+---
+
+## Session Checkpoint: 2026-08-20T00:05:00Z
+**State:** Adversarial Pass 5 NOT CLEAN: 1 MEDIUM (F-P5-01) comment-only (over-claim in pure_core_guard.rs). F-P5-01 REMEDIATED+VERIFIED at 9d1a6bb (D-019) with comment-only fix. 61-61 CI gate. NULL disposition on scanner.rs Target-2 (comment already accurate; no change). Convergence streak 0/3. NEXT: adversarial Pass 6 (first clean-pass opportunity after remediation; 3 consecutive clean passes required).
+
+**Feature branch:** feature/S-1.01-workspace-scaffold-and-core-discovery
+**HEAD SHA:** 9d1a6bb (remediation fix-wave, comment-only)
+**Working tree:** clean (post-burst)
+**Test command:** cargo nextest run --locked --workspace --no-fail-fast
+**EXIT code:** 0
+**Pass/fail counts:** 61 passed, 0 fail
+**Toolchain verified:** cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
+
+**Adversarial Pass 5 verdict:** NOT CLEAN (fix-wave remediation, not clean-pass), 1 MEDIUM (F-P5-01) comment-only, convergence streak 0/3. REMEDIATED+VERIFIED.
+
+**Checkpoint Status:** ARCHIVED
+
+**Operator Decisions Completed:**
+- D-019: F-P5-01 ACCEPT+FIX comment-only — comment "independent" over-claim corrected; NO code change; NULL disposition on scanner.rs Target-2.
+- HUMAN PAUSE ORDER LIFTED this session
+- Feature-branch push (f468bd5, 9d1a6bb unpushed vs origin 46101ae) to be PACKAGED FOR HUMAN, NOT factory-pushed
+
+**Next Action:** Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P5-01 remediation; 3 consecutive clean passes required.
