@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.9"
+version: "3.11"
 status: draft
 producer: state-manager
-timestamp: 2026-08-19T22:00:00Z
+timestamp: 2026-08-19T23:22:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 4 NOT CLEAN; F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); streak 0/3; NEXT adversarial Pass 5 (first clean-pass opportunity)"
+current_step: "Pass 5 NOT CLEAN; F-P5-01 ACCEPT+FIX (D-019) COMMENT SOFTENING RECORDED; HUMAN PAUSE ORDER IN EFFECT; convergence streak 0/3"
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,7 +28,7 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-19T22:00:00Z - Pass-4 checkpoint: F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); 2 LOW residuals non-blocking; convergence streak 0/3; NEXT: adversarial Pass 5 (first clean-pass opportunity) |
+| **Last Updated** | 2026-08-19T22:30:00Z - Pass-4 checkpoint: F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); 2 LOW residuals non-blocking; convergence streak 0/3; NEXT: adversarial Pass 5 (first clean-pass opportunity) |
 | **Current Phase** | phase-3 |
 | **Current Step** | Pass 4 NOT CLEAN; F-P4-01 REMEDIATED+VERIFIED at f468bd5 (D-018); streak 0/3; NEXT adversarial Pass 5 (first clean-pass opportunity) |
 
