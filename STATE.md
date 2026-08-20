@@ -1,10 +1,10 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.15"
+version: "3.16"
 status: draft
 producer: state-manager
-timestamp: 2026-08-20T12:30:00Z
+timestamp: 2026-08-20T13:30:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"

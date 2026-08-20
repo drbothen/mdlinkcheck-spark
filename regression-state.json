@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-20T06:43:22Z","command":"echo \"STEP_COMPLETE: step=6 name=wait-for-ci status=ok note=CI workflow verified: .github/workflows/ci.yml runs cargo nextest --all-targets; POL-11 pure_core_guard is CI-enforced\""}
+{"status":"pass","timestamp":"2026-08-20T12:06:17Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01\ncargo nextest run --locked >/tmp/nextest_ee89580.log 2>&1\necho \"EXIT_CODE=$?\"\ntail -2 /tmp/nextest_ee89580.log"}
