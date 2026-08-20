@@ -4,7 +4,7 @@ level: ops
 version: "3.15"
 status: draft
 producer: state-manager
-timestamp: 2026-08-20T12:25:00Z
+timestamp: 2026-08-20T12:30:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
@@ -266,5 +266,5 @@ Operator to adjudicate F-P7-01 (accept+fix comment-only / defer / reject-as-imma
 | Resolved blockers | `cycles/phase-3-wave-1/blocking-issues-resolved.md` |
 | Cycle manifest | `cycles/phase-3-wave-1/cycle-manifest.md` |
 
-<!-- ~246
-<!-- 2026-08-20T12:19:00Z S-1.01 Adversarial Pass 7 NOT CLEAN — corrective checkpoint -->
+<!-- ~270 lines (wc-l) -->
+<!-- 2026-08-20T12:30:00Z S-1.01 Adversarial Pass 7 NOT CLEAN — corrective checkpoint -->
