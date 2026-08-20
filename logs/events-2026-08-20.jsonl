@@ -2,3 +2,5 @@
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-20T00:15:28-0500","ts_epoch":1787202928,"schema_version":1}
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-20T00:16:03-0500","ts_epoch":1787202963,"schema_version":1}
 {"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-20T00:16:59-0500","ts_epoch":1787203019,"schema_version":1}
+{"type":"hook.block","hook":"validate-table-cell-count","reason":"table_cell_count","ts":"2026-08-20T01:03:08-0500","ts_epoch":1787205788,"schema_version":1}
+{"type":"hook.block","hook":"validate-template-compliance","reason":"template_drift","ts":"2026-08-20T01:04:34-0500","ts_epoch":1787205874,"schema_version":1}

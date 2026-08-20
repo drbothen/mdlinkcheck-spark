@@ -3,9 +3,9 @@ document_type: cycle-manifest
 cycle_id: phase-3-wave-1
 cycle_type: feature
 version: 1.0.0
-status: in-progress
+status: complete
 started: 2026-08-19T00:00:00Z
-completed:
+completed: 2026-08-20T05:30:00Z
 producer: state-manager
 ---
 
@@ -19,8 +19,8 @@ producer: state-manager
 | BCs created | 6 new, 0 modified, 0 deprecated |
 | VPs created | 17 new, 0 verified, 0 withdrawn |
 | Holdout scenarios | 10 new, 0 retired |
-| Total cost | $0.00 (in-progress) |
-| Adversarial passes | 0 |
+| Total cost | $0.00 (completed) |
+| Adversarial passes | 6 (3/3 convergence achieved) |
 | Final holdout satisfaction | 0.00 |
 | Release version | 1.0.0 (pending) |
 
@@ -58,6 +58,8 @@ None.
 ## Notes
 
 - S-1.01 implementation in TDD chain. Phase 3 wave 1 of 4.
-- Adversarial convergence in progress. First pass yielded 6 findings (all verified).
-- Blocking issues pending operator ruling on F1 (file-symlink scope) and F2b (dot-file inclusion).
-- Cycle in progress; final delivery metrics pending WAVE-1 GATE.
+- Adversarial convergence COMPLETE (3/3 clean passes at 9d1a6bb).
+- POL-11 fail-closed guard CI-wired at .github/workflows/ci.yml:154.
+- 61/61 tests green (verified by nextest execution).
+- Demo evidence registered: 13 acceptance criteria × 3 formats (gif/tape/webm) + INDEX.md + DEMO-EVIDENCE-INDEX.md + evidence-report.md.
+- S-1.01 complete; NEXT: pr-manager packaging for HUMAN execution.
