@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.20"
+version: "3.21"
 status: draft
 producer: state-manager
-timestamp: 2026-08-20T23:25:00Z
+timestamp: 2026-08-20T23:55:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 12 CLEAN @45c30f6 (D-028 comment-only fix L616/L655 applied + verified 61/61); convergence streak 1 of 3; PR packaging BLOCKED until 3/3; clean-stop."
+current_step: "Pass 13 NOT CLEAN @45c30f6 (F-P13-01 LOW, ESCALATED-PENDING-OPERATOR); convergence streak RESET 1->0 of 3; PR packaging BLOCKED; escalate-before-fix, clean-stop."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,9 +28,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-20 - S-1.01 Adversarial Pass 12 CLEAN @45c30f6 (D-028); convergence streak 1 of 3; PR packaging BLOCKED until 3/3.
+| **Last Updated** | 2026-08-20 - S-1.01 Adversarial Pass 13 NOT CLEAN @45c30f6 (F-P13-01); convergence streak RESET 1->0 of 3; PR packaging BLOCKED until 3/3.
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 12 CLEAN @45c30f6 (D-028 comment-only fix L616/L655 applied + verified 61/61); convergence streak 1 of 3; PR packaging BLOCKED until 3/3; clean-stop.
+| **Current Step** | Pass 13 NOT CLEAN @45c30f6 (F-P13-01 LOW, ESCALATED-PENDING-OPERATOR); convergence streak RESET 1->0 of 3; PR packaging BLOCKED; escalate-before-fix, clean-stop.
 
 ## Phase Progress
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified; Adversarial Pass 12 CLEAN @45c30f6 (D-028); convergence streak 1 of 3 | 29→24→21→7→4→3→2→0→0→1
+3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified; Adversarial Pass 13 NOT CLEAN @45c30f6 (F-P13-01); convergence streak RESET 1->0 of 3 | 29→24→21→7→4→3→2→0→0→1
 
 ## Current Phase Steps
 
@@ -71,10 +71,12 @@ dtu_required: false
 | Adversarial convergence pass-9 | CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter; grep-predicate coverage: "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0, etc. Convergence streak 1/3 substantiated. PR packaging remains BLOCKED (not 3/3).
 | Adversarial convergence pass-10 | CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml v1.3 rubric; D-016/D-019/D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter; orchestrator-executed reached-counts substantiate active inspection (not a ghost pass); convergence streak 2/3 substantiated; PR packaging BLOCKED (not 3/3).
 | Adversarial convergence pass-11 | NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; D-016/D-019/D-023/D-025 supplied as ground truth; 1 MEDIUM finding (F-P11-01) ESCALATED-PENDING-OPERATOR; predicate reached-counts orchestrator-reconciled (all match ground truth); convergence streak reset 2->0 provisional; NO fix (escalate-before-fix); clean-stop.
+| Adversarial convergence pass-12 | CLEAN | Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; perimeter pre-enumerated at dispatch (E1-E5); baseline feature HEAD 45c30f6 (D-028 fix commit). VERDICT: CLEAN (0 findings). Convergence streak 1 of 3 substantiated. PR packaging remains BLOCKED until 3/3.
+| Adversarial convergence pass-13 | NOT CLEAN | Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens, policies.yaml v1.3 rubric; perimeter pre-enumerated E1-E5 at dispatch; baseline feature HEAD 45c30f6. 1 LOW finding F-P13-01 (POLICY 4) ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass; convergence streak RESET 1->0 of 3.
 
 ## Convergence Status
 
-- Consecutive clean passes: 1 of 3 (Pass 12 CLEAN @45c30f6 D-028). S-1.01 convergence proceeding toward 3/3 (2 more clean passes required). PR packaging remains BLOCKED until 3/3 substantiated.
+- Consecutive clean passes: 0 of 3 (Pass 13 NOT CLEAN @45c30f6; F-P13-01 ESCALATED). PR packaging remains BLOCKED until 3/3 substantiated.
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
@@ -89,9 +91,9 @@ dtu_required: false
 - Pass 8: NOT CLEAN (remediation not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-021/D-022/D-023 supplied as ground truth; 2 findings ESCALATED (F-P8-01, F-P8-02); REMEDIATED at FEAT_SHA ad75a7f (D-025 comment-only); convergence streak 0/3.
 - Pass 9: CLEAN (first substantiated clean pass of Pass 8 remediation). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter; grep-predicate coverage: "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0, etc. Convergence streak 1/3 substantiated. PR packaging remains BLOCKED (not 3/3).
 - Pass 10: CLEAN (second substantiated clean pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml v1.3 rubric; D-016/D-019/D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter. Orchestrator independently re-ran the adversary's reached-count predicates by execution and CONFIRMED the verdict: all load-bearing single-hit predicates verified; reconciled 2 non-material count discrepancies (adversary 'Regression guard'=6 missed one honest label at L1069 -> actual 7; adversary 'FORBIDDEN_PATTERNS'=10 vs 9 case-sensitive/13 case-insensitive). Both adversary NOT-COVERED gaps closed: HEAD-SHA via orchestrator git rev-parse (=ad75a7f), 61/61 by construction (ee89580..ad75a7f diff comment-only, 10 ins/7 del all comment lines; ee89580 already 61/61-verified). Convergence streak 2/3 substantiated. PR packaging remains BLOCKED (not 3/3).
-
 - Pass 11: NOT CLEAN. Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; D-016/D-019/D-023/D-025 supplied as ground truth. 1 MEDIUM finding F-P11-01: scanner_discovery_tests.rs L616/L655 assert "the cycle is detected" but scanner.rs:26 uses follow_links(false), so the walker never enters the cycle and performs NO detection; termination is by not-following. Orchestrator independently execution-verified (scanner.rs:26 .follow_links(false); exactly 2 "detect" hits L616/L655; internal inconsistency L149-152 "vacuous under follow_links(false)"; accurate siblings L645/L1166/L1229) and reconciled all Pass-11 predicate reached-counts against orchestrator ground truth (all match). ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix). Convergence streak reset 2->0 provisional.
 - Pass 12: CLEAN (first substantiated clean pass of the D-028 fix; convergence streak 1 of 3). Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; perimeter pre-enumerated at dispatch (E1-E5); baseline feature HEAD 45c30f6 (D-028 fix commit). VERDICT: CLEAN (0 findings). Convergence streak 1 of 3 substantiated. PR packaging remains BLOCKED until 3/3.
+- Pass 13: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens, policies.yaml v1.3 rubric; perimeter pre-enumerated E1-E5 at dispatch; baseline feature HEAD 45c30f6. 1 LOW finding F-P13-01 (POLICY 4) ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass; convergence streak RESET 1->0 of 3.
 
 ## Fix Wave Ledger
 
@@ -122,6 +124,7 @@ dtu_required: false
 | F-P8-01 MEDIUM [test-documentation-accuracy] | test-writer | RESOLVED+VERIFIED | EC-008 comments in scanner_discovery_tests.rs had DIRECTION-WRONG framing: claimed "dangling symlink a->b (b nonexistent)" when create_dir_symlink(&dir_a,&dir_b) actually creates a link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling. D-025 governs (new binding evidence rule: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report). Remediated at FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines); 61-61 CI gate. |
 | F-P8-02 LOW [test-comment-accuracy] | test-writer | RESOLVED+VERIFIED | F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test". D-025 governs; remediated at FEAT_SHA ad75a7f (comment-only, relabelled "Regression guard" with provenance note); 61-61 CI gate.
 | F-P11-01 MEDIUM [test-comment-accuracy] | test-writer | ESCALATED-PENDING-OPERATOR | scanner_discovery_tests.rs L616/L655 (test_BC_2_01_001_scan_terminates_with_genuine_symlink_cycle): comments assert "the cycle is detected and avoided" / "should detect and handle the cycle", but scanner.rs:26 uses .follow_links(false) — the ignore walker never descends into the symlinked dirs, never enters the cycle, performs NO detection; termination is by not-following. D-025 binding-evidence-rule + POL-4. Orchestrator execution-verified (follow_links(false) at scanner.rs:26; 2 "detect" hits; L149-152 corroboration; siblings L645/L1166/L1229 accurate). NO fix (escalate-before-fix). |
+| F-P13-01 LOW [test-comment-accuracy / POLICY 4 semantic_anchoring_integrity] | test-writer | ESCALATED-PENDING-OPERATOR | test-writer scanner_discovery_tests.rs L1165-1166 (test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle): comment 'We also include a generated case with a directory symlink cycle to prove the scanner handles cycles correctly' uses outcome-language that mischaracterizes the termination mechanism — scanner.rs:26 .follow_links(false) (doc L24-25) means the ignore walker never enters the cycle; termination is by not-following, NOT by cycle-handling. Same comment-drift class as F-P5-01/F-P7-01/F-P8-01/F-P11-01; sibling-propagation gap NOT covered by D-028's L616/L655-only fix. Milder than F-P11-01 (does NOT assert detection; orchestrator confirmed detect=0). Orchestrator execution-verified: scanner.rs:26 follow_links(false) confirmed; L1165-1166 comment verbatim; D-028 diff scope = L616/L655 only (L1166 untouched); 'handles...correctly' family = 2 hits (L292 gitignore accurate, L1166 finding); rest of perimeter CLEAN (E3 Red Gate=1 L1281, Regression guard=7; E5 independent=0/canonical=1/complete=1/liveness=0); control run cargo test --workspace --locked = 61 passed/0 failed/0 ignored exit 0 @45c30f6. NO fix this session (escalate-before-fix). D-025 binding-evidence rule + POL-4.
 
 ## Decisions Log
 
@@ -153,9 +156,9 @@ dtu_required: false
 | D-024 | 2026-08-20 | Operator ruling this session: Adversarial Pass 8 at feature ee89580 NOT CLEAN. F-P8-01 MEDIUM (EC-008 direction-wrong framing: claimed "dangling symlink a->b (b nonexistent)" but create_dir_symlink(&dir_a,&dir_b) creates link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling). F-P8-02 LOW (F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test"). Both ESCALATED-PENDING-OPERATOR; convergence streak reset 0/3. |
 | D-025 | 2026-08-20 | Operator ruling this session: F-P8-01/F-P8-02 ACCEPT+FIX comment-only. REMEDIATION COMMITTED AT ad75a7f: (1) EC-008 comment corrected with direction-accurate wording ("directory symlink b -> a; target a exists; not followed; scan must terminate") with verification statement per NEW BINDING EVIDENCE RULE: fix author MUST verify claimed behavior against executed/documented semantics (here: std::os::unix::fs::symlink(src,dst) creates link AT dst pointing TO src) and STATE that verification in its report. (2) F-SCAN-DOT-ROOT relabelled as "Regression guard" with honest provenance note ("originally authored as a Red Gate probe; premise disproven under D-016; retained as a regression guard"). Code message-strings (the .expect("create symlink a->b") at ~L861) remain OUT OF SCOPE. 61/61 CI gate GREEN. Convergence streak 0->1 of 3 substantiated. NEXT: Adversarial Pass 9 (fresh context, scoped-to-fix). PR packaging remains BLOCKED until 3/3 substantiated. |
 | D-026 | 2026-08-20 | Adversarial Pass 10 (fresh-context different-model static, scoped-to-fix) at feature ad75a7f: CLEAN, 0 findings in perimeter. Orchestrator execution-verified the adversary's reached-count predicates (confirmed all load-bearing single-hit predicates; reconciled 2 non-material count discrepancies; closed both adversary NOT-COVERED gaps — HEAD-SHA via git rev-parse=ad75a7f, 61/61 by comment-only-diff construction). Convergence streak 1/3 → 2/3 substantiated. NO fix wave (clean pass). PR packaging remains BLOCKED until 3/3. NEXT: one more fresh-context clean pass. |
-
 | D-027 | 2026-08-20 | Adversarial Pass 11 (fresh-context different-model static, scoped-to-fix) at feature ad75a7f: NOT CLEAN. F-P11-01 MEDIUM (test-comment-accuracy): scanner_discovery_tests.rs L616/L655 assert the symlink cycle is "detected", contradicting scanner.rs:26 .follow_links(false) (walker never enters the cycle; termination is by not-following, NOT by detection). Same comment-drift class as F-P7/F-P8, under D-025 binding evidence rule + POL-4. ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix + Pass-11-only clean-stop). Orchestrator independently execution-verified the finding (follow_links(false) confirmed; only 2 "detect" hits at L616/L655; internal inconsistency at L149-152; accurate sibling phrasing at L645/L1166/L1229) and reconciled all Pass-11 predicate reached-counts against orchestrator ground truth (all match). Convergence streak reset 2->0 of 3 (PROVISIONAL; operator may adjudicate F-P11-01 immaterial -> restore 2/3, per D-022 precedent). Checkpoint committed LOCAL-ONLY via github-ops direct; push deferred to operator per session rider. NO second pass this session. |
 | D-028 | 2026-08-20 | Operator decision this session: F-P11-01 adjudicated OPTION A (ACCEPT+FIX, comment-only): correct scanner_discovery_tests.rs L616 & L655 to describe follow_links(false) not-following termination. Option B (immaterial -> restore streak 2/3) REJECTED: comment over-claims ruled material at F-P5-01/F-P7-01/F-P8-01; a fourth restoration for the same class would relax the bar (C-#8 forbids). Convergence streak CONFIRMED reset 0/3; 3 fresh clean passes required from the fix. Governed by D-025 binding-evidence rule. |
+| D-029 | 2026-08-20 | Adversarial Pass 13 (fresh-context different-model static, scoped-to-fix, Read/Grep/Glob only) at feature 45c30f6: NOT CLEAN. F-P13-01 LOW (POLICY 4 / test-comment-accuracy): scanner_discovery_tests.rs:1165-1166 proptest sibling comment 'We also include a generated case with a directory symlink cycle to prove the scanner handles cycles correctly' is outcome-language mischaracterizing the not-following termination mechanism (scanner.rs:26 follow_links(false)); fifth instance of the comment-mischaracterization class (F-P5/F-P7/F-P8/F-P11); sibling-propagation gap left by D-028's L616/L655-only fix. Orchestrator independently execution-verified the finding facts and reconciled all Pass-13 perimeter reached-counts against orchestrator ground truth (detect=0; handle-family L292/L1166; E3/E5 all match; FORBIDDEN_PATTERNS 9 cs/13 ci non-material). Control run 61/61 @45c30f6. ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass. Convergence streak RESET 1->0 of 3 (NOT a streak-2/3 outcome; anti-inflation). D-028 forbids an immaterial 'restore-streak' disposition for a further instance of this class (C-#8 no bar-relaxation); the operator adjudicates the disposition (likely Option A accept+fix comment-only, consistent with D-025/D-016/D-019/D-023/D-028). Non-blocking observations passed through: (a) L1033-1034 'The bug:' present-tense wording inside a failure-branch assert message — D-023-governed, acceptable; (b) L861 .expect("create symlink a->b") message-string direction — OUT OF SCOPE per D-025. Checkpoint committed LOCAL-ONLY on factory-artifacts (github-ops); operator pushes with ls-remote proof.
 
 ## Skip Log
 
@@ -168,79 +171,32 @@ dtu_required: false
 |----|-------|----------|---------------|-------|------------|
 | F-02 | AC-006 and AC-010 partial coverage — "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01. | MEDIUM | phase-3 | test-writer | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
 | F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables". | MEDIUM | phase-3 | spec-steward | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
+| F-P13-01 | scanner_discovery_tests.rs L1165-1166 comment mischaracterizes termination as cycle-handling when it is actually not-following (follow_links(false)); same comment-drift class as F-P5-01/F-P7-01/F-P8-01/F-P11-01; sibling-propagation gap NOT covered by D-028's L616/L655-only fix. | LOW | phase-3 | test-writer | ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix). |
 
 ## Drift Items
 
 - [clippy-gap] F-VP017 proptest introduced 4 clippy needless-borrow errors (scanner_discovery_tests.rs lines 1242, 1243, 1248, 1249). MECHANICAL FIX COMPLETE at 4820ead; gate GREEN.
-- [feature-branch] Local feature HEAD is 45c30f6 (D-028 fix wave: comment-only L616/L655 fix applied + verified 61/61). Origin is 53ffff4. Pass-8/D-024 remediation at ee89580, Pass-9/D-025 fix-wave at ad75a7f, Pass-10/D-026 clean pass, Pass-11/D-027 NOT CLEAN, Pass-12/D-028 CLEAN.
+- [feature-branch] Local feature HEAD is 45c30f6 (D-028 fix wave: comment-only L616/L655 fix applied + verified 61/61). Origin is 53ffff4. Pass-8/D-024 remediation at ee89580, Pass-9/D-025 fix-wave at ad75a7f, Pass-10/D-026 clean pass, Pass-11/D-027 NOT CLEAN, Pass-12/D-028 CLEAN, Pass-13/D-029 NOT CLEAN.
 
 ## Session Resume Checkpoint
 
-S-1.01 convergence: Adversarial Pass 12 CLEAN @45c30f6 (D-028). Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; perimeter pre-enumerated at dispatch (E1-E5); baseline feature HEAD 45c30f6 (D-028 fix commit). VERDICT: CLEAN (0 findings). Convergence streak 1 of 3 substantiated (first clean pass of the D-028 fix). PR packaging remains BLOCKED until 3/3 substantiated. Feature tree updated at 45c30f6 (D-028 comment-only fix L616/L655 applied + verified 61/61). This checkpoint committed LOCAL-ONLY on factory-artifacts via github-ops direct; OPERATOR must push and return ls-remote proof. NEXT SESSION: run the next fresh-context scoped-to-fix adversarial pass (Pass 13) at 45c30f6 toward streak 2/3. Convergence achieved only at 3 consecutive clean passes.
+Pass 13 NOT CLEAN @45c30f6, F-P13-01 LOW ESCALATED-PENDING-OPERATOR (comment-mischaracterization class, scanner_discovery_tests.rs:1165-1166); orchestrator execution-verified; convergence streak RESET 1->0 of 3; PR packaging BLOCKED until 3/3 durably enumerated; this checkpoint LOCAL-ONLY until operator pushes + returns `git ls-remote origin factory-artifacts` proof matching new local SHA; NEXT SESSION awaits operator adjudication of F-P13-01, then (if accept+fix) a fix wave, then a fresh Pass 14 toward a NEW 3-clean-pass streak from the fix.
 
-## Adversarial Pass 8
+## Concurrent Cycles
 
-- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-021/D-022/D-023 supplied as ground truth
-- **Findings:** 2 MEDIUM (F-P8-01), 1 LOW (F-P8-02)
-- **Operator Ruling:** D-024 — Both findings ESCALATED-PENDING-OPERATOR; convergence streak 0/3
-- **Remediation:** Test-only comment-only fix pair committed at FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines)
-- **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
-- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (remediation, not clean-pass)
-- **Convergence streak:** 0 of 3
-- **New binding evidence rule:** Fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report (F-P8-01)
+None active.
 
-### Pass 8 Adversarial Findings
+## Adversarial Pass 13
 
-| ID | Severity | Category | Issue | Notes |
-|----|----------|----------|-------|-------|
-| F-P8-01 | MEDIUM | test-documentation-accuracy | EC-008 comment claims "dangling symlink a->b (b nonexistent)" but create_dir_symlink(&dir_a,&dir_b) creates link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling | Comment-only. D-025 governs (new binding evidence rule: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report). Remediated at FEAT_SHA ad75a7f with direction-correct wording: "directory symlink b -> a; target a exists; not followed; scan must terminate" + verification statement. |
-| F-P8-02 | LOW | test-comment-accuracy | F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test" | Comment-only. D-025 governs; remediated at FEAT_SHA ad75a7f with relabelled "Regression guard" and honest provenance note: "originally authored as a Red Gate probe; premise disproven under D-016; retained as a regression guard" |
-
-## Adversarial Pass 9
-
-- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-023/D-024/D-025 supplied as ground truth
-- **Findings:** 0 (all previous findings REMEDIATED+VERIFIED)
-- **Verdict:** CLEAN (first substantiated clean pass of Pass 8 remediation)
-- **Convergence streak:** 1 of 3 (substantiated)
-- **Grep-predicate coverage evidence:** "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0
-- **Governing decisions:** D-023 (F-P7-01/F-P7-02), D-024 (F-P8-01/F-P8-02), D-025 (F-P8-01/F-P8-02 comment-only fix + new binding evidence rule)
-
-## Adversarial Pass 10
-
-- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml v1.3 rubric
-- D-016/D-019/D-023/D-024/D-025 supplied as ground truth; D-025 out-of-scope `.expect("create symlink a->b")` string honored
-- **Findings:** 0 (all four targets A1 EC-008 comments / A2 F-SCAN-DOT-ROOT guard block / A3 H1/H2 regression comments incl. L1034 / B1 pure_core_guard comment set CLEAN)
-- **Verdict:** CLEAN (second substantiated clean pass)
-- **Convergence streak:** 2 of 3 (substantiated)
-- **Reached-count evidence (orchestrator-executed; grep lower bounds):** scanner_discovery_tests.rs — "Red Gate"=1 (L1281 honest historical provenance), "dangling"=1 (L858 negated "not dangling"), "MUST FAIL"=0, "should fail"=0, "Regression guard"=7 (all honest PASSING-guard labels), "cycle"=23, "BUG"=3 (L310 prod gitignore-masking / L1034 H1 regression-target message / L1287 "no production scanner bug"). pure_core_guard.rs — "independent"=0, "canonical"=1 (L104 negated completeness disclaimer), "complete"=1 (L104), "liveness"=0, "FORBIDDEN_PATTERNS"=9 case-sensitive / 13 case-insensitive.
-- **Orchestrator verification note:** verdict CONFIRMED by independent execution; 2 non-material count discrepancies reconciled; both adversary NOT-COVERED gaps (HEAD-SHA, 61/61) closed as described in Convergence Status Pass 10 bullet.
-- **Governing decision:** D-026.
-
-## Adversarial Pass 11
-
-- Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric
-- Baseline feature HEAD ad75a7f; perimeter = comments in scanner_discovery_tests.rs + pure_core_guard.rs
-- D-016/D-019/D-023/D-025 supplied as ground truth (not re-litigated)
-- **Verdict:** NOT CLEAN (1 MEDIUM finding)
-- **Finding:** F-P11-01 MEDIUM (test-comment-accuracy) — scanner_discovery_tests.rs L616 ("The scanner should detect and handle the cycle") and L655 ("the cycle is detected and avoided") mischaracterize the termination mechanism; scanner.rs:26 uses .follow_links(false), so the ignore walker never descends into the symlinked dirs, never enters the cycle, performs NO cycle detection. Termination is guaranteed by not-following, not by detection. D-025 binding-evidence-rule + POL-4.
-- **Orchestrator execution-verification (finding CONFIRMED material):** scanner.rs:26 .follow_links(false) confirmed; exactly 2 "detect" hits in file, both at L616/L655; internal inconsistency confirmed (L149-152 correctly reasons behavior is "VACUOUS under follow_links(false)"); sibling comments L645/L1166/L1229 use accurate mechanism-neutral phrasing.
-- **Predicate reached-counts (orchestrator-reconciled; case-insensitive unless noted):** scanner_discovery_tests.rs — "Red Gate"=1 (L1281 honest), "MUST FAIL"=0, "should fail"=0, "dangling"=1 (L858 honest negated), "regression guard"=7 (all honest), "cycle"=23 line-hits/28 occ (2 DEFECT L616/L655, rest honest), "bug"=3 (L310/L1034/L1287 honest). pure_core_guard.rs — "independent"=0, "canonical"=1 (L104 honest disclaimer), "complete"=1 (L104), "liveness"=0, "FORBIDDEN_PATTERNS"=9 (cs). All match orchestrator ground truth.
-- **NOT-COVERED closures (orchestrator-side):** HEAD-SHA=ad75a7f (git rev-parse); finding is comment-only — 61/61 test-pass unaffected (no code change proposed).
-- **Disposition:** ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass. Convergence streak reset 2->0 provisional.
-- **Governing decision:** D-027.
-
-## Adversarial Pass 12
-
-- Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix lens, policies.yaml v1.3 rubric injected; perimeter pre-enumerated at dispatch (E1-E5).
+- Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; perimeter pre-enumerated at dispatch (E1-E5).
 - Baseline feature HEAD 45c30f6 (D-028 fix commit).
-- Fix commit: `test(S-1.01): correct cycle-termination comments (L616/L655) per D-028` @ 45c30f666da16fb2193b91522cc36d72b5abb10c — comment-only, 1 file, 2 insertions/2 deletions. L616 now "The symlinks are not followed, so the cycle is never entered and the scan terminates."; L655 now "Should find both files (the symlinks are not followed, so the cycle is never entered)".
-- VERDICT: CLEAN (0 findings). Two Bash-dependent obligations (git-diff scope proof; pure_core_guard.rs unchanged proof) were delegated by the static adversary to the orchestrator.
-- Orchestrator execution-verification (verdict CONFIRMED): (a) diff-proof — `git show --stat 45c30f6` = 1 file changed, 2 ins/2 del, both comment lines, NO scope creep; (b) control run — `cargo test --workspace --locked` workspace aggregate 61 passed / 0 failed / 0 ignored, exit 0 (note: test-writer report quoted per-binary 34; orchestrator reconciled to workspace aggregate 61/61); (c) reached-count reconciliation (all MATCH orchestrator ground truth, case-insensitive unless noted): scanner_discovery_tests.rs "detect"=0, "Red Gate"(cs)=1 (L1281 honest provenance), "MUST FAIL"/"should fail"=0, "dangling"=1 (L858 honest negated), "regression guard"=7, "cycle"=23 line-hits, "bug"=3; pure_core_guard.rs (crates/mdlinkcheck-core/tests/) NOT touched by 45c30f6 (unchanged). D-025 binding-evidence satisfied (fix author quoted scanner.rs:26 `.follow_links(false)` + doc L24).
-- Convergence streak: 1 of 3 (substantiated, first clean pass of the D-028 fix).
-- Governing decision: D-028.
+- **Verdict:** NOT CLEAN (1 LOW finding)
+- **Finding:** F-P13-01 LOW (test-comment-accuracy / POLICY 4 semantic_anchoring_integrity) — scanner_discovery_tests.rs L1165-1166 (test_VP_017_proptest_scan_terminates_for_bounded_tree_with_symlink_cycle): comment 'We also include a generated case with a directory symlink cycle to prove the scanner handles cycles correctly' uses outcome-language that mischaracterizes the termination mechanism — scanner.rs:26 .follow_links(false) (doc L24-25) means the ignore walker never enters the cycle; termination is by not-following, NOT by cycle-handling. Same comment-drift class as F-P5-01/F-P7-01/F-P8-01/F-P11-01; sibling-propagation gap NOT covered by D-028's L616/L655-only fix. Milder than F-P11-01 (does NOT assert detection; orchestrator confirmed detect=0).
+- **Orchestrator execution-verification (finding CONFIRMED material):** scanner.rs:26 .follow_links(false) confirmed; L1165-1166 comment verbatim; 'handles...correctly' family = 2 hits (L292 gitignore accurate, L1166 finding); D-028 diff scope = L616/L655 only (L1166 untouched); perimeter reached-counts all match orchestrator ground truth (E3 Red Gate=1 L1281, Regression guard=7; E5 independent=0/canonical=1/complete=1/liveness=0); control run 61/61 @45c30f6.
+- **NOT-COVERED closures (orchestrator-side):** HEAD-SHA=45c30f6 (git rev-parse); finding is comment-only — 61/61 test-pass unaffected (no code change proposed).
+- **Disposition:** ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix); NO second pass. Convergence streak RESET 1->0 of 3.
+- **Governing decision:** D-029.
 
 ## NEXT ACTION
 
-Feature HEAD is 45c30f6 (D-028 fix applied, UNPUSHED, packaged-for-human). Pass 12 CLEAN, streak 1 of 3. Convergence requires 3 consecutive clean passes; 2 more fresh-context scoped-to-fix clean passes remain (future sessions). PR packaging remains BLOCKED until 3/3 substantiated. This checkpoint is LOCAL-ONLY on factory-artifacts until the operator pushes and returns `git ls-remote origin factory-artifacts` proof matching the new local SHA. Worktree-health gate PASSED this session (only deviation: designed UNPUSHED feature branch, adjudicated expected). NEXT SESSION: run the next fresh-context scoped-to-fix adversarial pass (Pass 13) at 45c30f6 toward streak 2/3.
+Feature HEAD is 45c30f6 (D-028 fix applied, UNPUSHED, packaged-for-human). Pass 13 NOT CLEAN, F-P13-01 LOW ESCALATED-PENDING-OPERATOR (comment-mischaracterization class, scanner_discovery_tests.rs:1165-1166); convergence streak RESET 1->0 of 3; PR packaging remains BLOCKED until 3/3 substantiated. This checkpoint is LOCAL-ONLY on factory-artifacts until the operator pushes and returns `git ls-remote origin factory-artifacts` proof matching the new local SHA. NEXT SESSION awaits operator adjudication of F-P13-01, then (if accept+fix) a fix wave, then a fresh Pass 14 toward a NEW 3-clean-pass streak from the fix.
