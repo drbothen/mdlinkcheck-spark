@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.22"
+version: "3.23"
 status: draft
 producer: state-manager
-timestamp: 2026-08-21T00:00:00Z
+timestamp: 2026-08-20T21:50:46Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 14 CLEAN @4e096e5 (execution-substantiated); D-030 fix wave complete; convergence streak 1 of 3; PR packaging BLOCKED until 3/3; escalate-before-fix; clean-stop."
+current_step: "Pass 15 CLEAN @4e096e5 (execution-substantiated); convergence streak 2 of 3; PR packaging BLOCKED until 3/3; escalate-before-fix; clean-stop."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,9 +28,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-21 - Pass 14 CLEAN @4e096e5 (D-030 fix wave complete); convergence streak 1 of 3; PR packaging BLOCKED until 3/3.
+| **Last Updated** | Pass 15 CLEAN @4e096e5 (execution-substantiated); convergence streak 2 of 3; PR packaging BLOCKED until 3/3; escalate-before-fix; clean-stop.
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 14 CLEAN @4e096e5 (D-030 fix wave complete); convergence streak 1 of 3; PR packaging BLOCKED until 3/3.
+| **Current Step** | Pass 15 CLEAN @4e096e5 (execution-substantiated); convergence streak 2 of 3; PR packaging BLOCKED until 3/3; escalate-before-fix; clean-stop.
 
 ## Phase Progress
 
@@ -75,10 +75,11 @@ dtu_required: false
 | Adversarial convergence pass-13 | NOT CLEAN | Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens, policies.yaml v1.3 rubric; perimeter pre-enumerated E1-E5 at dispatch; baseline feature HEAD 45c30f6. 1 LOW finding F-P13-01 (POLICY 4) ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass; convergence streak RESET 1->0 of 3.
 | D-030 fix wave (F-P13-01 + class-exhaustion audit) | COMPLETE+VERIFIED | FEAT_SHA 4e096e5; comment-only (+4/-1, all //); one-time audit of all 4 S-1.01 test files = 99 ACCURATE / 1 CORRECTED / 0 OUT-OF-SCOPE; per-comment ledger authored (untracked .d030-comment-audit-ledger.md); CI-equiv 61/61 pass, 0 failed, 0 ignored, build/fmt/clippy exit 0; independently execution-verified (diff-proof + control run) |
 | Adversarial convergence pass 14 | CLEAN | Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens (POLICY 4 + POLICY 11), policies.yaml v1.3; perimeter pre-enumerated E1-E5 at dispatch; baseline HEAD 4e096e5; D-030 ledger as declared coverage. VERDICT CLEAN (0 material findings). Orchestrator execution-reconciled HEAD=4e096e5 + 11 load-bearing predicates (incl demonstrated zeros MUST-FAIL=0/should-fail=0, detect=1 disclaimer-only) all MATCH. Convergence streak 1 of 3 substantiated (anti-inflation: 1st of the new streak after D-028/D-029 reset, NOT 2/3).
+| Adversarial convergence pass 15 | CLEAN | Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens (POLICY 4 + POLICY 11), policies.yaml v1.3; perimeter pre-enumerated E1-E5 at dispatch; baseline HEAD 4e096e5; D-030 ledger as declared coverage. VERDICT CLEAN (0 material findings). Orchestrator execution-reconciled: HEAD=4e096e5; working tree == HEAD (git diff --quiet exit 0); CI gate build/fmt/clippy(-Dwarnings)/nextest all exit 0 (61 passed, 0 skipped); ALL E1-E5 predicates MATCH adversary self-report (detect=1@L1169 disclaimer; handl=5@L291/292/362/364/1169 no cycle-handling claim; Red Gate=1@L1284; Regression guard ci=7; pure_core_guard fail-closed !FORBIDDEN_PATTERNS.is_empty()@L96 + runtime Check-passed@L130 + D-012 residual@L102-104; deferral-honesty@L254/484/681; demonstrated zeros MUST-FAIL=0/should-fail=0 perimeter-wide). Convergence streak 2 of 3 (anti-inflation: 2nd of the new streak after D-028/D-029 reset, NOT 3/3). |
 
 ## Convergence Status
 
-- Consecutive clean passes: 1 of 3 (Pass 14 CLEAN @4e096e5; execution-substantiated). PR packaging remains BLOCKED until 3/3.
+- Consecutive clean passes: 2 of 3 (Pass 14 @4e096e5 + Pass 15 @4e096e5; both execution-substantiated). PR packaging remains BLOCKED until 3/3.
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
@@ -97,6 +98,7 @@ dtu_required: false
 - Pass 12: CLEAN (first substantiated clean pass of the D-028 fix; convergence streak 1 of 3). Fresh-context different-model static adversary (scoped-to-fix, Read/Grep/Glob only), policies.yaml v1.3 rubric; perimeter pre-enumerated at dispatch (E1-E5); baseline feature HEAD 45c30f6 (D-028 fix commit). VERDICT: CLEAN (0 findings). Convergence streak 1 of 3 substantiated. PR packaging remains BLOCKED until 3/3.
 - Pass 13: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens, policies.yaml v1.3 rubric; perimeter pre-enumerated E1-E5 at dispatch; baseline feature HEAD 45c30f6. 1 LOW finding F-P13-01 (POLICY 4) ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass; convergence streak RESET 1->0 of 3.
 - Pass 14: CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens (POLICY 4 + POLICY 11), policies.yaml v1.3; perimeter pre-enumerated E1-E5 at dispatch; baseline HEAD 4e096e5; D-030 ledger as declared coverage. VERDICT CLEAN (0 material findings). Orchestrator execution-reconciled HEAD=4e096e5 + 11 load-bearing predicates (incl demonstrated zeros MUST-FAIL=0/should-fail=0, detect=1 disclaimer-only) all MATCH. Convergence streak 1 of 3 substantiated (anti-inflation: 1st of the new streak after D-028/D-029 reset, NOT 2/3).
+- Pass 15: CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix (POLICY 4 + POLICY 11); perimeter pre-enumerated E1-E5; baseline 4e096e5. Orchestrator execution-reconciled all E1-E5 predicates + CI gate 61/61 all exit 0; verdict CLEAN. Convergence streak 2 of 3. One NON-BLOCKING observation passed through (see D-032).
 
 ## Fix Wave Ledger
 
@@ -164,6 +166,7 @@ dtu_required: false
 | D-029 | 2026-08-20 | Adversarial Pass 13 (fresh-context different-model static, scoped-to-fix, Read/Grep/Glob only) at feature 45c30f6: NOT CLEAN. F-P13-01 LOW (POLICY 4 / test-comment-accuracy): scanner_discovery_tests.rs:1165-1166 proptest sibling comment 'We also include a generated case with a directory symlink cycle to prove the scanner handles cycles correctly' is outcome-language mischaracterizing the not-following termination mechanism (scanner.rs:26 follow_links(false)); fifth instance of the comment-mischaracterization class (F-P5/F-P7/F-P8/F-P11); sibling-propagation gap left by D-028's L616/L655-only fix. Orchestrator independently execution-verified the finding facts and reconciled all Pass-13 perimeter reached-counts against orchestrator ground truth (detect=0; handle-family L292/L1166; E3/E5 all match; FORBIDDEN_PATTERNS 9 cs/13 ci non-material). Control run 61/61 @45c30f6. ESCALATED-PENDING-OPERATOR; NO fix (escalate-before-fix); NO second pass. Convergence streak RESET 1->0 of 3 (NOT a streak-2/3 outcome; anti-inflation). D-028 forbids an immaterial 'restore-streak' disposition for a further instance of this class (C-#8 no bar-relaxation); the operator adjudicates the disposition (likely Option A accept+fix comment-only, consistent with D-025/D-016/D-019/D-023/D-028). Non-blocking observations passed through: (a) L1033-1034 'The bug:' present-tense wording inside a failure-branch assert message — D-023-governed, acceptable; (b) L861 .expect("create symlink a->b") message-string direction — OUT OF SCOPE per D-025. Checkpoint committed LOCAL-ONLY on factory-artifacts (github-ops); operator pushes with ls-remote proof.
 | D-030 | 2026-08-20 | Operator adjudication of F-P13-01: OPTION A ACCEPT+FIX comment-only at scanner_discovery_tests.rs L1166 to mechanism-accurate wording (not-following termination); Option B (immaterial-restore) REJECTED per D-028/C-#8 (no bar-relaxation for this class, 5th instance F-P5/F-P7/F-P8/P11). ADDITIONALLY commissions a ONE-TIME CLASS-EXHAUSTION AUDIT in the same fix wave: test-writer audits EVERY behavior-describing comment in the story's test files (scanner_discovery_tests.rs + siblings in the story perimeter) against executed/documented semantics per D-025 evidence rule, producing a per-comment ledger (line, claim, verification method, verdict accurate/corrected/out-of-scope). Corrections comment-only; code message-strings (.expect etc.) OUT OF SCOPE per D-025/D-028; L1033-1034 stays per D-023. Remediation-completeness within perimeter (C-#5 precedent), NOT scope growth, NOT tooling (mechanical sibling-sweep checker = post-run lessons-codification). |
 | D-031 | 2026-08-20 | Adversarial Pass 14 (fresh-context different-model static, Read/Grep/Glob only) at feature 4e096e5 (D-030 fix): CLEAN, 0 material findings across pre-enumerated perimeter E1-E5. Orchestrator INDEPENDENTLY execution-reconciled (adversary disclosed no-Bash method-limit): git rev-parse HEAD=4e096e5 confirmed; 11 load-bearing grep predicates MATCH adversary self-report incl demonstrated zeros (MUST-FAIL=0, should-fail=0), detect=1 (L1169 disclaimer only, zero positive detection/handling assertions), Red Gate=1, Regression guard=7, pure_core_guard non-empty-assert@L96 + Check-passed@L130, deferral cites@L152/254/484/681. Convergence streak 0->1 of 3 (anti-inflation: 1st of the new streak). Two NON-BLOCKING observations passed through: (a) scanner_discovery_tests.rs:1232 'cycle-termination guarantee' phrasing — names the VP-017 termination property, asserts no detection/handling mechanism the code lacks; principled non-material distinction (NOT a C-#8 relaxation); governed by same disclaimer at L1165-1169 in the same test body; (b) [process-gap] D-030 ledger bookkeeping imprecision (SUMMARY OUT-OF-SCOPE count=0 vs L1034 folded into an ACCURATE row; types_tests.rs '12-11' inverted line range) — cosmetic in an untracked one-time evidence file; substance (exactly 1 CORRECTED) holds under independent re-derivation; codification decision DEFERRED to convergence-time (S-7.02 checklist) since sub-cycle is NOT being closed this session. PR packaging remains BLOCKED until 3/3. NEXT: one fresh-context Pass 15 (one-per-session) toward 2/3.
+| D-032 | 2026-08-20 | Adversarial Pass 15 (fresh-context different-model static, Read/Grep/Glob only) at feature 4e096e5: CLEAN, 0 material findings across pre-enumerated perimeter E1-E5. Orchestrator INDEPENDENTLY execution-reconciled (adversary Grep-tool-only, no Bash): HEAD=4e096e5 (git rev-parse); working tree == HEAD (git diff --quiet exit 0); CI-equiv gate all exit 0 (build/fmt/clippy-Dwarnings/nextest; 61 passed, 0 skipped); all E1-E5 load-bearing predicates MATCH adversary self-report incl demonstrated zeros. Convergence streak 1 -> 2 of 3 (anti-inflation: 2nd of the new streak; NOT 3/3). ONE NON-BLOCKING observation passed through (NOT a finding, LOW/borderline): scanner_discovery_tests.rs:1165 'a generated case with a directory symlink cycle' is a test-STRUCTURE wording imprecision — the proptest body L1234-1247 adds circular symlinks unconditionally to EVERY iteration, not a single case. Orchestrator-reconciled against the proptest body: factually correct but NON-MATERIAL — does NOT misstate the follow_links(false) termination mechanism (correctly stated L1167-1169), so OUTSIDE the POLICY-4 mechanism-mischaracterization class (distinct from F-P5/P7/P8/P11/P13). NO fix this session (escalate-before-fix + clean-stop); codification/adjudication DEFERRED to convergence-time per S-7.02. PR packaging remains BLOCKED until 3/3. |
 
 ## Skip Log
 
@@ -181,11 +184,11 @@ dtu_required: false
 ## Drift Items
 
 - [clippy-gap] F-VP017 proptest introduced 4 clippy needless-borrow errors (scanner_discovery_tests.rs lines 1242, 1243, 1248, 1249). MECHANICAL FIX COMPLETE at 4820ead; gate GREEN.
-- [feature-branch] Local feature HEAD is 4e096e5 (D-030 fix wave: F-P13-01 comment-only + class-exhaustion audit; 61/61). Origin feature branch is at 46101ae (Pass-3 SHA; ls-remote confirmed) — local is AHEAD and UNPUSHED (packaged-for-human); the earlier '53ffff4' origin note was stale. Passes since: P9 CLEAN, P10 CLEAN, P11 NOT CLEAN, P12 CLEAN, P13 NOT CLEAN, P14 CLEAN (streak 1/3).
+- [feature-branch] Local feature HEAD is 4e096e5 (D-030 fix wave: F-P13-01 comment-only + class-exhaustion audit; 61/61). Origin feature branch is at 46101ae (Pass-3 SHA; ls-remote confirmed) — local is AHEAD and UNPUSHED (packaged-for-human); the earlier '53ffff4' origin note was stale. Passes since: P9 CLEAN, P10 CLEAN, P11 NOT CLEAN, P12 CLEAN, P13 NOT CLEAN, P14 CLEAN (streak 1/3), P15 CLEAN (streak 2/3).
 
 ## Session Resume Checkpoint
 
-Pass 14 CLEAN @4e096e5 (D-030 fix wave complete: F-P13-01 comment-only + one-time class-exhaustion audit, per-comment ledger; execution-verified: comment-only diff, 61/61, HEAD confirmed). Convergence streak 1 of 3 substantiated (anti-inflation). PR packaging BLOCKED until 3/3. This checkpoint is LOCAL-ONLY on factory-artifacts until the operator pushes and returns `git ls-remote origin factory-artifacts` proof matching the new local SHA. NEXT SESSION: one fresh-context Adversarial Pass 15 toward 2/3 (one-per-session, enumerated + committed before Pass 16 toward 3/3), then PR packaging for HUMAN execution.
+Pass 15 CLEAN @4e096e5 (execution-substantiated: HEAD confirmed, working tree == HEAD, CI gate 61/61 all exit 0, all E1-E5 predicates reconciled). Convergence streak 2 of 3. PR packaging BLOCKED until 3/3. This checkpoint is LOCAL-ONLY on factory-artifacts until the operator pushes and returns `git ls-remote origin factory-artifacts` proof matching the new local SHA. NEXT SESSION: one fresh-context Adversarial Pass 16 toward 3/3, then PR packaging for HUMAN execution.
 
 ## Concurrent Cycles
 
@@ -211,6 +214,16 @@ None active.
 - **Governing decision:** D-031.
 - **Convergence streak:** 1 of 3 (anti-inflation: 1st of the new streak after D-028/D-029 reset, NOT 2/3).
 
+## Adversarial Pass 15
+
+- Fresh-context different-model static adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens (POLICY 4 + POLICY 11), policies.yaml v1.3; perimeter pre-enumerated at dispatch (E1-E5).
+- Baseline HEAD 4e096e5.
+- **Verdict:** CLEAN (0 material findings)
+- **Orchestrator execution-reconciliation (all predicates MATCH):** HEAD=4e096e5 (git rev-parse); working tree == HEAD (git diff --quiet exit 0); CI gate build/fmt/clippy(-Dwarnings)/nextest all exit 0 (61 passed, 0 skipped); detect=1@L1169 disclaimer; handl=5@L291/292/362/364/1169 (no cycle-handling claim); Red Gate=1@L1284; Regression guard ci=7; pure_core_guard !FORBIDDEN_PATTERNS.is_empty()@L96 + runtime Check-passed@L130 + D-012 residual@L102-104; deferral-honesty@L254/484/681; demonstrated zeros MUST-FAIL=0/should-fail=0 perimeter-wide.
+- **Non-blocking observation (NOT a finding, LOW/borderline):** scanner_discovery_tests.rs:1165 'a generated case' wording vs proptest body L1234-1247 adding circular symlinks to every iteration; NON-MATERIAL (mechanism correctly stated L1167-1169); codification DEFERRED to convergence-time (S-7.02).
+- **Governing decision:** D-032.
+- **Convergence streak:** 2 of 3 (anti-inflation: 2nd of the new streak after D-028/D-029 reset, NOT 3/3).
+
 ## NEXT ACTION
 
-Feature HEAD 4e096e5 (D-030 fix, UNPUSHED, packaged-for-human). Pass 14 CLEAN; convergence streak 1 of 3. NEXT: fresh-context Adversarial Pass 15 (one-per-session) toward 2/3, then Pass 16 toward 3/3; each enumerated + committed before the next. PR packaging remains BLOCKED until 3/3 durably substantiated. This checkpoint LOCAL-ONLY until operator pushes with ls-remote proof.
+Feature HEAD 4e096e5 (UNPUSHED, packaged-for-human). Pass 15 CLEAN; convergence streak 2 of 3. NEXT: fresh-context Adversarial Pass 16 (one-per-session) toward 3/3. PR packaging remains BLOCKED until 3/3 durably substantiated. This checkpoint LOCAL-ONLY until operator pushes with ls-remote proof.
