@@ -1,8 +1,10 @@
+> **DRAFT — NOT READY FOR PR.** S-1.01 convergence not yet complete (1 of 3 substantiated clean passes). Do not open this PR until 3 consecutive clean passes are durably enumerated.
+
 # S-1.01: Workspace Scaffold, Shared Types, and Default-CWD File Discovery
 
 **Epic:** E-1 — File Discovery and Scanning Pipeline
 **Mode:** greenfield
-**Convergence:** CONVERGED after 3 consecutive clean adversarial passes (Pass 6)
+**Convergence:** IN PROGRESS — 1 of 3 substantiated consecutive clean passes; final clean pass at 9d1a6bb; 2 clean passes remaining. See .factory/cycles/phase-3-wave-1/convergence-trajectory.md.
 
 ![Tests](https://img.shields.io/badge/tests-61%2F61-brightgreen)
 
@@ -67,7 +69,7 @@ graph TD
 
 ```mermaid
 graph LR
-    S1[S-1.01<br/>CONVERGED] --> S2[S-1.02<br/>blocked]
+    S1[S-1.01<br/>IN PROGRESS] --> S2[S-1.02<br/>blocked]
     S1 --> S3[S-1.03<br/>blocked]
     S1 --> S4[S-3.01<br/>blocked]
     S1 --> S5[S-3.03<br/>blocked]
@@ -223,7 +225,7 @@ test:
 
 ## Adversarial Review
 
-**Convergence:** 3 consecutive clean adversarial passes; final clean pass at 9d1a6bb; 0 blocking findings.
+**Convergence:** IN PROGRESS — 1 of 3 substantiated consecutive clean passes; final clean pass at 9d1a6bb; 2 clean passes remaining. See .factory/cycles/phase-3-wave-1/convergence-trajectory.md.
 
 **Convergence Trajectory:** `4→0→4→1→1→0`
 
@@ -235,9 +237,7 @@ test:
 | 4 | 2026-08-19 | 4 (remediated at 46101ae) | REMEDIATED+VERIFIED |
 | 5 | 2026-08-19 | 1 (F-P4-01 remediated at f468bd5) | REMEDIATED+VERIFIED |
 | 6 | 2026-08-19 | 1 (F-P5-01 comment-only fix at 9d1a6bb) | REMEDIATED+VERIFIED |
-| 7 | 2026-08-20 | 0 (3 consecutive clean passes) | **CLEAN! CONVERGENCE COMPLETE** |
-
-**Note:** Pass 6 confirmed convergence with 3 consecutive clean adversarial passes. The full trajectory is documented in `.factory/cycles/phase-3-wave-1/convergence-trajectory.md`.
+**Note:** Convergence in progress. The full trajectory is documented in `.factory/cycles/phase-3-wave-1/convergence-trajectory.md`.
 
 ---
 
