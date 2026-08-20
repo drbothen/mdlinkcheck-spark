@@ -155,3 +155,4 @@
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T17:58:26-0500","ts_epoch":1787266706,"schema_version":1}
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T17:59:07-0500","ts_epoch":1787266747,"schema_version":1}
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T18:00:39-0500","ts_epoch":1787266839,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"git_reset_hard","ts":"2026-08-20T18:23:54-0500","ts_epoch":1787268234,"schema_version":1}
