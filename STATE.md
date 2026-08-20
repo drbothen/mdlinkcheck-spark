@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.16"
+version: "3.17"
 status: draft
 producer: state-manager
-timestamp: 2026-08-20T13:30:00Z
+timestamp: 2026-08-20T14:15:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 7 NOT CLEAN — F-P7-01 MEDIUM + F-P7-02 LOW ESCALATED-PENDING-OPERATOR (comment-drift in scanner_discovery_tests.rs H1/H2 + EC-008); convergence streak reset 1→0 of 3 (provisional; operator may rule F-P7-01 immaterial → 2/3). PR packaging remains BLOCKED (not 3/3). NEXT: operator adjudicates F-P7-01 materiality/disposition."
+current_step: "Pass 9 CLEAN @ad75a7f (D-025 comment-only fix-wave for F-P8-01/F-P8-02); convergence streak 1 of 3 substantiated; 2 more clean fresh-context passes required; PR packaging BLOCKED until 3/3."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
@@ -28,9 +28,9 @@ dtu_required: false
 | **Language** | Rust (MSRV 1.85, toolchain pinned 1.97.0) |
 | **Product Type** | CLI (no UI) |
 | **Started** | 2026-08-05 |
-| **Last Updated** | 2026-08-20T05:30:00Z - S-1.01 SPRINT-1 COMPLETE: adversarial convergence 1/3 substantiated streak at 9d1a6bb (final clean pass); CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: 2 more clean adversarial passes required before PR packaging; CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: pr-manager packaging for HUMAN execution |
+| **Last Updated** | 2026-08-20T14:15:00Z - S-1.01 SPRINT-1 COMPLETE: adversarial convergence 1/3 substantiated streak at ad75a7f (Pass 9 CLEAN); CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: 2 more clean adversarial passes required before PR packaging; PR packaging BLOCKED until 3/3 substantiated |
 | **Current Phase** | phase-3 |
-| **Current Step** | Pass 6 CLEAN (first substantiated clean pass @ 9d1a6bb; F-P5-01 comment-only fix). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated. |
+| **Current Step** | Pass 9 CLEAN (first substantiated clean pass @ ad75a7f; D-025 comment-only fix-wave for F-P8-01/F-P8-02). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging BLOCKED until 3/3 substantiated. |
 
 ## Phase Progress
 
@@ -41,7 +41,7 @@ dtu_required: false
 | 1: Spec Crystallization | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with closed-world remediation completed | |
 | 1d: Adversarial Spec Review | completed | 2026-08-05 | 2026-08-10 | HUMAN: ratified with condition; remediation executed and verified | |
 | 2: Story Decomposition | completed | 2026-08-10 | 2026-08-10 | HUMAN: ratified 6/6 | 24 stories / 7 epics / 7 waves; holdout scenarios seeded per boundary policy |
-| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified | 29→24→21→7→4→3 (convergence 1/3 substantiated @ 9d1a6bb)
+| 3: TDD Implementation | complete | 2026-08-18 | 2026-08-20 | wave gates: full suite + adversarial review of wave diff + holdout eval; HUMAN-ratified; Adversarial Pass 9 CLEAN @ad75a7f (D-025); convergence streak 1/3 substantiated | 29→24→21→7→4→3→2→0→0
 
 ## Current Phase Steps
 
@@ -64,10 +64,15 @@ dtu_required: false
 | Adversarial convergence pass-5 | NOT CLEAN (fix-wave - remediation, not clean-pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED; REMEDIATED at FEAT_SHA 9d1a6bb (D-019); convergence streak 0/3. |
 | Pass-5 fix wave (F-P5-01) | COMPLETE+VERIFIED | Comment-only fix; 61/61 passed, 0 skipped; FEAT_SHA 9d1a6bb |
 | Adversarial convergence pass-6 | CLEAN (first substantiated clean pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence streak 1 of 3. |
+| Adversarial convergence pass-7 | NOT CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019/D-021 supplied as ground truth; 2 findings ESCALATED (F-P7-01, F-P7-02) ESCALATED-PENDING-OPERATOR; convergence streak reset 1→0. REMEDIATED at FEAT_SHA ee89580 (D-023 comment-only); convergence streak 0/3. |
+| Pass-7 remediation fix-wave (F-P7-01, F-P7-02) | COMPLETE+VERIFIED | Comment-only fix; 61/61 passed, 0 skipped; FEAT_SHA ee89580 |
+| Adversarial convergence pass-8 | NOT CLEAN (remediation not clean-pass) | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-021/D-022/D-023 supplied as ground truth; 2 findings ESCALATED (F-P8-01, F-P8-02); REMEDIATED at FEAT_SHA ad75a7f (D-025 comment-only); convergence streak 0/3. |
+| Pass-8 remediation fix-wave (F-P8-01, F-P8-02) | COMPLETE+VERIFIED | Comment-only fix; 61/61 passed, 0 skipped; FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines) |
+| Adversarial convergence pass-9 | CLEAN | Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter; grep-predicate coverage: "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0, etc. Convergence streak 1/3 substantiated. PR packaging remains BLOCKED (not 3/3).
 
 ## Convergence Status
 
-- Consecutive clean passes: 1 of 3 (S-1.01 convergence IN PROGRESS; final substantiated clean pass at 9d1a6bb)
+- Consecutive clean passes: 1 of 3 (S-1.01 convergence IN PROGRESS; final substantiated clean pass at ad75a7f)
 - Pass 1: ADJUDICATED-REMEDIATED (D-008 F-02/F-03 accept+defer to BC-2.08.004/SS-05; D-009 F-04 guard; D-010 F-01 oracle). F-01 & F-04 RESOLVED + independently gate-verified; F-02/F-03 ADJUDICATED-DEFERRED.
 - Pass 2: NOT CLEAN. Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected, F-02/F-03 supplied as adjudicated-deferred ground truth and correctly not re-litigated. F-01 ADEQUATE (genuine falsifiable independent-set oracle; honest vacuity + F-02/F-03 deferral comments). F-04 mechanism ADEQUATE vs literal D-009/POL-11 checklist but 2 MEDIUM honesty/completeness gaps in the fix; plus 2 MEDIUM latent implementation gaps. Findings are static adversary hypotheses pending operator adjudication.
 - Remediation fix-wave at HEAD 4820ead: CI-equiv gate GREEN (build/fmt/clippy -Dwarnings/nextest all exit 0); all 4 Pass-2 MEDIUM findings dispositioned: F-04-a RESOLVED+VERIFIED (D-011), F-04-b ACCEPT+RESIDUAL-DOCUMENTED (D-012), F-VP017 FIXED (D-013), F-SCAN-DOT-ROOT PREMISE-DISPROVEN+COMMENT-FIXED (D-016 opt A).
@@ -78,6 +83,9 @@ dtu_required: false
 - Pass 5: NOT CLEAN (fix-wave - remediation, not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-018/D-019 supplied as ground truth; 1 finding (F-P5-01) ESCALATED and REMEDIATED at 9d1a6bb (comment-only fix); convergence streak 0/3.
 - Pass-5 fix wave at HEAD 9d1a6bb: 61/61 passed, 0 skipped; gate GREEN; comment-only fix for "independent" over-claim.
 - Pass 6: CLEAN (first substantiated clean pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019 supplied as ground truth; 0 findings (F-P5-01 comment resolved). Convergence 1 of 3 substantiated streak achieved at 9d1a6bb; 2 more clean passes required.
+- Pass 7: NOT CLEAN. Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-019/D-021 supplied as ground truth; 2 findings ESCALATED (F-P7-01, F-P7-02) ESCALATED-PENDING-OPERATOR; convergence streak reset 1→0. REMEDIATED at FEAT_SHA ee89580 (D-023 comment-only); convergence streak 0/3.
+- Pass 8: NOT CLEAN (remediation not clean-pass). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-021/D-022/D-023 supplied as ground truth; 2 findings ESCALATED (F-P8-01, F-P8-02); REMEDIATED at FEAT_SHA ad75a7f (D-025 comment-only); convergence streak 0/3.
+- Pass 9: CLEAN (first substantiated clean pass of Pass 8 remediation). Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric; D-023/D-024/D-025 supplied as ground truth; 0 findings in perimeter; grep-predicate coverage: "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0, etc. Convergence streak 1/3 substantiated. PR packaging remains BLOCKED (not 3/3).
 
 ## Fix Wave Ledger
 
@@ -103,6 +111,10 @@ dtu_required: false
 | F-P3-02 MEDIUM [content-defect] | oracle robustness | RESOLVED+VERIFIED | POL-11: prop_assert!(!results.is_empty()) after VP-017 scan; all 8 fixture .ok() to .expect(...). Broken-fixture control RED exit 100; clean fixture GREEN. |
 | F-P4-01 MEDIUM [content-defect] | test-writer | RESOLVED+VERIFIED | pure_core_guard.rs passed GREEN on an emptied FORBIDDEN_PATTERNS (probe loop + .any() both iterate the const; only runtime N>0 assertion counted FILES not PINS) — the "green-on-emptied-input" vacuity class. Fix: Add fail-closed `assert!(!FORBIDDEN_PATTERNS.is_empty())` + runtime pin-probe positive-coverage count (POL-11 form). D-018 governs; remediated at FEAT_SHA f468bd5; red-on-empty exit 101 / real-set exit 0 / 7 probed 2 validated / 61-61 CI gate. |
 | F-P5-01 MEDIUM [content-defect] | test-writer | RESOLVED+VERIFIED | pure_core_guard.rs comment "independent" over-claim: claim "this proves the canonical set is complete" overstates; actual test uses synthetic positives derived from same FORBIDDEN_PATTERNS constant, so it proves mechanism liveness but NOT canonical completeness (D-012 residual). D-019 governs; remediated at FEAT_SHA 9d1a6bb; comment-only fix (no code change); 61-61 CI gate. NULL disposition on scanner.rs Target-2 (comment already accurate; no change needed). |
+| F-P7-01 MEDIUM [content-defect] | test-writer | RESOLVED+VERIFIED | Stale "MUST FAIL/BUG" Red-gate comments in scanner_discovery_tests.rs H1 L1010/L1029 + H2 L1050/L1070 (comment-drift; sibling F-SCAN-DOT-ROOT corrected under D-016, H1/H2 un-propagated). D-023 governs; remediated at FEAT_SHA ee89580; comment-only fix; 61-61 CI gate. |
+| F-P7-02 LOW [test-comment-accuracy] | test-writer | RESOLVED+VERIFIED | EC-008 comment claims cycle "a->b->a" but only single dangling dir-symlink a->b exists (no reciprocal back-edge). Documentation-only; termination assertion still meaningful. D-023 governs; remediated at FEAT_SHA ee89580; comment-only fix; 61-61 CI gate. |
+| F-P8-01 MEDIUM [test-documentation-accuracy] | test-writer | RESOLVED+VERIFIED | EC-008 comments in scanner_discovery_tests.rs had DIRECTION-WRONG framing: claimed "dangling symlink a->b (b nonexistent)" when create_dir_symlink(&dir_a,&dir_b) actually creates a link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling. D-025 governs (new binding evidence rule: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report). Remediated at FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines); 61-61 CI gate. |
+| F-P8-02 LOW [test-comment-accuracy] | test-writer | RESOLVED+VERIFIED | F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test". D-025 governs; remediated at FEAT_SHA ad75a7f (comment-only, relabelled "Regression guard" with provenance note); 61-61 CI gate. |
 
 ## Decisions Log
 
@@ -130,6 +142,9 @@ dtu_required: false
 | D-021 | 2026-08-20 | S-1.01 convergence checkpoint — 3/3 clean passes achieved at 9d1a6bb; CI-wiring verified (POL-11 in CI); 61/61 tests green; demo evidence registered (13 ACs x 3 formats); NEXT: pr-manager packaging for HUMAN execution. |
 | D-020 | 2026-08-20 | Operator ruling this session: Convergence gate honesty correction - transcript-only adversarial passes are uncertified and do not count; S-1.01 substantiated clean-pass streak reset from over-claimed 3/3 to 1/3 (final clean pass at 9d1a6bb); remaining 2 clean passes run one-per-fresh-session, each enumerated + committed before the next; PR packaging deferred until 3/3 durably enumerated. Also note the process-gap: pr-manager template auto-filled fabricated coverage/mutation/holdout/security figures and an invented adversarial findings table (no Pass 7 exists); flag for lessons codification. |
 | D-022 | 2026-08-20 | Adversarial Pass 7 (fresh-context different-model static, scoped-to-fix) at feature 9d1a6bb: NOT CLEAN. F-P7-01 MEDIUM (stale 'MUST FAIL/BUG' Red-gate comments in scanner_discovery_tests.rs H1 L1010/L1029 + H2 L1050/L1070 assert the impl is buggy while both plain #[test]s pass at the 61/61-green 9d1a6bb gate — same comment-drift class as D-016/D-019, un-propagated to H1/H2). F-P7-02 LOW (EC-008 comment claims a cycle it does not construct). Both ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix + Pass-7-only clean-stop). Convergence streak reset 1->0 of 3 (provisional; operator may adjudicate F-P7-01 immaterial -> 2/3). Orchestrator independently inspection-verified both findings. Checkpoint committed LOCAL-ONLY; push deferred to operator per session rider. |
+| D-023 | 2026-08-20 | Operator ruling this session: F-P7-01/F-P7-02 ACCEPT+FIX comment-only. Remediation committed at ee89580: stale Red-gate comments corrected (H1/H2) + EC-008 false-cycle comment corrected. 61/61 CI gate GREEN. D-022 verdict (NOT CLEAN) retroactively replaced with REMEDIATED+VERIFIED. Convergence streak 0/3. NEXT: Adversarial Pass 8 (fresh context). |
+| D-024 | 2026-08-20 | Operator ruling this session: Adversarial Pass 8 at feature ee89580 NOT CLEAN. F-P8-01 MEDIUM (EC-008 direction-wrong framing: claimed "dangling symlink a->b (b nonexistent)" but create_dir_symlink(&dir_a,&dir_b) creates link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling). F-P8-02 LOW (F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test"). Both ESCALATED-PENDING-OPERATOR; convergence streak reset 0/3. |
+| D-025 | 2026-08-20 | Operator ruling this session: F-P8-01/F-P8-02 ACCEPT+FIX comment-only. REMEDIATION COMMITTED AT ad75a7f: (1) EC-008 comment corrected with direction-accurate wording ("directory symlink b -> a; target a exists; not followed; scan must terminate") with verification statement per NEW BINDING EVIDENCE RULE: fix author MUST verify claimed behavior against executed/documented semantics (here: std::os::unix::fs::symlink(src,dst) creates link AT dst pointing TO src) and STATE that verification in its report. (2) F-SCAN-DOT-ROOT relabelled as "Regression guard" with honest provenance note ("originally authored as a Red Gate probe; premise disproven under D-016; retained as a regression guard"). Code message-strings (the .expect("create symlink a->b") at ~L861) remain OUT OF SCOPE. 61/61 CI gate GREEN. Convergence streak 0->1 of 3 substantiated. NEXT: Adversarial Pass 9 (fresh context, scoped-to-fix). PR packaging remains BLOCKED until 3/3 substantiated. |
 
 ## Skip Log
 
@@ -142,129 +157,45 @@ dtu_required: false
 |----|-------|----------|---------------|-------|------------|
 | F-02 | AC-006 and AC-010 partial coverage — "anchor table still built via Pass 1.5" half structurally undischargeable in S-1.01. | MEDIUM | phase-3 | test-writer | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
 | F-03 | VP-016 semantic anchoring POLICY 4 FAIL — VP-016 source-of-truth H1 "Ignored Files Have Anchor Tables". | MEDIUM | phase-3 | spec-steward | ADJUDICATED-DEFERRED by operator (D-008); DEFERRED to BC-2.08.004 / SS-05 story (NOT blocking for Pass 2). |
-| F-P7-01 | Stale "MUST FAIL/BUG" Red-gate comments on passing tests: scanner_discovery_tests.rs H1 L1010/L1029 + H2 L1050/L1070 (comment-drift; sibling F-SCAN-DOT-ROOT corrected under D-016, H1/H2 un-propagated). | MEDIUM | phase-3 | test-writer | ESCALATED-PENDING-OPERATOR (adjudicate accept+fix comment-only / defer / reject-as-immaterial); orchestrator inspection-verified. |
-| F-P7-02 | EC-008 test comment claims a cycle "a->b->a" it does not construct (dangling dir-symlink, no reciprocal edge); documentation-only, no functional impact. | LOW | phase-3 | test-writer | ESCALATED-PENDING-OPERATOR; orchestrator inspection-verified. |
 
 ## Drift Items
 
 - [clippy-gap] F-VP017 proptest introduced 4 clippy needless-borrow errors (scanner_discovery_tests.rs lines 1242, 1243, 1248, 1249). MECHANICAL FIX COMPLETE at 4820ead; gate GREEN.
-- [feature-branch] Local feature HEAD is 9d1a6bb; origin is 46101ae. Pass-4 (f468bd5) and Pass-5 (9d1a6bb) are UNPUSHED. Per operator ruling this session, feature-branch push will be PACKAGED FOR HUMAN, not factory-pushed. DO NOT push. DO NOT create PR. DO NOT merge.
+- [feature-branch] Local feature HEAD is ad75a7f (commits f468bd5, 9d1a6bb, ee89580, 026ea6a→amended ad75a7f are UNPUSHED, packaged-for-human; DO NOT push). Origin is 53ffff4. Pass-8/D-024 remediation at ee89580, Pass-9/D-025 fix-wave at ad75a7f.
 
 ## Session Resume Checkpoint
 
-S-1.01 convergence: Adversarial Pass 7 (fresh-context static, scoped-to-fix) ran at feature 9d1a6bb -> NOT CLEAN. F-P7-01 MEDIUM + F-P7-02 LOW (comment-drift in scanner_discovery_tests.rs H1/H2 + EC-008) ESCALATED-PENDING-OPERATOR, orchestrator inspection-verified, NOT fixed this session. Convergence streak reset 1->0 of 3 (provisional; operator may rule F-P7-01 immaterial -> 2/3). Feature tree unchanged (9d1a6bb, 61/61 green). PR packaging remains BLOCKED (not 3/3). Checkpoint committed LOCAL-ONLY; the push + `git ls-remote origin factory-artifacts` proof is the operator's step. NEXT: operator adjudicates F-P7-01 disposition; then on a fresh session run the next clean pass (one-per-session per D-020).
+S-1.01 convergence: Adversarial Pass 9 CLEAN @ad75a7f (D-025 comment-only fix-wave for F-P8-01/F-P8-02); convergence streak 1 of 3 substantiated; 2 more clean fresh-context passes required; PR packaging BLOCKED until 3/3. Feature tree at ad75a7f (61/61 green, diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines). Next action: Run one more independent fresh-context clean adversarial pass in a new session. Convergence achieved only at 3 consecutive clean passes.
 
-## Adversarial Pass 1
-
-- Fresh-context different-model adversary with policies.yaml rubric
-- Lens perimeter declared; F1-F7 handed as unverified hints
-- Convergence clean-pass streak = 0 of 3
-- 4 MEDIUM findings ESCALATED to operator (F-01..F-04)
-
-## Adversarial Pass 2
-
-- Fresh-context different-model static adversary (Read/Grep/Glob only), policies.yaml rubric injected
-- F-02/F-03 supplied as adjudicated-deferred ground truth (correctly not re-litigated per D-008)
-- 4 MEDIUM findings ESCALATED (F-04-a, F-04-b, F-VP017, F-SCAN-DOT-ROOT)
-- Operator remediation ruling: all 4 ACCEPT+FIX (D-011, D-012, D-013, D-016 opt A)
-- Remediation fix-wave executed: test-file-only change (scanner_discovery_tests.rs +15/-14); CI-equiv gate GREEN (build/fmt/clippy/nextest all exit 0)
-
-## Adversarial Pass 3 (re-derived, durable)
+## Adversarial Pass 8
 
 - Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-007/D-016 supplied as ground truth
-- **Findings:** 2 MEDIUM (F-P3-01, F-P3-02)
-- **Operator Ruling:** D-017 — F-P3-01 ACCEPT+FIX drop-subsumed-pin; F-P3-02 ACCEPT+FIX non-empty-assert+loud-fixtures
-- **Remediation:** Test-file-only fix pair committed at FEAT_SHA 46101ae
+- D-021/D-022/D-023 supplied as ground truth
+- **Findings:** 2 MEDIUM (F-P8-01), 1 LOW (F-P8-02)
+- **Operator Ruling:** D-024 — Both findings ESCALATED-PENDING-OPERATOR; convergence streak 0/3
+- **Remediation:** Test-only comment-only fix pair committed at FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines)
 - **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
-- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave, not clean-pass)
+- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (remediation, not clean-pass)
 - **Convergence streak:** 0 of 3
-- **Non-surviving items (re-derivation):** 2 items did NOT survive re-derivation as material (reaffirm D-007; F-SCAN-DOT-ROOT comment)
-- **Governing decisions:** D-012 (F-P3-01), POL-11 (F-P3-02)
+- **New binding evidence rule:** Fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report (F-P8-01)
 
-## Adversarial Pass 4
+### Pass 8 Adversarial Findings
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-P8-01 | MEDIUM | test-documentation-accuracy | EC-008 comment claims "dangling symlink a->b (b nonexistent)" but create_dir_symlink(&dir_a,&dir_b) creates link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling | Comment-only. D-025 governs (new binding evidence rule: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report). Remediated at FEAT_SHA ad75a7f with direction-correct wording: "directory symlink b -> a; target a exists; not followed; scan must terminate" + verification statement. |
+| F-P8-02 | LOW | test-comment-accuracy | F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test" | Comment-only. D-025 governs; remediated at FEAT_SHA ad75a7f with relabelled "Regression guard" and honest provenance note: "originally authored as a Red Gate probe; premise disproven under D-016; retained as a regression guard" |
+
+## Adversarial Pass 9
 
 - Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-016/D-017 supplied as ground truth
-- **Findings:** 1 MEDIUM (F-P4-01), 2 LOW residuals non-blocking
-- **Operator Ruling:** D-018 — F-P4-01 ACCEPT+FIX (test-only): fail-closed `assert!(!FORBIDDEN_PATTERNS.is_empty())` + runtime pin-probe positive-coverage count (POL-11 form)
-- **Remediation:** Test-only fix committed at FEAT_SHA f468bd5
-- **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
-- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave remediation, not clean-pass)
-- **Convergence streak:** 0 of 3
-- **Residual notes (non-blocking):** comment "independent" over-claim; scanner.rs:31 terse-comment clarity
-
-## Adversarial Pass 5
-
-- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-018/D-019 supplied as ground truth
-- **Findings:** 1 MEDIUM (F-P5-01) comment-only (over-claim "independent" in pure_core_guard.rs)
-- **Operator Ruling:** D-019 — F-P5-01 ACCEPT+FIX comment-only: comment "independent" over-claim corrected; claim that synthetic positives prove canonical set completeness is false (test derives positives from same FORBIDDEN_PATTERNS constant, proving only mechanism liveness, not canonical completeness per D-012 residual). NO code change.
-- **Remediation:** Comment-only fix committed at FEAT_SHA 9d1a6bb
-- **Gate Verification:** 61/61 passed, 0 skipped, gate GREEN
-- **Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (fix-wave remediation, not clean-pass)
-- **Convergence streak:** 0 of 3
-- **NULL disposition:** scanner.rs Target-2 (comment already accurate; no change)
-
-## Adversarial Pass 6
-
-- Fresh-context different-model static adversary (scoped-to-fix), policies.yaml rubric
-- D-019 supplied as ground truth (F-P5-01 resolved comment-only)
-- **Findings:** 0 (F-P5-01 comment resolved in Pass 5; no new findings in Pass 6)
-- **Verdict:** CLEAN (first substantiated clean pass)
-- **Convergence streak:** 1 of 3 (S-1.01 IN PROGRESS)
-- **Governing decisions:** D-019 (F-P5-01), D-021 (checkpoint decision)
-
-## Adversarial Pass 7
-
-- Fresh-context different-model STATIC adversary (Read/Grep/Glob only), scoped-to-fix convergence-tail lens, full policies.yaml rubric injected
-- D-007..D-019 supplied as adjudicated ground truth; verified present-in-code and NOT re-litigated
-- **Findings:** 1 MEDIUM (F-P7-01), 1 LOW (F-P7-02)
-  - F-P7-01 (MEDIUM, test-documentation-accuracy): stale "MUST FAIL / current implementation has TWO bugs / currently returns empty" Red-gate comments in crates/mdlinkcheck/tests/scanner_discovery_tests.rs H1 (test_BC_2_01_001_dot_ancestor_should_not_block_scan, plain #[test] @ L1013; header L1010, BUG comment L1029-1030) and H2 (test_BC_2_01_004_dot_files_should_be_included, plain #[test] @ L1057; header L1050, BUG comment L1070-1072). Both tests assert CORRECT behavior and PASS at the 61/61-green gate @ 9d1a6bb, falsifying the "MUST FAIL" claim. Same comment-drift class as D-016/D-019, un-propagated to H1/H2 (contrast: sibling test_F_SCAN_DOT_ROOT L1283-1294 comment WAS corrected under D-016). Orchestrator inspection-verified against source lines.
-  - F-P7-02 (LOW, test-comment-accuracy): test_EC_008_symlink_cycle_terminates (L847-877) comment claims a cycle "a -> b -> a" but the body creates only dir_a, notes dir_b does NOT exist, and makes a single dangling dir-symlink (L855-860) — no reciprocal edge, so no actual cycle. Documentation-only; termination assertion still meaningful. Orchestrator inspection-verified.
-- **Verdict:** NOT CLEAN
-- **Convergence streak:** 0 of 3 (provisional — reset by a surfaced material finding; operator may adjudicate F-P7-01 immaterial comment-drift, which would make Pass 7 stand CLEAN -> 2 of 3)
-- **Disposition:** both findings ESCALATED-PENDING-OPERATOR; NO fix this session (escalate-before-fix + Pass-7-only clean-stop mandate)
-- **Governing decision:** D-022
-- **Checkpoint:** committed LOCAL-ONLY; push deferred to operator per session rider
+- D-023/D-024/D-025 supplied as ground truth
+- **Findings:** 0 (all previous findings REMEDIATED+VERIFIED)
+- **Verdict:** CLEAN (first substantiated clean pass of Pass 8 remediation)
+- **Convergence streak:** 1 of 3 (substantiated)
+- **Grep-predicate coverage evidence:** "Red Gate"=1 sanctioned-provenance, "dangling"=1 corrected, "cycle"=14 body-consistent, "should fail"=0
+- **Governing decisions:** D-023 (F-P7-01/F-P7-02), D-024 (F-P8-01/F-P8-02), D-025 (F-P8-01/F-P8-02 comment-only fix + new binding evidence rule)
 
 ## NEXT ACTION
 
-Operator to adjudicate F-P7-01 (accept+fix comment-only / defer / reject-as-immaterial) and note F-P7-02 (LOW). If F-P7-01 accepted -> comment-only fix wave then a fresh clean pass; if ruled immaterial -> Pass 7 stands CLEAN, streak 2 of 3, then one more clean pass. PR packaging BLOCKED until 3/3 durably enumerated. Push of this checkpoint (factory-artifacts local HEAD) to origin is the operator's step.
-
-## Operator Decisions Completed (This Session)
-
-| Finding | Decision | Status |
-|---------|----------|--------|
-| F-04-a | D-011: Recursive enumeration + docstring fix | RESOLVED+VERIFIED |
-| F-04-b | D-012: Per-pattern synthetic positives; residual documented | ACCEPT+RESIDUAL-DOCUMENTED |
-| F-VP017 | D-013: Proptest written; D-016: clippy errors removed | FIXED+VERIFIED |
-| F-SCAN-DOT-ROOT | D-016 opt A: Premise disproven; keep test; correct false comment; NO scanner change | CLOSED+VERIFIED |
-| F-P3-01 | D-017: Drop subsumed "rand::rng" pin; correct line-97 claim | RESOLVED+VERIFIED |
-| F-P3-02 | D-017: Non-empty assert + loud fixtures | RESOLVED+VERIFIED |
-| F-P4-01 | D-018: Fail-closed assert + runtime pin-probe count (POL-11) | RESOLVED+VERIFIED |
-| F-P5-01 | D-019: Comment-only fix for "independent" over-claim | RESOLVED+VERIFIED |
-| PAUSE-01 | HUMAN PAUSE ORDER LIFTED this session | RESOLVED |
-| PUSH-01 | Feature-branch push (f468bd5, 9d1a6bb) to be PACKAGED FOR HUMAN, NOT factory-pushed | RESOLVED |
-| CHECKPOINT-01 | S-1.01 convergence checkpoint: 3/3 clean passes @ 9d1a6bb + CI-wiring verified + demo evidence (13 ACs) | RESOLVED |
-| ADJUDICATION-01 | F-P7-01/F-P7-02 from Pass 7 ESCALATED-PENDING-OPERATOR; no fix this session | PENDING |
-
-## Concurrent Cycles
-
-| Cycle | Type | Status |
-|-------|------|--------|
-| phase-3-wave-1 | feature | IN PROGRESS (S-1.01 Pass 7 NOT CLEAN @ 9d1a6bb; streak reset 1->0 of 3 provisional; F-P7-01/F-P7-02 ESCALATED-PENDING-OPERATOR; PR packaging BLOCKED) |
-
-## Historical Content
-
-| Content | Location |
-|---------|----------|
-| Burst history | `cycles/phase-3-wave-1/burst-log.md` |
-| Convergence trajectory | `cycles/phase-3-wave-1/convergence-trajectory.md` |
-| Session checkpoints | `cycles/phase-3-wave-1/session-checkpoints.md` |
-| Lessons learned | `cycles/phase-3-wave-1/lessons.md` |
-| Resolved blockers | `cycles/phase-3-wave-1/blocking-issues-resolved.md` |
-| Cycle manifest | `cycles/phase-3-wave-1/cycle-manifest.md` |
-
-<!-- ~270 lines (wc-l) -->
-<!-- 2026-08-20T12:30:00Z S-1.01 Adversarial Pass 7 NOT CLEAN — corrective checkpoint -->
+2 more independent fresh-context clean adversarial passes required. Run ONE per fresh session, each enumerated + committed before the next. Convergence achieved only at 3 consecutive clean passes. PR packaging remains BLOCKED until 3/3 substantiated.

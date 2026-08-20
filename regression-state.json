@@ -1,1 +1,1 @@
-{"status":"pass","timestamp":"2026-08-20T12:06:17Z","command":"cd /Users/jmagady/Dev/mdlinkcheck-spark/.worktrees/S-1.01\ncargo nextest run --locked >/tmp/nextest_ee89580.log 2>&1\necho \"EXIT_CODE=$?\"\ntail -2 /tmp/nextest_ee89580.log"}
+{"status":"pass","timestamp":"2026-08-20T13:36:27Z","command":"cargo clippy --all-targets --locked -- -D warnings >/dev/null 2>&1; echo \"clippy_exit=$?\"; cargo nextest run --locked >/dev/null 2>&1; echo \"nextest_exit=$?\"; cargo fmt --check >/dev/null 2>&1; echo \"fmt_exit=$?\""}

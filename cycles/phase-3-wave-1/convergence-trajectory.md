@@ -348,3 +348,108 @@ Pass 6 was the FIRST substantiated clean pass (0 findings at 9d1a6bb); convergen
 
 ESCALATE-BEFORE-FIX: Present F-P7-01 (comment-drift in H1/H2 Red-gate comments) and F-P7-02 (EC-008 comment cycle mischaracterization) to operator for adjudication. After adjudication, if F-P7-01 is ruled immaterial, streak retroactively becomes 2/3 and 1 more clean pass is needed; if F-P7-01 is accepted, remediate comment-only fix and run Pass 8 (third clean pass). PR packaging remains BLOCKED until 3/3 durably enumerated.
 
+---
+
+### Pass 8 (2026-08-20) — REMEDIATED (durable fresh-context re-derivation)
+
+**Findings:** 2 (0 CRIT, 0 HIGH, 1 MED, 1 LOW)
+**Novelty:** LOW (fresh-context different-model static adversary, scoped-to-fix convergence-tail lens, policies.yaml rubric)
+**Convergence counter:** 0/3 (provisional)
+**Verdict:** REMEDIATED+VERIFIED, NOT CLEAN (remediation fix-wave, not clean-pass)
+
+#### Adversarial Review Findings - PASS 8
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-P8-01 | MEDIUM | test-documentation-accuracy | EC-008 comment claims "dangling symlink a->b (b nonexistent)" but create_dir_symlink(&dir_a,&dir_b) creates link AT dir_b pointing TO dir_a (b->a), target a exists, NOT dangling. | Comment-only. D-025 governs (new binding evidence rule: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in its report). Remediated at FEAT_SHA ad75a7f with direction-correct wording: "directory symlink b -> a; target a exists; not followed; scan must terminate" + verification statement. ESCALATED-PENDING-OPERATOR. |
+| F-P8-02 | LOW | test-comment-accuracy | F-SCAN-DOT-ROOT guard block header + inline still framed a PASSING test as a "Red Gate test". | Comment-only. D-025 governs; remediated at FEAT_SHA ad75a7f with relabelled "Regression guard" and honest provenance note: "originally authored as a Red Gate probe; premise disproven under D-016; retained as a regression guard". ESCALATED-PENDING-OPERATOR. |
+
+#### Operator Verdict Summary (D-024, D-025)
+
+- Both findings ESCALATED-PENDING-OPERATOR (adjudicate accept+fix comment-only / defer / reject-as-immaterial)
+- D-024: Operator ruling that Pass 8 NOT CLEAN (F-P8-01, F-P8-02) and convergence streak reset 0/3
+- D-025: Both ACCEPT+FIX comment-only at FEAT_SHA ad75a7f (diff ee89580..ad75a7f: 10 insertions/7 deletions, all comment lines)
+  - F-P8-01: Direction-correct wording with NEW BINDING EVIDENCE RULE - fix author MUST verify claimed behavior against executed/documented semantics (std::os::unix::fs::symlink(src,dst) creates link AT dst pointing TO src) and STATE that verification in its report
+  - F-P8-02: Relabelled "Regression guard" with honest provenance note (originally authored as Red Gate probe; premise disproven under D-016; retained as regression guard)
+- Code message-strings (.expect("create symlink a->b") at ~L861) remain OUT OF SCOPE (per D-025)
+- Gate Verification: 61/61 passed, 0 skipped, gate GREEN
+- Convergence streak: 0 -> 1 of 3 substantiated at ad75a7f (after Pass 9 CLEAN)
+
+#### Grep-Predicate Coverage Evidence
+
+| Predicate | Count | Status |
+|-----------|-------|--------|
+| "Red Gate" | 1 | Sanctioned-provenance (D-025 provenance note) |
+| "dangling" | 1 | Corrected (D-025 direction-correct wording) |
+| "cycle" | 14 | Body-consistent (no false claims) |
+| "should fail" | 0 | Zero false claims in perimeter |
+| "BUG" | 0 | Zero false claims in perimeter |
+| "MUST FAIL" | 0 | Zero false claims in perimeter |
+
+#### Convergence Status
+
+- Pass 7: NOT CLEAN (2 findings ESCALATED-PENDING-OPERATOR)
+- Pass 8: REMEDIATED+VERIFIED at FEAT_SHA ad75a7f; gate GREEN; NOT CLEAN (remediation, not clean-pass)
+- Convergence streak: 0 -> 1 of 3 substantiated (after Pass 9)
+
+#### Next Steps
+
+Adversarial Pass 9 (fresh context, scoped-to-fix) — first clean-pass opportunity after Pass 8 remediation; convergence streak 1 of 3; 2 more clean passes required. PR packaging remains BLOCKED until 3/3 durably enumerated.
+
+---
+
+### Pass 9 (2026-08-20) — CLEAN (first substantiated clean pass of Pass 8 remediation)
+
+**Findings:** 0 (0 CRIT, 0 HIGH, 0 MED, 0 LOW)
+**Novelty:** LOW (fresh-context different-model static adversary, scoped-to-fix convergence-tail lens, policies.yaml rubric)
+**Convergence counter:** 1 of 3 (substantiated)
+**Verdict:** CLEAN (substantiated clean pass; convergence streak 1 of 3)
+
+#### Adversarial Review Findings - PASS 9
+
+No material findings in perimeter. All previous findings (F-P7-01, F-P7-02, F-P8-01, F-P8-02) REMEDIATED+VERIFIED at ad75a7f.
+
+#### Operator Verdict Summary
+
+- VERDICT: CLEAN (first substantiated clean pass of Pass 8 remediation)
+- Convergence streak: 1 of 3 substantiated
+- Gate Verification: 61/61 passed, 0 skipped, gate GREEN
+- PR packaging: BLOCKED until 3/3 substantiated
+
+#### Grep-Predicate Coverage Evidence
+
+| Predicate | Count | Status |
+|-----------|-------|--------|
+| "Red Gate" | 1 | Sanctioned-provenance (D-025 provenance note preserved) |
+| "dangling" | 1 | Corrected (D-025 direction-correct wording preserved) |
+| "cycle" | 14 | Body-consistent (no false claims) |
+| "should fail" | 0 | Zero false claims in perimeter |
+| "BUG" | 0 | Zero false claims in perimeter |
+| "MUST FAIL" | 0 | Zero false claims in perimeter |
+
+#### Convergence Trajectory Shorthand
+
+`4→0→4→1→1→0→2→2→0→0`
+
+#### Key Milestones
+
+| Milestone | Date | SHA |
+|-----------|------|-----|
+| S-1.01 spec ratified | 2026-08-05 | develop f81f412 |
+| S-1.01 TDD chain complete | 2026-08-19 | 2859e03 |
+| Pass-3 remediation | 2026-08-19 | 46101ae |
+| Pass-4 remediation | 2026-08-19 | f468bd5 |
+| Pass-5 remediation | 2026-08-20 | 9d1a6bb |
+| Pass-6 - CONVERGENCE | 2026-08-20 | 9d1a6bb |
+| Pass-7 remediation | 2026-08-20 | ee89580 |
+| Pass-8 remediation | 2026-08-20 | ad75a7f |
+| **Pass-9 - CONVERGENCE** | 2026-08-20 | ad75a7f |
+
+#### Summary
+
+Pass 9 was the FIRST substantiated clean pass of Pass 8 remediation (0 findings at ad75a7f); convergence streak reached 1 of 3. Two further clean passes are required (per D-020).
+
+#### Next Steps
+
+2 more independent fresh-context clean adversarial passes required, run ONE per fresh session, each enumerated + committed before the next. Convergence achieved only at 3 consecutive clean passes. PR packaging remains BLOCKED until 3/3 substantiated.
+

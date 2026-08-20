@@ -38,3 +38,22 @@
 **Residuals (non-blocking):**
 - Comment "independent" over-claim
 - scanner.rs:31 terse-comment clarity
+
+---
+
+## Pass 8 (2026-08-20)
+
+**[process-gap][deferred] STATE RECORDING GAP**
+- **Lesson:** Pass 8/D-023/D-024 were committed transcript-only (commit subject) without updating the state body/cycle files
+- **Resolution:** DEFERRED to post-3/3; state-manager checkpoint discipline hardening (mandatory state update on every commit)
+- **Action Item:** Implement state-manager checkpoint discipline that requires all adversarial pass results and operator rulings to be durably recorded in STATE.md and cycle files before committing
+
+**[process-gap][deferred] RECURRING COMMENT-DRIFT CLASS**
+- **Lesson:** Stale Red-gate/direction/false-cycle test comments recurred across D-016/D-019/D-022/D-024/D-025 because sibling-fix propagation was incomplete
+- **Resolution:** DEFERRED to post-3/3; test-writer comment-propagation checklist
+- **Action Item:** Implement test-writer checklist that verifies all sibling test files receive consistent comment updates when a test comment pattern is corrected
+
+**[process-gap][deferred] FIX-SCOPE OVERSTEP**
+- **Lesson:** Test-writer changed an operator-ruled out-of-scope code string (the .expect("create symlink a->b") at ~L861) in the first fix attempt (026ea6a), caught by orchestrator diff-verify and reverted (ad75a7f)
+- **Resolution:** DEFERRED to post-3/3; fix-wave minimal-diff discipline reminder
+- **Action Item:** Implement fix-wave discipline that enforces minimal diff scope; only modify what the ruling specifies (code vs comment vs nothing)

@@ -81,3 +81,31 @@
 - Feature-branch push (f468bd5, 9d1a6bb unpushed vs origin 46101ae) to be PACKAGED FOR HUMAN, NOT factory-pushed
 
 **Next Action:** Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — first clean-pass opportunity after F-P5-01 remediation; 3 consecutive clean passes required.
+
+---
+
+## Session Checkpoint: 2026-08-20T14:15:00Z
+**State:** S-1.01 convergence checkpoint — Pass 9 CLEAN @ad75a7f (D-025 comment-only fix-wave for F-P8-01/F-P8-02); convergence streak 1 of 3 substantiated; 2 more clean fresh-context passes required; PR packaging BLOCKED until 3/3.
+
+**Feature branch:** feature/S-1.01-workspace-scaffold-and-core-discovery
+**HEAD SHA:** ad75a7f (D-025 comment-only fix-wave)
+**Working tree:** clean (post-burst)
+**Test command:** cargo nextest run --locked --workspace --no-fail-fast
+**EXIT code:** 0
+**Pass/fail counts:** 61 passed, 0 fail
+**Toolchain verified:** cargo 1.97.0, rustc 1.97.0, cargo-nextest 0.9.129
+
+**Adversarial Pass 8 verdict:** REMEDIATED+VERIFIED at ee89580 (comment-only fix for F-P7-01/F-P7-02), NOT CLEAN (remediation, not clean-pass)
+
+**Adversarial Pass 8 remediation:** D-023 comment-only fix-wave committed at ee89580 (61/61 green)
+
+**Adversarial Pass 9 verdict:** CLEAN (substantiated clean pass; convergence streak 1 of 3)
+
+**Checkpoint Status:** ARCHIVED
+
+**Operator Decisions Completed (This Session):**
+- D-023: F-P7-01/F-P7-02 ACCEPT+FIX comment-only — stale Red-gate comments corrected (H1/H2) + EC-008 false-cycle comment corrected; 61/61 CI gate GREEN
+- D-024: F-P8-01/F-P8-02 ESCALATED-PENDING-OPERATOR — Pass 8 NOT CLEAN (direction-wrong EC-008 comment + Red-gate framing on F-SCAN-DOT-ROOT); convergence streak 0/3
+- D-025: F-P8-01/F-P8-02 ACCEPT+FIX comment-only — EC-008 direction-correct wording + F-SCAN-DOT-ROOT relabelled "Regression guard" with provenance note; NEW BINDING EVIDENCE RULE effective: fix author MUST verify claimed behavior against executed/documented semantics and STATE that verification in report; 61/61 CI gate GREEN
+
+**Next Action:** Run one more independent fresh-context clean adversarial pass in a new session; 2 more clean passes required before PR packaging.
