@@ -21,10 +21,12 @@ traces_to: STATE.md
 | 3 | 2026-08-19 | 4 | 0 | 0 | 4 | 0 | MEDIUM | 0.00 | 0/3 | NOT CLEAN |
 | 4 | 2026-08-19 | 1 | 0 | 0 | 1 | 2 | LOW | 0.00 | 0/3 | REMEDIATED+VERIFIED |
 | 5 | 2026-08-20 | 1 | 0 | 0 | 1 | 0 | LOW | 0.00 | 0/3 | REMEDIATED+VERIFIED (comment-only) |
+| 6 | 2026-08-20 | 0 | 0 | 0 | 0 | 0 | LOW | 0.00 | 1/3 | CLEAN (first substantiated clean pass) |
+| 7 | 2026-08-20 | 2 | 0 | 0 | 1 | 1 | LOW | 0.00 | 0/3 | NOT CLEAN |
 
 ## Trajectory Shorthand
 
-`4→0→4→1→1→...`
+`4→0→4→1→1→0→2`
 
 ## Per-Pass Details
 
@@ -279,11 +281,11 @@ Adversarial Pass 6 (fresh context, different-model, static, scoped-to-fix) — f
 
 #### Summary
 
-S-1.01 adversarial convergence COMPLETE with 3 consecutive clean passes. F-P5-01 comment-only fix (D-019) verified in Pass 6 with 0 new findings. POL-11 fail-closed guard CI-wired and enforced at .github/workflows/ci.yml:154. 61/61 tests pass. Demo evidence registered (13 ACs x 3 formats).
+Pass 6 was the FIRST substantiated clean pass (0 findings at 9d1a6bb); convergence streak reached 1 of 3. Two further clean passes were still required (per D-020).
 
 #### Convergence Trajectory Shorthand
 
-`4→0→4→1→1→0`
+`4→0→4→1→1→0→2`
 
 #### Key Milestones
 
@@ -311,4 +313,38 @@ S-1.01 adversarial convergence COMPLETE with 3 consecutive clean passes. F-P5-01
 #### Next Steps
 
 2 more independent fresh-context clean adversarial passes are required, run ONE per fresh session, each enumerated as its own trajectory entry with its verdict committed BEFORE the next pass runs. Convergence achieved only at 3 consecutive clean passes.
+
+
+---
+
+### Pass 7 (2026-08-20) — NOT CLEAN
+
+**Findings:** 2 (0 CRIT, 0 HIGH, 1 MED, 1 LOW)
+**Novelty:** LOW (fresh-context different-model static adversary, scoped-to-fix convergence-tail lens, policies.yaml rubric)
+**Convergence counter:** 0/3 (provisional)
+**Verdict:** NOT CLEAN
+
+#### Adversarial Review Findings - PASS 7
+
+| ID | Severity | Category | Issue | Notes |
+|----|----------|----------|-------|-------|
+| F-P7-01 | MEDIUM | test-documentation-accuracy | Stale/false Red-gate comments in scanner_discovery_tests.rs: H1 test BC-2.01.001 claims "MUST FAIL" and "BUG" while test passes at 61/61-green 9d1a6bb gate; same comment-drift class as D-016/D-019, un-propagated to H1/H2. | Comment-only. ESCALATED-PENDING-OPERATOR. Three-part evidence: (1) exact lines L1010/L1029-1030 for H1, L1050/L1070-1072 for H2; (2) contrast with sibling test_F_SCAN_DOT_ROOT_... L1283-1294 corrected under D-016; (3) 61/61-green gate at 9d1a6bb proves tests PASS, falsifying "MUST FAIL" claim. |
+| F-P7-02 | LOW | test-comment-accuracy | test_EC_008_symlink_cycle_terminates L849/L852 claim cycle "a → b → a" but only single dangling dir-symlink a→b exists (no reciprocal back-edge); genuine cycle exists in test_...genuine_symlink_cycle L608 + VP-017 proptest. | Documentation-only; termination assertion L872-876 still meaningful → no functional impact. ESCALATED-PENDING-OPERATOR. |
+
+#### Operator Verdict Summary
+
+- Both findings ESCALATED-PENDING-OPERATOR (adjudicate accept+fix comment-only / defer / reject-as-immaterial)
+- NO fix applied this session (escalate-before-fix + Pass-7-only clean-stop mandate)
+- Orchestrator independently inspection-verified both findings against exact source lines
+- D-007..D-019 ground-truth adjudications verified present-in-code and not re-litigated
+
+#### Convergence Status
+
+- Streak reset: 1 → 0 of 3 (provisional; operator may rule F-P7-01 immaterial → 2/3)
+- Pass 6: CLEAN (first substantiated clean pass; streak 1 of 3)
+- Pass 7: NOT CLEAN (2 findings ESCALATED-PENDING-OPERATOR)
+
+#### Next Steps
+
+ESCALATE-BEFORE-FIX: Present F-P7-01 (comment-drift in H1/H2 Red-gate comments) and F-P7-02 (EC-008 comment cycle mischaracterization) to operator for adjudication. After adjudication, if F-P7-01 is ruled immaterial, streak retroactively becomes 2/3 and 1 more clean pass is needed; if F-P7-01 is accepted, remediate comment-only fix and run Pass 8 (third clean pass). PR packaging remains BLOCKED until 3/3 durably enumerated.
 

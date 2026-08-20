@@ -1,17 +1,17 @@
 ---
 document_type: pipeline-state
 level: ops
-version: "3.13"
+version: "3.14"
 status: draft
 producer: state-manager
-timestamp: 2026-08-20T07:01:20Z
+timestamp: 2026-08-20T11:30:00Z
 phase: phase-3
 inputs: []
 input-hash: "[live-state]"
 traces_to: ""
 project: mdlinkcheck
 mode: greenfield
-current_step: "Pass 6 CLEAN (first substantiated clean pass @ 9d1a6bb; F-P5-01 comment-only fix). Convergence streak 1 of 3. NEXT: Run 2 more independent fresh-context clean adversarial passes; PR packaging DEFERRED until 3/3 substantiated."
+current_step: "Pass 7 NOT CLEAN — F-P7-01 MEDIUM + F-P7-02 LOW ESCALATED-PENDING-OPERATOR (comment-drift in scanner_discovery_tests.rs H1/H2 + EC-008); convergence streak reset 1→0 of 3 (provisional; operator may rule F-P7-01 immaterial → 2/3). PR packaging remains BLOCKED (not 3/3). NEXT: operator adjudicates F-P7-01 materiality/disposition."
 current_cycle: phase-3-wave-1
 dtu_required: false
 ---
