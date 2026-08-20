@@ -18,3 +18,5 @@
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T02:05:41-0500","ts_epoch":1787209541,"schema_version":1}
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T02:05:45-0500","ts_epoch":1787209545,"schema_version":1}
 {"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T02:05:50-0500","ts_epoch":1787209550,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T02:27:26-0500","ts_epoch":1787210846,"schema_version":1}
+{"type":"hook.block","hook":"destructive-command-guard","reason":"sot_delete","ts":"2026-08-20T02:29:19-0500","ts_epoch":1787210959,"schema_version":1}
